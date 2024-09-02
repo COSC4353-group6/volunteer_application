@@ -3,10 +3,10 @@
 ![Volunteer application ](/client/src/images/homescreen.png)
 
 
-A full-stack web application using React, Nodejs and MySQL. This project provides all the functionality of an enterprise-level volunteer application allowing users to attend event catered by Non-profit Organizations
+A full-stack web application using React, Nodejs and MySQL. This project provides all the functionality of an enterprise-level volunteer application, allowing willing users to attend events managed by Non-profit Organizations
 
 
-- 👉 Hosted on netlify : [coming soon](coming soon)
+- 👉 Hosted on netlify : [https://volunteerapplication.netlify.app/](https://volunteerapplication.netlify.app/)
 
 
 ## Run Locally
@@ -14,8 +14,7 @@ A full-stack web application using React, Nodejs and MySQL. This project provide
 ### 1. Clone repo
 
 ```
-<!-- $ git clone git@github.com:COSC4353-group6/volunteer_application.git -->
-
+$ git clone https://github.com/COSC4353-group6/volunteer_application.git
 
 ```
 
@@ -23,7 +22,7 @@ A full-stack web application using React, Nodejs and MySQL. This project provide
 
 - rename the .env.example file in backend folder to .env
 
-### 3. Setup .env file with application credientials - contact project member for credential
+### 3. Setup .env file with application credientials - contact project member for credentials
 
 ### 4. Run Backend
 
@@ -45,6 +44,6 @@ $ npm start
 
 ## Support
 
-- Contact Developer: [Any Team MemberChiemela]
+- Contact Developer: [Any team Member]
 
 
