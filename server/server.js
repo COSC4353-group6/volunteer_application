@@ -32,9 +32,6 @@ app.use((err, req, res, next) => {
 app.get(
   '*',
   (req, res) =>
-    // res.send(
-    //   '<html><head><title>Hello, World!</title></head><body><h1>Hello, World! - Furniture store</body></html>'
-    // )
     res.json(
         {
             Name:"COSC 4353 volunteer API - Group 6 ",
@@ -46,8 +43,6 @@ app.get(
     )
 
 );
-
-
 
 
 const port = process.env.PORT || 4000;

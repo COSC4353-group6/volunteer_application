@@ -6,7 +6,7 @@
 A full-stack web application using React, Nodejs and MySQL. This project provides all the functionality of an enterprise-level volunteer application, allowing willing users to attend events managed by Non-profit Organizations
 
 
-- 👉 Hosted on netlify : [https://volunteerapplication.netlify.app/](https://volunteerapplication.netlify.app/)
+- Hosted on netlify : [https://volunteerapplication.netlify.app/](https://volunteerapplication.netlify.app/)
 
 
 ## Run Locally
