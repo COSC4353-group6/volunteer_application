@@ -8,6 +8,7 @@ import EventScreen from "./screens/EventScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ErrorScreen from "./screens/ErrorScreen";
 import SignupScreen from "./screens/SignupScreen";
+import UserProfile from "./screens/UserProfile";
 import SigninScreen from "./screens/SigninScreen";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
@@ -245,6 +246,7 @@ function App() {
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<ErrorScreen />} />
 

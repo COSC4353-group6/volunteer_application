@@ -1,0 +1,190 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light gray background */
+    margin: 0; /* Remove default margin */
+  }
+  
+  header {
+    background-color: #0b0b0b; /* Black background for the header */
+    color: #e6e5e3; /* Darker text color */
+    padding: 20px;
+    text-align: center; /* Center the text in the header */
+    font-size: 24px; /* Larger font for the header */
+    font-weight: bold;
+  }
+ 
+  .header-logo {
+    position: center;
+    margin-top:20px;
+    top: 10px;
+    Left: 500px; /* Adjust this for the right corner (top-right) by setting `right: 20px;` */
+    width: 50px; /* Adjust the size of the image */
+    height: auto;
+  }
+  
+  main {
+    padding: 20px;
+  }
+
+  /* Input field styling */
+form input, form select {
+  background-color: #333;  /* Dark background for input fields */
+  color: #fff;  /* White text inside the input fields */
+  border: 1px solid #555;  /* Border color for inputs */
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box; 
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  input, select, textarea, button {
+    width: calc(100% - 22px); /* Adjust width to fit inside the form with padding */
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  /* Additional styles for the date list */
+  #dateList {
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-height: 50px; /* Ensure it has some height even if empty */
+    border-radius: 5px;
+  }
+  
+  .date-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .date-item span {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .remove-btn:hover {
+    background-color: #c82333;
+  }
+
+/* Form background and width */
+form {
+  background-color: #000;  /* Black background */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;  /* Set a max width to make the form narrower */
+  margin: 0 auto;  /* Center the form horizontally */
+  width: 100%;  /* Ensure the form takes up full width up to the max-width */
+  box-sizing: border-box;
+}
+
+/* Form text color */
+form label {
+  color: #fff;  /* White text for labels */
+}
+
+/* Input field styling */
+form input, form select {
+  background-color: #333;  /* Dark background for input fields */
+  color: #fff;  /* White text inside the input fields */
+  border: 1px solid #555;  /* Border color for inputs */
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+/* Button styling */
+button {
+  background-color: #FFD700;  /* Yellow button background */
+  color: #000;  /* Black text */
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Button styling for "Sign up here" */
+/* Existing styles for the form and header */
+
+/* Style the question */
+.signup-question {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #040404;  /* White text to match the form theme */
+}
+
+/* Smaller button for "Sign up here" */
+.signup-button {
+  background-color: #FFD700;  /* Yellow background */
+  color: #000;  /* Black text */
+  padding: 10px;  /* Smaller padding to reduce button size */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;  /* Smaller font size */
+  text-align: center;
+  margin: 10px auto;  /* Center the button */
+  display: block;  /* Ensure the button stays below the text */
+  width: auto;  /* Let the width adjust based on the text content */
+  min-width: 100px;  /* Set a minimum width if you want the button to not be too small */
+}
+
+.signup-button:hover {
+  background-color: #FFC300;  /* Slightly darker yellow on hover */
+}
+
+.signup-button:focus {
+  outline: none;
+}
+
+button:hover {
+  background-color: #FFC300;  /* Slightly darker yellow on hover */
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Ensure the form text is also white */
+p {
+  color: #080808;
+}
+
+a {
+  color: #FFD700;  /* Yellow for links */
+}
