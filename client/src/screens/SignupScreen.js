@@ -1,14 +1,14 @@
 
-import { Helmet } from 'react-helmet-async';
+// import { Helmet } from 'react-helmet-async';
 
 export default function SignupScreen() {
   
   return (
     <section>
-      <Helmet>
+
         <title>Sign Up</title>
-      </Helmet>
-      <div> Signupscreen</div>
+
+      <h1> Signup screen</h1>
     </section>
   );
 }

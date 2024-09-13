@@ -1,14 +1,16 @@
 
-import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function EventScreen() {
+
+  const params = useParams();
+  const { slug } = params;
+
   
     return (
       <section >
-        <Helmet>
-          <title>EventScreen</title>
-        </Helmet>
-        <div> EventScreen</div>
+       
+        <h1> EventScreen {slug}</h1>
       </section>
     );
   }
