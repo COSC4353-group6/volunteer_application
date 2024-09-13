@@ -10,6 +10,7 @@ import ErrorScreen from "./screens/ErrorScreen";
 import SignupScreen from "./screens/SignupScreen";
 import UserProfile from "./screens/UserProfile";
 import SigninScreen from "./screens/SigninScreen";
+import VolunteerHistory from "./screens/VolunteerHistory";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
 import Nav from "react-bootstrap/Nav";
@@ -247,6 +248,7 @@ function App() {
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/volunteerhistory" element={<VolunteerHistory />} />
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<ErrorScreen />} />
 
