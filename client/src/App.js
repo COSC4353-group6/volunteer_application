@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HomeScreen from "./screens/HomeScreen";
 import EventScreen from "./screens/EventScreen";
 import SearchScreen from "./screens/SearchScreen";
+import ErrorScreen from "./screens/ErrorScreen";
 import SignupScreen from "./screens/SignupScreen";
 import SigninScreen from "./screens/SigninScreen";
 import Navbar from "react-bootstrap/Navbar";
@@ -15,6 +16,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
 import axios from "axios";
+
 
 function App() {
   // const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -244,6 +246,7 @@ function App() {
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/" element={<HomeScreen />} />
+              <Route path="*" element={<ErrorScreen />} />
 
               {/* 
               <Route
