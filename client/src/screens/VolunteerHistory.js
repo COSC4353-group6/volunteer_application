@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/VolunteerHistory.css'; 
-import logo from '../images/volt2.png'; 
+import logo from '../images/volt2.png'
 
 const volunteerHistory = [
   {
@@ -41,10 +41,9 @@ const VolunteerHistory = () => {
       <header className='volunteerheader'>
       <img src={logo} alt="Logo" className="header-logo" />
         Volunteer History
-      </header>
-
+      </header> 
       <main>
-        <section id="volunteer-history">
+        <div>
           <h1>Volunteer Participation History</h1>
           <table>
             <thead>
@@ -74,7 +73,7 @@ const VolunteerHistory = () => {
               ))}
             </tbody>
           </table>
-        </section>
+        </div>
       </main>
     </div>
   );

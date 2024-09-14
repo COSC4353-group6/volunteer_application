@@ -5,10 +5,10 @@ import { IoSearchSharp } from "react-icons/io5";
 export default function SearchScreen() {
   return (
     <div className="searchscreen">
-      <div className="search-container ">
+      {/* <div className="search-container ">
         <span> Search </span>
         <IoSearchSharp />
-      </div>
+      </div> */}
     </div>
   );
 }

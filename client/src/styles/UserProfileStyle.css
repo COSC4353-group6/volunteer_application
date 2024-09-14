@@ -1,107 +1,109 @@
 .user-profile body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0; /* Light gray background */
-    margin: 0; /* Remove default margin */
-  }
-  
-  .user-profile header {
-    background-color: #0b0b0b; /* Black background for the header */
-    color: #e6e5e3; /* Darker text color */
-    padding: 20px;
-    text-align: center; /* Center the text in the header */
-    font-size: 24px; /* Larger font for the header */
-    font-weight: bold;
-  }
-  
-  .user-profile .header-logo {
-    position: center;
-    margin-top:20px;
-    top: 10px;
-    Left: 500px; /* Adjust this for the right corner (top-right) by setting `right: 20px;` */
-    width: 50px; /* Adjust the size of the image */
-    height: auto;
-  }
-  
-  .user-profile main {
-    padding: 20px;
-  }
-  
-  .user-profile form {
-    max-width: 800px; /* Control the max width of the form */
-    margin: auto; /* Center the form horizontally */
-    padding: 20px;
-    background-color: black; /* Change background to black for the form */
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    border: 1px solid #ddd; /* Light border around the form */
-  }
-  
-  .user-profile label {
-    display: block;
-    margin-bottom: 8px;
-    color: #fff;
-  }
-  
-  .user-profile input, 
-  .user-profile select, 
-  .user-profile textarea, 
-  .user-profile button {
-    width: calc(100% - 22px); /* Adjust width to fit inside the form with padding */
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  .user-profile button {
-    background-color: #FFD700;
-    color: rgb(17, 16, 16);
-    cursor: pointer;
-    font-size: 16px;
-    border: none;
-  }
-  
-  .user-profile button:hover {
-    background-color: #FFC300;
-  }
-  
-  .user-profile .form-group {
-    margin-bottom: 16px;
-  }
-  
-  /* Additional styles for the date list */
-  .user-profile #dateList {
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #f9f9f9;
-    min-height: 50px; /* Ensure it has some height even if empty */
-    border-radius: 5px;
-  }
-  
-  .user-profile .date-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .user-profile .date-item span {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .user-profile .remove-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .user-profile .remove-btn:hover {
-    background-color: #c82333;
-  }
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* Light gray background */
+  margin: 0; /* Remove default margin */
+}
+
+.user-profile header {
+  background-color: #0b0b0b; /* Black background for the header */
+  color: #e6e5e3; /* Darker text color */
+  padding: 20px;
+  text-align: center; /* Center the text in the header */
+  font-size: 24px; /* Larger font for the header */
+  font-weight: bold;
+}
+
+.user-profile .header-logo {
+  position: center;
+  margin-top: 20px;
+  top: 10px;
+  left: 500px; /* Adjust this for the right corner (top-right) by setting `right: 20px;` */
+  width: 50px; /* Adjust the size of the image */
+  height: auto;
+}
+
+.user-profile main {
+  padding: 20px;
+}
+
+.user-profile form {
+  max-width: 800px; /* Control the max width of the form */
+  margin: auto; /* Center the form horizontally */
+  padding: 20px;
+  background-color: black; /* Change background to black for the form */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  border: 1px solid #ddd; /* Light border around the form */
+}
+
+.user-profile label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.user-profile input,
+.user-profile select,
+.user-profile textarea,
+.user-profile button {
+  width: calc(
+    100% - 22px
+  ); /* Adjust width to fit inside the form with padding */
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.user-profile button {
+  background-color: #ffd700;
+  color: rgb(17, 16, 16);
+  cursor: pointer;
+  font-size: 16px;
+  border: none;
+}
+
+.user-profile button:hover {
+  background-color: #ffc300;
+}
+
+.user-profile .form-group {
+  margin-bottom: 16px;
+}
+
+/* Additional styles for the date list */
+.user-profile #dateList {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+  min-height: 50px; /* Ensure it has some height even if empty */
+  border-radius: 5px;
+}
+
+.user-profile .date-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.user-profile .date-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.user-profile .remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.user-profile .remove-btn:hover {
+  background-color: #c82333;
+}

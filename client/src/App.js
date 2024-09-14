@@ -158,7 +158,7 @@ function App() {
               <LinkContainer style={{ color: "#FFD700" }} to="/search">
                 <Navbar.Brand>
                   {" "}
-                  Search <IoSearchSharp />{" "}
+                  {/* Search <IoSearchSharp />{" "} */}
                 </Navbar.Brand>
               </LinkContainer>
 
