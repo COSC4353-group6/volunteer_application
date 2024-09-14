@@ -1,13 +1,7 @@
 import "../styles/UserProfileStyle.css";
-import logo from '../images/volt2.png';
-
 export default function UserProfile () {
   return (
     <section className="user-profile">
-      
-        
-      
-
       <div>
         <form id="profileForm">
           <div class="form-group">
