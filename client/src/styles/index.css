@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(248, 243, 243);
+  /* background-color: rgb(248, 243, 243); */
   /* background-color: black; */
 }
 .site-container {
@@ -76,3 +76,4 @@ main {
   /* background-color: rgba(185, 57, 14, 0.415); */
   transition: 0.5s;
 }
+

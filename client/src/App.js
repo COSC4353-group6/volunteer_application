@@ -27,6 +27,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { MdOutlineLightMode } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
+import logo from "./images/volt2.png"
 import axios from "axios";
 
 const categories = ["a", "b", "c"];
@@ -151,14 +152,19 @@ function App() {
         <header>
           <Navbar className="navstyle" expand="lg">
             <Container>
+            <LinkContainer style={{ color: "#FFD700" }} to="/">
+              <img src={logo}  />
+                {/* <Navbar.Brand>{} VoltMatchPro </Navbar.Brand> */}
+              </LinkContainer>
               <LinkContainer style={{ color: "#FFD700" }} to="/">
-                <Navbar.Brand> VoltMatchPro </Navbar.Brand>
+              {/* <img src={logo}  /> */}
+                <Navbar.Brand>{} VoltMatchPro </Navbar.Brand>
               </LinkContainer>
               <div className="marginright"></div>
               <LinkContainer style={{ color: "#FFD700" }} to="/search">
                 <Navbar.Brand>
                   {" "}
-                  {/* Search <IoSearchSharp />{" "} */}
+                  Search <IoSearchSharp />{" "}
                 </Navbar.Brand>
               </LinkContainer>
 
