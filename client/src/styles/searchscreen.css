@@ -1,0 +1,20 @@
+
+.searchscreen {
+    background-color: rgb(0, 0, 0);
+    color: #FFD700;
+    /* display: inline; */
+   
+    /* position: fixed;
+    width: 100vw;
+    z-index: 10; */
+  }
+
+  .search-container {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 8rem;
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+    gap: 5px; /* Optional: Adds some spacing between the text and icon */
+  }

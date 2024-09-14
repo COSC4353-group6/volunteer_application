@@ -38,7 +38,7 @@ const volunteerHistory = [
 const VolunteerHistory = () => {
   return (
     <div>
-      <header>
+      <header className='volunteerheader'>
       <img src={logo} alt="Logo" className="header-logo" />
         Volunteer History
       </header>

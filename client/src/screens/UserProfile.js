@@ -1,11 +1,11 @@
-import "../styles/userprofile.css"
-// import 
+import "../styles/UserProfileStyle.css";
+import logo from '../images/volt2.png';
 
 export default function UserProfile () {
   return (
-    <section>
+    <section className="user-profile">
       <header>
-        <img src="volt2.png" alt="Logo" class="header-logo" />
+        <img src = {logo} alt = "Logo" className ="header-logo" />
         User Profile
       </header>
 
