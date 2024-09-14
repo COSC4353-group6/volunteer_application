@@ -1169,7 +1169,7 @@ function HomeScreen() {
   return (
     <div className='floater-head'>
       <Helmet>
-        <title>Team 2</title>
+        <title>VoltMatchPro</title>
       </Helmet>
       <h1>New Events</h1>
     
