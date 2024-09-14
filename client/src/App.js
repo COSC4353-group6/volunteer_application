@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useReducer } from "react";
-import "./App.css";
+// import "./App.css";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,27 +7,63 @@ import HomeScreen from "./screens/HomeScreen";
 import EventScreen from "./screens/EventScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ErrorScreen from "./screens/ErrorScreen";
+import LiveEventScreen from "./screens/LiveEventScreen.js";
+import PastEventScreen from "./screens/PastEventScreen.js";
 import SignupScreen from "./screens/SignupScreen";
 import UserProfile from "./screens/UserProfile";
+import UserListScreen from "./screens/UserListScreen.js";
 import SigninScreen from "./screens/SigninScreen";
 import VolunteerHistory from "./screens/VolunteerHistory";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
+import Button from "react-bootstrap/Button";
+import AdminRoute from "./hooks/AdminRoute.js";
+import FindEventScreen from "./screens/FindEventScreen.js";
+import ProtectedRoute from "./hooks/ProtectedRoute.js";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import { LinkContainer } from "react-router-bootstrap";
+import { MdOutlineLightMode } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
+import { IoSearchSharp } from "react-icons/io5";
 import axios from "axios";
 
+const categories = ["a", "b", "c"];
+const brands = ["a", "b", "c"];
+
+const cart = [
+  {
+    cartItems: ["a", "b", "c"],
+  },
+];
+
+const userInfo = {
+  name: "Username",
+  isAdmin: "true",
+};
+
+const fullBox = "a";
+
+console.log(userInfo);
 
 function App() {
   // const { state, dispatch: ctxDispatch } = useContext(Store);
   // const { fullBox, cart, userInfo } = state;
 
   // axios.defaults.baseURL = "http://localhost:4000/";
-  axios.defaults.baseURL = 'https://volunteer-application-5io5.onrender.com/';
+  axios.defaults.baseURL = "https://volunteer-application-5io5.onrender.com/";
 
-  // const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const signoutHandler = () => {
+    // ctxDispatch({ type: 'USER_SIGNOUT' });
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("cartItems");
+    window.location.href = "/signin";
+  };
+
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   // const [categories, setCategories] = useState([]);
   // const [brands, setBrands] = useState([]);
   // const [rating, setRating] = useState([]);
@@ -100,145 +136,97 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ToastContainer position="bottom-center" limit={1} />
-      {/* <header>
-          <Navbar className='navstyle' expand='lg'>
+      <div
+        className={
+          sidebarIsOpen
+            ? fullBox
+              ? "site-container active-cont d-flex flex-column"
+              : "site-container active-cont d-flex flex-column"
+            : fullBox
+            ? "site-container  d-flex flex-column full-box"
+            : "site-container  d-flex flex-column"
+        }
+      >
+        <ToastContainer position="bottom-center" limit={1} />
+        <header>
+          <Navbar className="navstyle" expand="lg">
             <Container>
-             
-              <LinkContainer style={{ color: 'white' }} to='/'>
+              <LinkContainer style={{ color: "#FFD700" }} to="/">
                 <Navbar.Brand> VoltMatchPro </Navbar.Brand>
               </LinkContainer>
-              <LinkContainer style={{ color: 'white' }} to='/'>
+              <div className="marginright"></div>
+              <LinkContainer style={{ color: "#FFD700" }} to="/search">
                 <Navbar.Brand>
-            
+                  {" "}
+                  {/* Search <IoSearchSharp />{" "} */}
                 </Navbar.Brand>
               </LinkContainer>
-              <Navbar.Toggle aria-controls='basic-navbar-nav' />
-              <Navbar.Collapse id='basic-navbar-nav'>
-                <SearchBox /> 
-                <Nav className='me-auto  w-100   justify-content-end'>
-              
-                  <Link
-                    style={{ color: 'white' }}
-                    to='/cart'
-                    className='nav-link'
-                  >
-                    Cart
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg='danger'>
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )} 
-                  </Link>
-                 
-               {userInfo ? (
-                    <NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
-                      <LinkContainer to='/profile'>
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+
+              <Navbar.Toggle
+                aria-controls="basic-navbar-nav"
+                style={{ borderColor: "#FFD700" }}
+              />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto  w-100   justify-content-end">
+                  {userInfo ? (
+                    <NavDropdown
+                      title={
+                        <span style={{ color: "#FFD700" }}>
+                          {userInfo.name}
+                        </span>
+                      }
+                      id="basic-nav-dropdown"
+                    >
+                      <LinkContainer to="/userprofile">
+                        <NavDropdown.Item style={{ color: "#FFD700" }}>
+                          User Profile
+                        </NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/orderhistory'>
-                        <NavDropdown.Item>My Orders</NavDropdown.Item>
+                      <LinkContainer to="/findevent">
+                        <NavDropdown.Item style={{ color: "#FFD700" }}>
+                          Find Event
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/volunteerhistory">
+                        <NavDropdown.Item>Volunteer History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                       <Link
-                        className='dropdown-item'
-                        to='#signout'
+                        className="dropdown-item"
+                        to="#signout"
                         onClick={signoutHandler}
                       >
                         Sign Out
                       </Link>
                     </NavDropdown>
                   ) : (
-                    <Link className='nav-link' to='/signin'>
+                    <Link className="nav-link" to="/signin">
                       Sign In
                     </Link>
-                  )} 
-                 {userInfo && userInfo.isAdmin === 'true' && (
-                    <NavDropdown title='Admin' id='admin-nav-dropdown'>
-                      <LinkContainer to='/admin/dashboard'>
-                        <NavDropdown.Item>Reports</NavDropdown.Item>
+                  )}
+                  {userInfo && userInfo.isAdmin === "true" && (
+                    <NavDropdown
+                      title={
+                        <span style={{ color: "#FFD700" }}>Organizer</span>
+                      }
+                      id="admin-nav-dropdown"
+                    >
+                      <LinkContainer to="/admin/liveevents">
+                        <NavDropdown.Item>Live Events</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/events'>
-                        <NavDropdown.Item>events</NavDropdown.Item>
+                      <LinkContainer to="/admin/pastevents">
+                        <NavDropdown.Item>Completed Events</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/orders'>
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to='/admin/users'>
+                      <LinkContainer to="/admin/users">
                         <NavDropdown.Item>Users</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/refunds'>
-                        <NavDropdown.Item>Refund Requests</NavDropdown.Item>
-                      </LinkContainer>
                     </NavDropdown>
-                  )} 
+                  )}
                 </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
-        </header> */}
-
-      {/* <div
-        className={
-          sidebarIsOpen
-            ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column "
-            : "side-navbar d-flex justify-content-between flex-wrap flex-column"
-        }
-      > */}
-        {/* <Nav className=" flex-column text-white w-100 p-2">
-          <Nav.Item>
-            <strong style={{ color: "black" }}>Categories</strong>
-          </Nav.Item>
-          <div
-            style={{
-              border: "2px solid rgb(185, 56, 14)",
-              borderRadius: "10px",
-              marginBottom: "1rem",
-            }}
-          >
-            <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-              <Nav className="flex-column">
-                {categories.map((category) => (
-                  <Nav.Item key={category}>
-                    <LinkContainer
-                      to={{
-                        pathname: "/search",
-                        search: `category=${category}`,
-                      }}
-                    >
-                      <Nav.Link className="namestyle ">{category}</Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
-                ))}
-              </Nav>
-            </div>
-          </div>
-
-          <Nav.Item>
-            <strong style={{ color: "black" }}>Brands</strong>
-          </Nav.Item>
-          <div
-            style={{
-              border: "2px solid rgb(185, 56, 14)",
-              borderRadius: "10px",
-              marginBottom: "1rem",
-            }}
-          >
-            <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-              <Nav className="flex-column">
-                {brands.map((brand) => (
-                  <Nav.Item key={brand} style={{ width: "100%" }}>
-                    <LinkContainer
-                      to={{ pathname: "/bsearch", search: `brand=${brand}` }}
-                    >
-                      <Nav.Link className="namestyle">{brand}</Nav.Link>
-                    </LinkContainer>
-                  </Nav.Item>
-                ))}
-              </Nav>
-            </div>
-          </div>
-        </Nav> */}
+        </header>
 
         <main>
           <Container className="mt-3">
@@ -247,150 +235,61 @@ function App() {
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
-              <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/liveevents" element={<LiveEventScreen />} />
               <Route path="/volunteerhistory" element={<VolunteerHistory />} />
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<ErrorScreen />} />
 
-              {/* 
               <Route
-                path='/forget-password'
-                element={<ForgetPasswordScreen />}
-              />
-              <Route
-                path='/reset-password/:token'
-                element={<ResetPasswordScreen />}
+                path="/userprofile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
               />
 
               <Route
-                path='/profile'
+                path="/findevent"
                 element={
                   <ProtectedRoute>
-                    <ProfileScreen />
+                    <FindEventScreen />
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path='/map'
-                element={
-                  <ProtectedRoute>
-                    <MapScreen />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path='/placeorder' element={<PlaceOrderScreen />} />
-              <Route
-                path='/order/:id'
-                element={
-                  <ProtectedRoute>
-                    <OrderScreen />
-                  </ProtectedRoute>
-                }
-              ></Route>
-               <Route
-                path='/refund/:id'
-                element={
-                  <ProtectedRoute>
-                    <RefundScreen />
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path='/orderhistory'
-                element={
-                  <ProtectedRoute>
-                    <OrderHistoryScreen />
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path='/shipping'
-                element={<ShippingAddressScreen />}
-              ></Route>
-              <Route path='/payment' element={<PaymentMethodScreen />}></Route>
- */}
 
-              {/* Admin Routes  */}
-
-              {/* <Route
-                path='/admin/dashboard'
+              <Route
+                path="/admin/liveevents"
                 element={
                   <AdminRoute>
-                    <DashboardScreen />
+                    <LiveEventScreen />
                   </AdminRoute>
                 }
               ></Route>
               <Route
-                path='/admin/orders'
+                path="/admin/pastevents"
                 element={
                   <AdminRoute>
-                    <OrderListScreen />
+                    <PastEventScreen />
                   </AdminRoute>
                 }
               ></Route>
+
               <Route
-                path='/admin/users'
+                path="/admin/users"
                 element={
                   <AdminRoute>
                     <UserListScreen />
                   </AdminRoute>
                 }
               ></Route>
-              <Route
-                path='/admin/events'
-                element={
-                  <AdminRoute>
-                    <ProductListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-               <Route
-                path='/admin/refunds'
-                element={
-                  <AdminRoute>
-                    <RefundListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path='/admin/product/:id'
-                element={
-                  <AdminRoute>
-                    <ProductEditScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-            <Route
-                path='/admin/restock'
-                element={
-                  <AdminRoute>
-                    <Restock />
-                  </AdminRoute>
-                }
-              ></Route> 
-              <Route
-                path='/admin/product/newproduct'
-                element={
-                  <AdminRoute>
-                    <ProductCreateScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path='/admin/user/:id'
-                element={
-                  <AdminRoute>
-                    <UserEditScreen />
-                  </AdminRoute>
-                }
-              ></Route> */}
             </Routes>
           </Container>
         </main>
         <footer>
           <div className="text-center">All rights reserved</div>
         </footer>
-      {/* </div> */}
+      </div>
     </BrowserRouter>
   );
 }

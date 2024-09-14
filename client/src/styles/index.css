@@ -5,9 +5,74 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(248, 243, 243);
+  /* background-color: black; */
+}
+.site-container {
+  min-height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+main {
+  flex: 1;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.discount {
+  background-color: black;
+  width: 100%;
+  color: white;
+  outline: none;
+  border: none;
+  height: 2.5rem;
+  
+}
+.navbar-toggler {
+  color: white;
+  border-color: white;
+}
+
+/* Custom CSS for Navbar Collapse */
+.navbar-collapse {
+  color: white;
+}
+
+.marginright {
+  margin-right: 10rem;
+}
+
+.navstyle {
+  background-color: rgb(0, 0, 0);
+  color: azure;
+  /* position: fixed;
+  width: 100vw;
+  z-index: 10; */
+}
+.white {
+  color: azure;
+}
+
+.btn-primary,
+.btn-outline-primary {
+  background-color: rgb(185, 56, 14);
+  /* color: #000000; */
+  border: none;
+}
+
+
+
+
+
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: fixed;
+  left: -300px;
+  /* background-color: rgba(185, 57, 14, 0.415); */
+  transition: 0.5s;
 }
