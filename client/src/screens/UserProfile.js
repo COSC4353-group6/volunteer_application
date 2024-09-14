@@ -4,10 +4,9 @@ import logo from '../images/volt2.png';
 export default function UserProfile () {
   return (
     <section className="user-profile">
-      <header>
-        <img src = {logo} alt = "Logo" className ="header-logo" />
-        User Profile
-      </header>
+      
+        
+      
 
       <div>
         <form id="profileForm">
@@ -65,7 +64,7 @@ export default function UserProfile () {
               <option value="KS">Kansas</option>
               <option value="KY">Kentucky</option>
               <option value="LA">Louisiana</option>
-              <option value="ME">dive</option>
+              <option value="ME">Maine</option>
               <option value="MD">Maryland</option>
               <option value="MA">Massachusetts</option>
               <option value="MI">Michigan</option>
