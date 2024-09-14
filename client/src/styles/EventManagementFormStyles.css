@@ -1,0 +1,55 @@
+.event-management-form body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .event-management-form {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .event-management-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .event-management-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .event-management-form label {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .event-management-form input[type="text"],
+  .event-management-form textarea,
+  .event-management-form select,
+  .event-management-form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+  }
+  
+  .event-management-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .event-management-form button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
