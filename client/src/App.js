@@ -19,6 +19,7 @@ import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import AdminRoute from "./hooks/AdminRoute.js";
 import FindEventScreen from "./screens/FindEventScreen.js";
+import EventManagementForm from "./screens/EventManagementForm.js";
 import ProtectedRoute from "./hooks/ProtectedRoute.js";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -217,8 +218,8 @@ function App() {
                       }
                       id="admin-nav-dropdown"
                     >
-                      <LinkContainer to="/admin/liveevents">
-                        <NavDropdown.Item>Live Events</NavDropdown.Item>
+                      <LinkContainer to="/admin/eventmanagement">
+                        <NavDropdown.Item>Event management</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/pastevents">
                         <NavDropdown.Item>Completed Events</NavDropdown.Item>
@@ -265,10 +266,10 @@ function App() {
               />
 
               <Route
-                path="/admin/liveevents"
+                path="/admin/eventmanagement"
                 element={
                   <AdminRoute>
-                    <LiveEventScreen />
+                    <EventManagementForm />
                   </AdminRoute>
                 }
               ></Route>
