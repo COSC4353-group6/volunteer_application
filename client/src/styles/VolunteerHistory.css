@@ -1,0 +1,56 @@
+/* Header Styling */
+header {
+    background-color: #0b0b0b; /* Black background for the header */
+    color: #e6e5e3; /* Darker text color */
+    padding: 20px;
+    text-align: center; /* Center the text in the header */
+    font-size: 24px; /* Larger font for the header */
+    font-weight: bold;
+  }
+
+.header-logo {
+  position: center;
+  margin-top:20px;
+  top: 15px;
+  Left: 400px; /* Adjust this for the right corner (top-right) by setting `right: 20px;` */
+  width: 50px; /* Adjust the size of the image */
+  height: auto;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0; /* Light gray background */
+    margin: 0; /* Remove default margin */
+  }
+
+main {
+    padding: 20px;
+  }
+
+#volunteer-history {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #FFD700;
+    color: #000;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
