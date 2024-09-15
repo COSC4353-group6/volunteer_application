@@ -41,7 +41,7 @@
   }
   
   .event-management-form button[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #FFD700;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -50,6 +50,43 @@
   }
   
   .event-management-form button[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #FFD700;
+  }
+  
+
+
+
+  /* Events form table */
+  .event-management-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .event-management-table th,
+  .event-management-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    background-color: black;
+    color: white;
+  }
+  
+  .event-management-table th {
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .event-management-table tr:nth-child(even) {
+    background-color: #333;
+  }
+  
+  .event-management-table tr:hover {
+    background-color: #FFD700;
+    color: black;
   }
   
