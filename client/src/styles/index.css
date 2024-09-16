@@ -1,7 +1,7 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,7 +25,6 @@ main {
   outline: none;
   border: none;
   height: 2.5rem;
-  
 }
 .navbar-toggler {
   color: white;
@@ -59,11 +58,6 @@ main {
   border: none;
 }
 
-
-
-
-
-
 /* sidebar */
 .navbar-brand {
   font-weight: bold;
@@ -76,4 +70,3 @@ main {
   /* background-color: rgba(185, 57, 14, 0.415); */
   transition: 0.5s;
 }
-
