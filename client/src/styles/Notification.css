@@ -1,0 +1,60 @@
+.notification-container {
+    position: relative;
+    top: 5px;
+  }
+  
+  .notification-bell-icon {
+    font-size: 24px;
+    cursor: pointer;
+    color: #FFD700; 
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    width: 300px;
+    background-color: black;
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+  }
+  
+  .notification-title {
+    font-weight: bold;
+    color:#FFD700
+  }
+  
+  .notification-list {
+    list-style-type: none;
+    color:white;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .notification-item {
+    margin-bottom: 10px;
+  }
+  
+  .notification-message {
+    display: block;
+  }
+  
+  .notification-date {
+    font-size: 0.8em;
+    color: gray;
+  }
+  
