@@ -183,7 +183,7 @@ function EventScreen() {
 
   return (
     <div>
-      <Row>
+      <Row >
         <Col md={6}>
           <img
             className="img-large"
@@ -331,9 +331,10 @@ function EventScreen() {
               <div className="mb-3">
                 <Button
                   // disabled={loadingCreateReview}
+                  style={{ backgroundColor: 'black', color:'#FFD700' }} 
                   type="submit"
                 >
-                  Volunteer
+                  Volunteer Now!
                 </Button>
                 {/* {loadingCreateReview && <LoadingBox></LoadingBox>} */}
               </div>
