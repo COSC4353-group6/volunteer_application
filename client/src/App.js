@@ -20,6 +20,7 @@ import Button from "react-bootstrap/Button";
 import AdminRoute from "./hooks/AdminRoute.js";
 import FindEventScreen from "./screens/FindEventScreen.js";
 import EventManagementForm from "./screens/EventManagementForm.js";
+import Notification from './components/Notification'; //Notification component
 import ProtectedRoute from "./hooks/ProtectedRoute.js";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -46,6 +47,31 @@ const userInfo = {
 };
 
 const fullBox = "a";
+
+const events =  [
+  {
+      "_id": 20,
+      "name": "Beach Cleanup",
+      "slug": "gBeach-Cleanup",
+      "image": "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
+      "description": "Clean Up",
+      "location": "Miami Beach",
+      "Date": "May 2024",
+      "urgency": "Relaxed",
+      "category": "Clean up"
+  },
+  {
+      "_id": 21,
+      "name": "Planting Trees",
+      "slug": "planting-trees",
+      "image": "https://hornfarmcenter.org/wp-content/uploads/2023/01/20220405_093601-1024x683.jpg",
+      "description": "Planting",
+      "location": "Little Rock",
+      "Date": "August 2024",
+      "urgency": "Severe",
+      "category": "Planting"
+  },
+]
 
 console.log(userInfo);
 
@@ -229,6 +255,7 @@ function App() {
                       </LinkContainer>
                     </NavDropdown>
                   )}
+                  <Notification events={events} /> {/* Add notification bell */}                
                 </Nav>
               </Navbar.Collapse>
             </Container>
