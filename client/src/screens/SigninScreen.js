@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Signin.css'; 
+import logo from '../images/volt2.png';  // Update the image path
+import '../styles/Signin.css';  // Ensure the CSS file is linked correctly
 
 const SigninScreen = () => {
   const [email, setEmail] = useState('');
@@ -10,49 +11,52 @@ const SigninScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Signing in as ${userType} with email ${email}`);
-    // Add your logic for handling the signin here (e.g., send data to server)
     alert(`Signed in as ${userType}`);
   };
 
   return (
-    <div>
-      <header>
-        <img src="/volt2.png" alt="Logo" className="header-logo" /> {/* Image in the corner */}
-        Sign In
+    <div className="signin-container">
+      <header className="header">
+        <div className="header-content">
+          <img src={logo} alt="Logo" className="header-logo" />
+          <h1 className="header-title">Sign In</h1>
+        </div>
       </header>
-
-      <main>
-        <form onSubmit={handleSubmit}>
+      <main className="form-container">
+        <form onSubmit={handleSubmit} className="signin-form">
           <div className="form-group">
-            <label htmlFor="signinEmail">Email:</label>
+            <label htmlFor="signinEmail" className="form-label">Email:</label>
             <input
               type="email"
               id="signinEmail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="form-input"
               placeholder="Enter your email"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="signinPassword">Password:</label>
+            <label htmlFor="signinPassword" className="form-label">Password:</label>
             <input
               type="password"
               id="signinPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
               placeholder="Enter your password"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="userType">Sign in as:</label>
+            <label htmlFor="userType" className="form-label">Sign in as:</label>
             <select
               id="userType"
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
+              className="form-input"
               required
             >
               <option value="">Select User Type</option>
@@ -61,17 +65,13 @@ const SigninScreen = () => {
             </select>
           </div>
 
-          <button type="submit">Sign In</button>
+          <button type="submit" className="form-button">Sign In</button>
         </form>
-        <div className="signup-section">
-          <p className="signup-question">
-            Don't have an account?
-          </p>
-          <Link to="/signup">
-            <button className="signup-button">Sign up here</button>
-          </Link>
-        </div>
-        </main>
+
+        <p className="form-question">
+          Don't have an account? <Link to="/signup" className="form-link">Sign up here</Link>
+        </p>  {/* Use same class "form-question" and "form-link" */}
+      </main>
     </div>
   );
 };

@@ -1,181 +1,127 @@
-/* body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-  }
-  
-  header {
-    background-color: #0b0b0b;
-    color: #e6e5e3;
-    padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .header-logo {
-    position: center;
-    margin-top: 20px;
-    top: 10px;
-    Left: 500px;
-    width: 50px;
-    height: auto;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  form input, form select {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-  }
-  
-  input, select, textarea, button {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .form-group {
-    margin-bottom: 16px;
-  }
-  
-  #dateList {
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #f9f9f9;
-    min-height: 50px;
-    border-radius: 5px;
-  }
-  
-  .date-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  
-  .date-item span {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .remove-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .remove-btn:hover {
-    background-color: #c82333;
-  }
-  
-  form {
-    background-color: #000;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  form label {
-    color: #fff;
-  }
-  
-  form input, form select {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 10px;
-    width: 100%;
-    border-radius: 5px;
-    margin-bottom: 15px;
-  }
-  
-  button {
-    background-color: #FFD700;
-    color: #000;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s ease;
-  }
-  
-  .signin-question {
-    margin-top: 20px;
-    font-size: 14px;
-    text-align: center;
-    color: #040404;
-  }
-  
-  .signin-button {
-    background-color: #FFD700;
-    color: #000;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    text-align: center;
-    margin: 10px auto;
-    display: block;
-    width: auto;
-    min-width: 100px;
-  }
-  
-  .signin-button:hover {
-    background-color: #FFC300;
-  }
-  
-  .signin-button:focus {
-    outline: none;
-  }
-  
-  button:hover {
-    background-color: #FFC300;
-  }
-  
-  button:focus {
-    outline: none;
-  }
-  
-  p {
-    color: #080808;
-  }
-  
-  a {
-    color: #FFD700;
-  }
-   */
+/* General body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+}
+
+/* Header styling */
+.header {
+  background-color: #0b0b0b;
+  color: #e6e5e3;
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header-logo {
+  width: 50px;
+  height: auto;
+  margin-top: 20px;
+}
+
+.header-title {
+  margin-left: 10px;
+}
+
+/* Form container styling */
+.form-container {
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Form styling */
+form {
+  background-color: #000;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.form-input {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-bottom: 16px;
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+form select {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.form-input::placeholder {
+  color: #bbb;
+}
+
+/* Button styling */
+button {
+  background-color: #FFD700;
+  color: #000;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FFC300;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Specific class for Sign In/Sign Up button */
+.form-button {
+  background-color: #FFD700;
+}
+
+.form-button:hover {
+  background-color: #FFC300;
+}
+
+/* Text links and form footer */
+.signin-question {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #040404;
+}
+
+.form-link {
+  color: #FFD700;
+  text-decoration: none;
+}
+
+.form-link:hover {
+  color: #FFC300;
+}
+
+.all-rights {
+  text-align: center;
+  font-size: 12px;
+  color: #bbb;
+  margin-top: 30px;
+}
