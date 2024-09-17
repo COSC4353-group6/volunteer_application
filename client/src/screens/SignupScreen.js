@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../images/volt2.png';  
 import '../styles/Signup.css'; 
 
 const SignupScreen = () => {
@@ -10,48 +11,52 @@ const SignupScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Signing up as ${userType} with email ${email}`);
-    // Add your logic for handling the signup here (e.g., send data to server)
     alert(`Signed up as ${userType}`);
   };
 
   return (
-    <div>
-      <header>
-        <img src="/volt2.png" alt="Logo" className="header-logo" /> {/* Image in the corner */}
-        Sign Up
+    <div className="signup-container">
+      <header className="header">
+        <div className="header-content">
+          <img src={logo} alt="Logo" className="header-logo" />
+          <h1 className="header-title">Sign Up</h1>
+        </div>
       </header>
-      <main>
-        <form onSubmit={handleSubmit}>
+      <main className="form-container">
+        <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
-            <label htmlFor="signupEmail">Email:</label>
+            <label htmlFor="signupEmail" className="form-label">Email:</label>
             <input
               type="email"
               id="signupEmail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="form-input"
               placeholder="Enter your email"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="signupPassword">Password:</label>
+            <label htmlFor="signupPassword" className="form-label">Password:</label>
             <input
               type="password"
               id="signupPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
               placeholder="Enter your password"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="userType">Sign up as:</label>
+            <label htmlFor="userType" className="form-label">Sign up as:</label>
             <select
               id="userType"
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
+              className="form-input"
               required
             >
               <option value="">Select User Type</option>
@@ -60,17 +65,13 @@ const SignupScreen = () => {
             </select>
           </div>
 
-          <button type="submit">Sign Up</button>
+          <button type="submit" className="form-button siginorsignupbtn">Sign Up</button>
         </form>
-        <div className="signup-section">
-          <p className="signup-question">
-            Already have an account?
-          </p>
-          <Link to="/signin">
-            <button className="signin-button">Log in here</button>
-          </Link>
-        </div>
-        </main>
+
+        <p className="form-question">
+          Already have an account? <Link to="/signin" className="form-link">Log in here</Link>
+        </p>  {/* Use same class "form-question" and "form-link" */}
+      </main>
     </div>
   );
 };

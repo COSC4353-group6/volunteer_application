@@ -14,13 +14,15 @@ import UserProfile from "./screens/UserProfile";
 import UserListScreen from "./screens/UserListScreen.js";
 import SigninScreen from "./screens/SigninScreen";
 import VolunteerHistory from "./screens/VolunteerHistory";
+import VolunteerMatchingScreen from "./screens/VolunteerMatchingScreen.js";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import AdminRoute from "./hooks/AdminRoute.js";
 import FindEventScreen from "./screens/FindEventScreen.js";
 import EventManagementForm from "./screens/EventManagementForm.js";
-import Notification from './components/Notification'; //Notification component
+import MatchUser from "./screens/MatchUser.js";
+import Notification from "./components/Notification"; //Notification component
 import ProtectedRoute from "./hooks/ProtectedRoute.js";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -29,7 +31,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { MdOutlineLightMode } from "react-icons/md";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
-import logo from "./images/volt2.png"
+import logo from "./images/volt2.png";
 import axios from "axios";
 
 const categories = ["a", "b", "c"];
@@ -47,31 +49,56 @@ const userInfo = {
 };
 
 const fullBox = "a";
+const events = [
+  {
+    _id: 20,
+    name: "Beach Cleanup",
+    slug: "gBeach-Cleanup",
+    image:
+      "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
+    description:
+      "Join us for a beach cleanup volunteering event! Help protect marine life and preserve our beautiful coastline by collecting litter and debris along the shore. This hands-on event is open to all ages, and supplies like gloves and trash bags will be provided. Volunteers will work together to remove plastic waste, bottles, and other pollutants that threaten the environment. It’s a great opportunity to make a positive impact, meet like-minded people, and enjoy the outdoors. Let’s come together to keep our beaches clean and safe for everyone! Refreshments and community spirit guaranteed.",
+    location: "Miami Beach",
+    date: "May 2024",
+    urgency: "Relaxed",
+    category: "Clean up",
+    organizer: "Taylor Paige",
+    numberNeeded: "50",
+    numberOfVol: "17",
+    startTime: "9:00 AM",
 
-const events =  [
-  {
-      "_id": 20,
-      "name": "Beach Cleanup",
-      "slug": "gBeach-Cleanup",
-      "image": "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
-      "description": "Clean Up",
-      "location": "Miami Beach",
-      "Date": "May 2024",
-      "urgency": "Relaxed",
-      "category": "Clean up"
+    endTime: "1:00 PM",
+    contactEmail: "organizer@beachcleanup.com",
+    weatherForecast: "Sunny, 75°F",
+    eventStatus: "Open",
+    ageRestriction: "12+",
+    accessibility: "Wheelchair accessible",
   },
   {
-      "_id": 21,
-      "name": "Planting Trees",
-      "slug": "planting-trees",
-      "image": "https://hornfarmcenter.org/wp-content/uploads/2023/01/20220405_093601-1024x683.jpg",
-      "description": "Planting",
-      "location": "Little Rock",
-      "Date": "August 2024",
-      "urgency": "Severe",
-      "category": "Planting"
+    _id: 20,
+    name: "Beach Cleanup",
+    slug: "gBeach-Cleanup",
+    image:
+      "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
+    description:
+      "Join us for a beach cleanup volunteering event! Help protect marine life and preserve our beautiful coastline by collecting litter and debris along the shore. This hands-on event is open to all ages, and supplies like gloves and trash bags will be provided. Volunteers will work together to remove plastic waste, bottles, and other pollutants that threaten the environment. It’s a great opportunity to make a positive impact, meet like-minded people, and enjoy the outdoors. Let’s come together to keep our beaches clean and safe for everyone! Refreshments and community spirit guaranteed.",
+    location: "Miami Beach",
+    date: "May 2024",
+    urgency: "Relaxed",
+    category: "Clean up",
+    organizer: "Taylor Paige",
+    numberNeeded: "50",
+    numberOfVol: "17",
+    startTime: "9:00 AM",
+
+    endTime: "1:00 PM",
+    contactEmail: "organizer@beachcleanup.com",
+    weatherForecast: "Sunny, 75°F",
+    eventStatus: "Open",
+    ageRestriction: "12+",
+    accessibility: "Wheelchair accessible",
   },
-]
+];
 
 console.log(userInfo);
 
@@ -179,21 +206,21 @@ function App() {
         <header>
           <Navbar className="navstyle" expand="lg">
             <Container>
-            <LinkContainer style={{ color: "#FFD700" }} to="/">
-              <img src={logo}  />
+              <LinkContainer style={{ color: "#FFD700" }} to="/">
+                <img src={logo} />
                 {/* <Navbar.Brand>{} VoltMatchPro </Navbar.Brand> */}
               </LinkContainer>
               <LinkContainer style={{ color: "#FFD700" }} to="/">
-              {/* <img src={logo}  /> */}
+                {/* <img src={logo}  /> */}
                 <Navbar.Brand>{} VoltMatchPro </Navbar.Brand>
               </LinkContainer>
               <div className="marginright"></div>
-              <LinkContainer style={{ color: "#FFD700" }} to="/search">
+              {/* <LinkContainer style={{ color: "#FFD700" }} to="/search">
                 <Navbar.Brand>
                   {" "}
                   Search <IoSearchSharp />{" "}
                 </Navbar.Brand>
-              </LinkContainer>
+              </LinkContainer> */}
 
               <Navbar.Toggle
                 aria-controls="basic-navbar-nav"
@@ -215,11 +242,7 @@ function App() {
                           User Profile
                         </NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/findevent">
-                        <NavDropdown.Item style={{ color: "#FFD700" }}>
-                          Find Event
-                        </NavDropdown.Item>
-                      </LinkContainer>
+                     
                       <LinkContainer to="/volunteerhistory">
                         <NavDropdown.Item>Volunteer History</NavDropdown.Item>
                       </LinkContainer>
@@ -244,8 +267,11 @@ function App() {
                       }
                       id="admin-nav-dropdown"
                     >
+                      <LinkContainer to="/admin/volunteermatching">
+                        <NavDropdown.Item>Volunteer Matching</NavDropdown.Item>
+                      </LinkContainer>
                       <LinkContainer to="/admin/eventmanagement">
-                        <NavDropdown.Item>Event management</NavDropdown.Item>
+                        <NavDropdown.Item>Event Management</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/pastevents">
                         <NavDropdown.Item>Completed Events</NavDropdown.Item>
@@ -255,7 +281,7 @@ function App() {
                       </LinkContainer>
                     </NavDropdown>
                   )}
-                  <Notification events={events} /> {/* Add notification bell */}                
+                  <Notification events={events} /> {/* Add notification bell */}
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -266,7 +292,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/event/:slug" element={<EventScreen />} />
-              <Route path="/search" element={<SearchScreen />} />
+              {/* <Route path="/search" element={<SearchScreen />} /> */}
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/liveevents" element={<LiveEventScreen />} />
@@ -314,6 +340,22 @@ function App() {
                 element={
                   <AdminRoute>
                     <UserListScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/volunteermatching"
+                element={
+                  <AdminRoute>
+                    <VolunteerMatchingScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/:_id"
+                element={
+                  <AdminRoute>
+                    <MatchUser />
                   </AdminRoute>
                 }
               ></Route>
