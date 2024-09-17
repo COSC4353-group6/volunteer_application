@@ -161,16 +161,47 @@ function EventScreen() {
                   </Row>
                 </ListGroup.Item>
 
+                {/* {eevent.countInStock > 0 && (
+                  <ListGroup.Item>
+                    <div className="d-grid">
+                      {iseeventInCart ? (
+                        <Button onClick={()=>removeItemHandler(eevent)} variant="primary">
+                   
+                          Remove from Cart
+                        </Button>
+                      ) : (
+                        <Button onClick={addToCartHandler} variant="primary">
+                          Add to Cart
+                        </Button>
+                      )}
+                    </div>
+                  </ListGroup.Item>
+                )} */}
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <div className="my-3">
+        {/* <h2 ref={reviewsRef}>Reviews</h2> */}
+        {/* <div className="mb-3">
+          {eevent.reviews.length === 0 && (
+            <MessageBox>There is no review</MessageBox>
+          )}
+        </div> */}
+        {/* <ListGroup>
+          {eevent.reviews.map((review) => (
+            <ListGroup.Item key={review._id}>
+              <strong>{review.name}</strong>
+              <Rating rating={review.rating} caption=" "></Rating>
+              <p>{review.comment}</p>
+            </ListGroup.Item>
+          ))}
+        </ListGroup> */}
         <div className="my-3">
           {userInfo ? (
             <form
-          
+            // onSubmit={submitHandler}
             >
               <h2 className="mb2 makeyellow">{eevent.name}</h2>
 
@@ -194,13 +225,13 @@ function EventScreen() {
               </FloatingLabel>
               <div className="mb-3">
                 <Button
-
+                  // disabled={loadingCreateReview}
                   style={{ backgroundColor: "black", color: "#FFD700" }}
                   type="submit"
                 >
                   Volunteer Now!
                 </Button>
-
+                {/* {loadingCreateReview && <LoadingBox></LoadingBox>} */}
               </div>
             </form>
           ) : (
