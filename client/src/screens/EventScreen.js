@@ -12,7 +12,7 @@ import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
 import MessageBox from "../components/MessageBox";
-import { Store } from "../Store";
+import { Store } from "../Context";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { toast } from "react-toastify";
 const reducer = (state, action) => {
@@ -76,114 +76,10 @@ function EventScreen() {
     accessibility: "Wheelchair accessible",
   };
 
-  // const [{ loading, error, product, loadingCreateReview }, dispatch] =
-  //   useReducer(reducer, {
-  //     product: [],
-  //     loading: true,
-  //     error: "",
-  //   });
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     dispatch({ type: "FETCH_REQUEST" });
-  //     try {
-  //       const result = await axios.get(`/db/products/slug/${slug}`);
-  //       dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-  //     } catch (err) {
-  //       dispatch({ type: "FETCH_FAIL", payload: getError(err) });
-  //     }
-  //   };
-  //   fetchData();
-  // }, [slug]);
-
-  // const { state, dispatch: ctxDispatch } = useContext(Store);
-  // const { cart, userInfo } = state;
-
-  // const theCartItems = state.cart.cartItems;
-
-  // const isProductInCart = theCartItems.some((item) => item._id === product._id);
-
-  // const postToCart = async () => {
-  //   try {
-
-  //     const { cartThings } = await axios.post(
-  //       "/db/addtocart",
-  //       {
-  //         userId: state.cart.userInfo._id,
-  //         cartItems: state.cart.shippingAddress,
-  //       },
-  //       {
-  //         headers: {
-  //           authorization: `Bearer ${state.userInfo.token}`,
-  //         },
-  //       }
-  //     );
-  //   } catch (err) {}
-  // };
-
-  // const removeItemHandler = (item) => {
-  //   ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });
-  //   // setLowCount(false);
-  // };
-
-  // const addToCartHandler = async () => {
-  //   postToCart();
-  //   const existItem = cart.cartItems.find((x) => x._id === product._id);
-  //   const quantity = existItem ? existItem.quantity + 1 : 1;
-  //   const { data } = await axios.get(`/db/products/id/${product._id}`);
-  //   if (data.countInStock < quantity) {
-  //     window.alert("Sorry. Product is out of stock");
-  //     return;
-  //   }
-  //   ctxDispatch({
-  //     type: "CART_ADD_ITEM",
-  //     payload: { ...product, quantity },
-  //   });
-  //   // navigate("/cart");
-  // };
-
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  //   if (!comment || !rating) {
-  //     toast.error("Please enter comment and rating");
-  //     return;
-  //   }
-  //   try {
-  //     const { data } = await axios.post(
-  //       `/db/products/${product._id}/reviews`,
-  //       { rating, comment, name: userInfo.name },
-  //       {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       }
-  //     );
-
-  //     dispatch({
-  //       type: "CREATE_SUCCESS",
-  //     });
-  //     toast.success("Review submitted successfully");
-  //     product.reviews.unshift(data.review);
-  //     product.numReviews = data.numReviews;
-  //     product.rating = data.rating;
-  //     dispatch({ type: "REFRESH_PRODUCT", payload: product });
-  //     window.scrollTo({
-  //       behavior: "smooth",
-  //       top: reviewsRef.current.offsetTop,
-  //     });
-  //   } catch (error) {
-  //     toast.error(getError(error));
-  //     dispatch({ type: "CREATE_FAIL" });
-  //   }
-  // };
-
-  // return
-  // loading ? (
-  //   <LoadingBox />
-  // ) : error ? (
-  //   <MessageBox variant="danger">{error}</MessageBox>
-  // ) : (
 
   return (
     <div>
-      <Row >
+      <Row>
         <Col md={6}>
           <img
             className="img-large"
@@ -265,49 +161,18 @@ function EventScreen() {
                   </Row>
                 </ListGroup.Item>
 
-                {/* {eevent.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      {iseeventInCart ? (
-                        <Button onClick={()=>removeItemHandler(eevent)} variant="primary">
-                   
-                          Remove from Cart
-                        </Button>
-                      ) : (
-                        <Button onClick={addToCartHandler} variant="primary">
-                          Add to Cart
-                        </Button>
-                      )}
-                    </div>
-                  </ListGroup.Item>
-                )} */}
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <div className="my-3">
-        {/* <h2 ref={reviewsRef}>Reviews</h2> */}
-        {/* <div className="mb-3">
-          {eevent.reviews.length === 0 && (
-            <MessageBox>There is no review</MessageBox>
-          )}
-        </div> */}
-        {/* <ListGroup>
-          {eevent.reviews.map((review) => (
-            <ListGroup.Item key={review._id}>
-              <strong>{review.name}</strong>
-              <Rating rating={review.rating} caption=" "></Rating>
-              <p>{review.comment}</p>
-            </ListGroup.Item>
-          ))}
-        </ListGroup> */}
         <div className="my-3">
           {userInfo ? (
             <form
-            // onSubmit={submitHandler}
+          
             >
-              <h2   className="mb2 makeyellow">{eevent.name}</h2>
+              <h2 className="mb2 makeyellow">{eevent.name}</h2>
 
               {/* <ListGroup.Item>Category - {eevent.category}</ListGroup.Item> */}
 
@@ -329,13 +194,13 @@ function EventScreen() {
               </FloatingLabel>
               <div className="mb-3">
                 <Button
-                  // disabled={loadingCreateReview}
-                  style={{ backgroundColor: 'black', color:'#FFD700' }} 
+
+                  style={{ backgroundColor: "black", color: "#FFD700" }}
                   type="submit"
                 >
                   Volunteer Now!
                 </Button>
-                {/* {loadingCreateReview && <LoadingBox></LoadingBox>} */}
+
               </div>
             </form>
           ) : (

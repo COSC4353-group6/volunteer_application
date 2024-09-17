@@ -106,8 +106,7 @@ function App() {
   // const { state, dispatch: ctxDispatch } = useContext(Store);
   // const { fullBox, cart, userInfo } = state;
 
-  // axios.defaults.baseURL = "http://localhost:4000/";
-  axios.defaults.baseURL = "https://volunteer-application-5io5.onrender.com/";
+
 
   const signoutHandler = () => {
     // ctxDispatch({ type: 'USER_SIGNOUT' });
@@ -119,75 +118,7 @@ function App() {
   };
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  // const [categories, setCategories] = useState([]);
-  // const [brands, setBrands] = useState([]);
-  // const [rating, setRating] = useState([]);
-
-  // const reducer = (state, action) => {
-  //   switch (action.type) {
-  //     case 'FETCH_REQUEST':
-  //       return { ...state, loading: true };
-  //     case 'FETCH_SUCCESS':
-  //       return { ...state, events: action.payload, loading: false };
-  //     case 'FETCH_FAIL':
-  //       return { ...state, loading: false, error: action.payload };
-  //     default:
-  //       return state;
-  //   }
-  // };
-
-  // const [{ loading, error, events }, dispatch] = useReducer(reducer, {
-  //   events: [],
-  //   loading: true,
-  //   error: '',
-  // });
-
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const { data } = await axios.get(`/db/events/categories`);
-  //       setCategories(data);
-  //     } catch (err) {
-  //       toast.error(getError(err));
-  //     }
-  //   };
-  //   fetchCategories();
-  // }, []);
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const { data } = await axios.get(`/db/events/brands`);
-  //       setBrands(data);
-
-  //     } catch (err) {
-  //       toast.error(getError(err));
-  //     }
-  //   };
-  //   fetchCategories();
-  // }, []);
-  //  const starRatings = ["0 - 499","500 - 1499","1500 - 4999","5000 - 9999","10000 - 14999"]
-  //  useEffect(() => {
-  //   const fetchData = async () => {
-  //     dispatch({ type: 'FETCH_REQUEST' });
-  //     try {
-  //       const result = await axios.get('/db/events');
-  //       dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
-  //     } catch (err) {
-  //       dispatch({ type: 'FETCH_FAIL', payload: err.message });
-  //     }
-
-  //     // setevents(result.data);
-  //   };
-  //   fetchData();
-  // }, []);
-
-  // let countLessThan10 = 0;
-
-  // events.forEach((product) => {
-  //   if (product.countInStock < 10) {
-  //     countLessThan10++;
-  //   }
-  // });
+  
 
   return (
     <BrowserRouter>
@@ -215,12 +146,7 @@ function App() {
                 <Navbar.Brand>{} VoltMatchPro </Navbar.Brand>
               </LinkContainer>
               <div className="marginright"></div>
-              {/* <LinkContainer style={{ color: "#FFD700" }} to="/search">
-                <Navbar.Brand>
-                  {" "}
-                  Search <IoSearchSharp />{" "}
-                </Navbar.Brand>
-              </LinkContainer> */}
+              
 
               <Navbar.Toggle
                 aria-controls="basic-navbar-nav"

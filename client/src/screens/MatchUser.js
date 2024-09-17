@@ -52,19 +52,20 @@ export default function MatchUser() {
       <Form 
     //   onSubmit={submitHandler}
       >
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Request ID</Form.Label>
+        
+        <Form.Group className="mb-3 " controlId="name">
+          <Form.Label className='makeyellow' >Volunteer Name</Form.Label>
           <Form.Control
-            value={request._id}
+            value={request.name}
             // onChange={(e) => setName(e.target.value)}
 
             disabled
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Request ID</Form.Label>
           <Form.Control
-            value={request.name}
+            value={request._id}
             // onChange={(e) => setName(e.target.value)}
 
             disabled
@@ -102,7 +103,7 @@ export default function MatchUser() {
         <h3 className='makeyellow'>Event details</h3>
 
         <Form.Group className="mb-3" controlId="slug">
-          <Form.Label>Requested Event </Form.Label>
+          <Form.Label className='makeyellow' >Matched Event </Form.Label>
           <Form.Control
             value={request.requestedEvent}
             // onChange={(e) => setSlug(e.target.value)}
@@ -134,7 +135,7 @@ export default function MatchUser() {
           <Form.Label>  Dropdown selector to Match user with a different event based on their profiles and event requirements </Form.Label>
           <Form.Select
             aria-label="Category"
-            value={request.userRequest}
+            value={userRequest}
             onChange={(e) => setUserRequest(e.target.value)}
           >
             <option value="">Select...</option>

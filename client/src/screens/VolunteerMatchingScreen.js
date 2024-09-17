@@ -65,15 +65,7 @@ export default function VolunteerMatchingScreen() {
         </Col>
       </Row>
 
-      {/* {loadingCreate && <LoadingBox></LoadingBox>}
-      {loadingDelete && <LoadingBox></LoadingBox>} */}
-
-      {/* {
-      loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant='danger'>{error}</MessageBox>
-      ) : ( */}
+    
       <>
         <table className="table">
           <thead>
