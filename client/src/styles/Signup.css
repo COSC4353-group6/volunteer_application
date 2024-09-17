@@ -1,11 +1,11 @@
-/* General body styling */
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
   margin: 0;
 }
 
-/* Header styling */
+
 .header {
   background-color: #0b0b0b;
   color: #e6e5e3;
@@ -25,14 +25,14 @@ body {
   margin-left: 10px;
 }
 
-/* Form container styling */
+
 .form-container {
   padding: 20px;
   max-width: 400px;
   margin: 0 auto;
 }
 
-/* Form styling */
+
 form {
   background-color: #000;
   padding: 20px;
@@ -71,8 +71,8 @@ form select {
   color: #bbb;
 }
 
-/* Button styling */
-button {
+
+.siginorsignupbtn {
   background-color: #FFD700;
   color: #000;
   padding: 10px;
@@ -93,7 +93,7 @@ button:focus {
   outline: none;
 }
 
-/* Specific class for Sign In/Sign Up button */
+
 .form-button {
   background-color: #FFD700;
 }
@@ -102,7 +102,7 @@ button:focus {
   background-color: #FFC300;
 }
 
-/* Text links and form footer */
+
 .signin-question {
   margin-top: 20px;
   font-size: 14px;

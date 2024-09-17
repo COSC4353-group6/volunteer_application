@@ -65,7 +65,7 @@ const SignupScreen = () => {
             </select>
           </div>
 
-          <button type="submit" className="form-button">Sign Up</button>
+          <button type="submit" className="form-button siginorsignupbtn">Sign Up</button>
         </form>
 
         <p className="form-question">

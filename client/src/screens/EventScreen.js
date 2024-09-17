@@ -307,12 +307,12 @@ function EventScreen() {
             <form
             // onSubmit={submitHandler}
             >
-              <h2 className="mb2">{eevent.name}</h2>
+              <h2   className="mb2 makeyellow">{eevent.name}</h2>
 
               {/* <ListGroup.Item>Category - {eevent.category}</ListGroup.Item> */}
 
-              <h6>Description:</h6>
-              <p className="mb2">{eevent.description}</p>
+              <h6 className="makewhite">Description:</h6>
+              <p className="mb2 makewhite">{eevent.description}</p>
 
               <FloatingLabel
                 controlId="floatingTextarea"
@@ -327,7 +327,6 @@ function EventScreen() {
                   className="height6rem"
                 />
               </FloatingLabel>
-
               <div className="mb-3">
                 <Button
                   // disabled={loadingCreateReview}
