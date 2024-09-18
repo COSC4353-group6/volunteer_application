@@ -7,6 +7,7 @@ export default function ProtectedRoute({ children }) {
     name: "Blackflame",
     isAdmin: "true",
   };
+  
   //   const { state } = useContext(Store);
   //   const { userInfo } = state;
   return userInfo ? children : <Navigate to="/signin" />;
