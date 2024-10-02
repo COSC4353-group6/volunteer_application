@@ -36,7 +36,6 @@ import axios from "axios";
 
 const categories = ["a", "b", "c"];
 const brands = ["a", "b", "c"];
-
 const cart = [
   {
     cartItems: ["a", "b", "c"],
