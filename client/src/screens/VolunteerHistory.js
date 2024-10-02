@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/VolunteerHistory.css'; 
+import axios from "axios"
 import logo from '../images/volt2.png'; 
 
 const VolunteerHistory = () => {
@@ -8,8 +9,7 @@ const VolunteerHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/volunteer-history');
-        const data = await response.json();
+        const {data }= await axios.get('/api/volunteer-history');
         setVolunteerHistory(data);
       } catch (error) {
         console.error('Error fetching volunteer history:', error);
