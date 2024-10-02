@@ -51,6 +51,11 @@ app.get('/api/volunteer-history', (req, res) => {
 });
 
 
+//Route to get User Authentication
+import authRoutes from './routes/auth.js';
+app.use('/api/auth', authRoutes);
+
+
 //Error handling
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
