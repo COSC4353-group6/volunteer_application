@@ -11,18 +11,33 @@ const router = express.Router();
 const users = [
   {
     id: '1',
-    email: 'john.ramirez@google.com',
+    email: 'john.ramirez@gmail.com',
     password: 'john123',  // Plain-text password (only for testing)
   },
   {
     id: '2',
-    email: 'jane_johnson@google.com',
+    email: 'jane_johnson@gmail.com',
     password: 'jane123',  // Plain-text password (only for testing)
   },
   {
     id: '3',
-    email: 'alex.jones@example.com',
+    email: 'alex.jones@hotmail.com',
     password: 'Alex123',    // Plain-text password (only for testing)
+  }
+  {
+    id: '4',
+    email: 'jade_075@gmail.com',
+    password: 'jade123',  // Plain-text password (only for testing)
+  },
+  {
+    id: '5',
+    email: 'william_johnson@hotmail.com',
+    password: 'william123',  // Plain-text password (only for testing)
+  },
+  {
+    id: '6',
+    email: 'scott_mane@gmail.com',
+    password: 'scott123',    // Plain-text password (only for testing)
   }
 ];
 
