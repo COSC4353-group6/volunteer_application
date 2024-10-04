@@ -56,6 +56,7 @@ const volunteerHistory = [
   },
 ];
 
+
 // Route to get volunteer history
 app.get('/api/volunteer-history', (req, res) => {
   res.json(volunteerHistory);
@@ -66,27 +67,12 @@ app.get('/api/user-profile', (req, res) => {
   res.json(userProfile);
 });
 
-// Route to update user profile (POST request)
-app.post('/api/user-profile', (req, res) => {
-  try {
-    const updatedProfile = req.body;
+//Route to get User Authentication
+import authRoutes from './routes/auth.js';
+app.use('/api/auth', authRoutes);
 
-    // Validate the updated profile
-    if (!updatedProfile.fullName || !updatedProfile.address1 || !updatedProfile.city || !updatedProfile.state || !updatedProfile.zipCode || !updatedProfile.skill) {
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
-    }
 
-    // Update the userProfile object
-    Object.assign(userProfile, updatedProfile);
-
-    res.json({ success: true, message: 'Profile updated successfully', userProfile });
-  } catch (error) {
-    console.error('Error updating user profile:', error);
-    res.status(500).json({ success: false, message: 'Error updating profile', error });
-  }
-});
-
-// Error handling middleware
+//Error handling
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Something went wrong';
