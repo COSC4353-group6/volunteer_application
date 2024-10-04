@@ -1,8 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
+import volunteerHistoryRouter from './routes/volunteerHistoryRoute';
 dotenv.config();
+
+
 const app = express();
 
 app.use(cors());
@@ -23,44 +25,43 @@ let userProfile = {
 };
 
 // Dummy data for Volunteer History (to replace DB for now)
-const volunteerHistory = [
-  {
-    volunteerId: '0001',
-    eventName: 'Beach Cleanup',
-    eventDescription: 'Cleaning the beach for community service.',
-    location: 'Miami Beach, FL',
-    requiredSkills: ['Teamwork', 'Physical Work'],
-    urgency: 'High',
-    eventDate: '2024-09-15',
-    status: 'Completed',
-  },
-  {
-    volunteerId: '0002',
-    eventName: 'Tree Planting',
-    eventDescription: 'Planting trees in the local park.',
-    location: 'Central Park, NY',
-    requiredSkills: ['Gardening', 'Environment Care'],
-    urgency: 'Low',
-    eventDate: '2024-10-01',
-    status: 'Pending',
-  },
-  {
-    volunteerId: '0003',
-    eventName: 'Animal Shelter',
-    eventDescription: 'Assisting with animal care and shelter maintenance.',
-    location: 'Chatsworth, CA',
-    requiredSkills: ['Animal Care', 'Cleaning', 'Compassion'],
-    urgency: 'Medium',
-    eventDate: '2024-11-07',
-    status: 'Pending',
-  },
-];
+// const volunteerHistory = [
+//   {
+//     volunteerId: '0001',
+//     eventName: 'Beach Cleanup',
+//     eventDescription: 'Cleaning the beach for community service.',
+//     location: 'Miami Beach, FL',
+//     requiredSkills: ['Teamwork', 'Physical Work'],
+//     urgency: 'High',
+//     eventDate: '2024-09-15',
+//     status: 'Completed',
+//   },
+//   {
+//     volunteerId: '0002',
+//     eventName: 'Tree Planting',
+//     eventDescription: 'Planting trees in the local park.',
+//     location: 'Central Park, NY',
+//     requiredSkills: ['Gardening', 'Environment Care'],
+//     urgency: 'Low',
+//     eventDate: '2024-10-01',
+//     status: 'Pending',
+//   },
+//   {
+//     volunteerId: '0003',
+//     eventName: 'Animal Shelter',
+//     eventDescription: 'Assisting with animal care and shelter maintenance',
+//     location: 'Chatsworth, CA',
+//     requiredSkills: ['Animal Care', 'Cleaning', 'Compassion'],
+//     urgency: 'Medium',
+//     eventDate: '2024-11-07',
+//     status: 'Pending',
+//   },
+// ];
 
 
 // Route to get volunteer history
-app.get('/api/volunteer-history', (req, res) => {
-  res.json(volunteerHistory);
-});
+
+app.use('/db', volunteerHistoryRouter)
 
 // Route to get user profile
 app.get('/api/user-profile', (req, res) => {
@@ -84,17 +85,26 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Fallback route for non-existing endpoints
-app.get('*', (req, res) => {
-  res.status(404).json({
-    Name: 'COSC 4353 volunteer API - Group 6',
-    Version: '1.0.0',
-    Engine: 'Node',
-    Status: 'Online',
-  });
+app.get(
+  '*',
+  (req, res) =>
+    res.json(
+        {
+            Name:"COSC 4353 volunteer API - Group 6 ",
+            Version: "1.0.0",
+            Engine: "Node",
+            Status: "Online"
+
+        }
+    )
+
+);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
 });
 
-// Start the server
+
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
