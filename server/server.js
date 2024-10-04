@@ -16,7 +16,7 @@ let userProfile = {
   fullName: 'John Doe',
   address1: '123 Main St',
   address2: 'Apt 4B',
-  city: 'Houston',
+  city: 'Austin',
   state: 'TX',
   zipCode: '77001',
   skill: 'animal care, gardening, and cooking',
