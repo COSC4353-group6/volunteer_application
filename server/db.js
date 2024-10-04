@@ -11,5 +11,3 @@ export const pool = mysql.createPool({
   }).promise();
   
 
-
-

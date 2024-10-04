@@ -58,12 +58,5 @@ CREATE TABLE volunteerConfirmation (
     confirmationDate datetime,
     event_id bigint,
     FOREIGN KEY (user_id) REFERENCES users(_id),
-	FOREIGN KEY (event_id) REFERENCES events(_id)
+FOREIGN KEY (event_id) REFERENCES events(_id)
 );
-
-
-
-
-
-
-

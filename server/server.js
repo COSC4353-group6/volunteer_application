@@ -11,6 +11,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Dummy data for User Profile (to replace DB for now)
+let userProfile = {
+  fullName: 'John Doe',
+  address1: '123 Main St',
+  address2: 'Apt 4B',
+  city: 'Austin',
+  state: 'TX',
+  zipCode: '77001',
+  skill: 'animal care, gardening, and cooking',
+  preferences: 'gardening preferred ',
+  availability: ['2024-10-15', '2024-10-20'],
+};
 
 // Dummy data for Volunteer History (to replace DB for now)
 // const volunteerHistory = [
@@ -51,6 +63,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/db', volunteerHistoryRouter)
 
+// Route to get user profile
+app.get('/api/user-profile', (req, res) => {
+  res.json(userProfile);
+});
 
 //Route to get User Authentication
 import authRoutes from './routes/auth.js';
@@ -62,15 +78,12 @@ app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Something went wrong';
   return res.status(errorStatus).json({
-    successful: false,
+    success: false,
     status: errorStatus,
     message: errorMessage,
     stack: err.stack,
   });
 });
-
-
-
 
 app.get(
   '*',
@@ -94,5 +107,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
-  console.log(`...Listening on port ${port}`);
+  console.log(`Server is listening on port ${port}`);
 });
