@@ -1,10 +1,10 @@
-.event-management-form body {
+.event-management body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
   }
   
-  .event-management-form {
+  .event-management {
     max-width: 800px;
     margin: auto;
     padding: 20px;
@@ -13,24 +13,24 @@
     border-radius: 10px;
   }
   
-  .event-management-form form {
+  .event-management form {
     display: flex;
     flex-direction: column;
   }
   
-  .event-management-form .form-group {
+  .event-management .form-group {
     margin-bottom: 15px;
   }
   
-  .event-management-form label {
+  .event-management label {
     font-size: 16px;
     margin-bottom: 5px;
   }
   
-  .event-management-form input[type="text"],
-  .event-management-form textarea,
-  .event-management-form select,
-  .event-management-form input[type="date"] {
+  .event-management input[type="text"],
+  .event-management textarea,
+  .event-management select,
+  .event-management input[type="date"] {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -40,7 +40,7 @@
     color: black;
   }
   
-  .event-management-form button[type="submit"] {
+  .event-management button[type="submit"] {
     background-color: #FFD700;
     color: white;
     border: none;
@@ -49,7 +49,7 @@
     cursor: pointer;
   }
   
-  .event-management-form button[type="submit"]:hover {
+  .event-management button[type="submit"]:hover {
     background-color: #FFD700;
   }
   
@@ -57,7 +57,7 @@
 
 
   /* Events form table */
-  .event-management-table {
+  .past-events {
     width: 100%;
     margin-top: 20px;
     border-collapse: collapse;
@@ -66,8 +66,8 @@
     border-radius: 10px;
   }
   
-  .event-management-table th,
-  .event-management-table td {
+  .past-events,
+  .past-events td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ccc;
@@ -75,17 +75,17 @@
     color: white;
   }
   
-  .event-management-table th {
+  .past-events th {
     background-color: #FFD700;
     color: black;
     font-weight: bold;
   }
   
-  .event-management-table tr:nth-child(even) {
+  .past-events tr:nth-child(even) {
     background-color: #333;
   }
   
-  .event-management-table tr:hover {
+  .past-events tr:hover {
     background-color: #FFD700;
     color: black;
   }

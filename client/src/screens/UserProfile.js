@@ -181,7 +181,6 @@ const UserProfile = () => {
               <option value="WV">West Virginia</option>
               <option value="WI">Wisconsin</option>
               <option value="WY">Wyoming</option>
-
             </select>
           </div>
 

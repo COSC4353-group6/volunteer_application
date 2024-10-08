@@ -1,28 +1,22 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import volunteerHistoryRouter from './routes/volunteerHistoryRoute';
+import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
+import userProfileRouter from './routes/userprofile.js'; // Adjust the path as needed
+import eventRouter from './eventRoutes.js';
+
+
 dotenv.config();
 
 
 const app = express();
+
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Dummy data for User Profile (to replace DB for now)
-let userProfile = {
-  fullName: 'John Doe',
-  address1: '123 Main St',
-  address2: 'Apt 4B',
-  city: 'Austin',
-  state: 'TX',
-  zipCode: '77001',
-  skill: 'animal care, gardening, and cooking',
-  preferences: 'gardening preferred ',
-  availability: ['2024-10-15', '2024-10-20'],
-};
 
 // Dummy data for Volunteer History (to replace DB for now)
 // const volunteerHistory = [
@@ -59,14 +53,27 @@ let userProfile = {
 // ];
 
 
+// Endpoint to get event data
+app.get('/api/event-data', (req, res) => {
+  res.json(eventData);
+});
+
+// Endpoint to get past events
+app.get('/api/past-events', (req, res) => {
+  res.json(pastEvents);
+});
+
+
 // Route to get volunteer history
 
 app.use('/db', volunteerHistoryRouter)
 
-// Route to get user profile
-app.get('/api/user-profile', (req, res) => {
-  res.json(userProfile);
-});
+//route for userprofile
+app.use('/api', userProfileRouter); // Prefix your routes with /api
+
+//route for events
+// Use the event routes
+//app.use('/api', eventRouter);
 
 //Route to get User Authentication
 import authRoutes from './routes/auth.js';
