@@ -23,7 +23,7 @@ const users = [
     id: '3',
     email: 'alex.jones@hotmail.com',
     password: 'Alex123',    // Plain-text password (only for testing)
-  }
+  },
   {
     id: '4',
     email: 'jade_075@gmail.com',

@@ -269,7 +269,7 @@ function App() {
                       <LinkContainer to="/admin/volunteermatching">
                         <NavDropdown.Item>Volunteer Matching</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/admin/eventmanagement">
+                      <LinkContainer to="/admin/event-management">
                         <NavDropdown.Item>Event Management</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/pastevents">
@@ -318,7 +318,7 @@ function App() {
               />
 
               <Route
-                path="/admin/eventmanagement"
+                path="/admin/event-management"
                 element={
                   <AdminRoute>
                     <EventManagementForm />
