@@ -10,8 +10,8 @@ const VolunteerHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const {  data } = await axios.get('/api/volunteer-history');
-        console.log("Data fetched:", data); 
+        const { data } = await axios.get('/api/volunteerhistory');
+       
         setVolunteerHistory(data);
         console.log(data)
       } catch (error) {
@@ -29,32 +29,35 @@ const VolunteerHistory = () => {
       </header>
       <main>
         <div>
-          <h1>Volunteer Participation History</h1>
+          <h1>Your Participation History</h1>
           <table>
             <thead>
               <tr>
-                <th>Volunteer ID</th>
-                <th>Event Name</th>
-                <th>Event Description</th>
+                <th>Title</th>
+                <th>Event ID</th>
+                <th>Event Category</th>
                 <th>Location</th>
-                <th>Required Skills</th>
                 <th>Urgency</th>
                 <th>Event Date</th>
-                <th>Participation Status</th>
+                <th>timesHeld</th>
+                <th>Status</th>
+
               </tr>
             </thead>
             <tbody>
               {Array.isArray(volunteerHistory) && volunteerHistory.length > 0 ? (
                 volunteerHistory.map((history) => (
-                  <tr key={history.volunteerId}>
-                    <td>{history.volunteerId}</td>
-                    <td>{history.eventName}</td>
-                    <td>{history.eventDescription}</td>
+                  <tr key={history._id}>
+                    <td>{history.title}</td>
+                    <td>{history._id}</td>
+                    <td>{history.category}</td>
                     <td>{history.location}</td>
-                    <td>{history.requiredSkills.join(', ')}</td>
                     <td>{history.urgency}</td>
-                    <td>{history.eventDate}</td>
+                    <td>{history.createdAt}</td>
+                    <td>{history.timesHeld}</td>
                     <td>{history.status}</td>
+
+
                   </tr>
                 ))
               ) : (
