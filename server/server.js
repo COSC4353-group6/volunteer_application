@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
 import userProfileRouter from './routes/userprofile.js';
-import eventRoutes from './routes/eventRoutes.js'; // Import your eventRoutes
+import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
 import authRoutes from './routes/auth.js'; // Import authentication routes
 
 dotenv.config();
@@ -18,10 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 
 // Route to get event data (eventRoutes handles this)
-app.use('/api/event', eventRoutes);  // Add your eventRoutes here
+app.use('/api/event', eventRouter);  // Add your eventRoutes here
 
 // Route to get volunteer history
-app.use('/db', volunteerHistoryRouter);
+app.use('/api', volunteerHistoryRouter);
+
 
 // Route to handle user profile
 app.use('/api', userProfileRouter);
