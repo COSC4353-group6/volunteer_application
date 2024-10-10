@@ -1,5 +1,7 @@
-const express = require('express');
-const router = express.Router();
+
+import express from "express";
+import { pool } from '../db.js';
+const eventRouter = express.Router();
 
 // Hardcoded event data
 const eventsData = {
@@ -38,8 +40,17 @@ const eventsData = {
 };
 
 // Define an API endpoint for fetching events data
-router.get('/event-management', (req, res) => {
+eventRouter.get('/event-management', (req, res) => {
   res.json(eventsData); // Send the hardcoded events data as a JSON response
 });
 
-module.exports = router;
+
+eventRouter.get('/allevents', async (req, res) => {
+  const allEvents = await pool.query(`SELECT * from events`);
+    res.send(allEvents[0]);
+});
+
+
+
+
+export default eventRouter
