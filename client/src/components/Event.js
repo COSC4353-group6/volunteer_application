@@ -82,7 +82,7 @@ function Event(props) {
       </Link>
       <Card.Body>
         <Link className="namestyle" to={`/event/${event.slug}`}>
-          <Card.Title className="light">{event.name}</Card.Title>
+          <Card.Title className="light">{event.title}</Card.Title>
         </Link>
         {/* <Rating rating={eevent.rating} numReviews={eevent.numReviews} /> */}
         <Card.Title> </Card.Title>

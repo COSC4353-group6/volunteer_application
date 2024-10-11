@@ -44,6 +44,7 @@ function EventScreen() {
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
+  const [theEvent, setTheEvent] = useState([]);
   const [comment, setComment] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
 
@@ -51,30 +52,43 @@ function EventScreen() {
   const params = useParams();
   const { slug } = params;
 
-  const eevent = {
-    _id: 20,
-    name: "Beach Cleanup",
-    slug: "gBeach-Cleanup",
-    image:
-      "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
-    description:
-      "Join us for a beach cleanup volunteering event! Help protect marine life and preserve our beautiful coastline by collecting litter and debris along the shore. This hands-on event is open to all ages, and supplies like gloves and trash bags will be provided. Volunteers will work together to remove plastic waste, bottles, and other pollutants that threaten the environment. It’s a great opportunity to make a positive impact, meet like-minded people, and enjoy the outdoors. Let’s come together to keep our beaches clean and safe for everyone! Refreshments and community spirit guaranteed.",
-    location: "Miami Beach",
-    date: "May 2024",
-    urgency: "Relaxed",
-    category: "Clean up",
-    organizer: "Taylor Paige",
-    numberNeeded: "50",
-    numberOfVol: "17",
-    startTime: "9:00 AM",
+  // const event = {
+  //   _id: 20,
+  //   name: "Beach Cleanup",
+  //   slug: "gBeach-Cleanup",
+  //   image:
+  //     "https://i0.wp.com/smdp.com/wp-content/uploads/2022/07/Surfrider5-1024px.jpg?fit=1024%2C683&ssl=1",
+  //   description:
+  //     "Join us for a beach cleanup volunteering event! Help protect marine life and preserve our beautiful coastline by collecting litter and debris along the shore. This hands-on event is open to all ages, and supplies like gloves and trash bags will be provided. Volunteers will work together to remove plastic waste, bottles, and other pollutants that threaten the environment. It’s a great opportunity to make a positive impact, meet like-minded people, and enjoy the outdoors. Let’s come together to keep our beaches clean and safe for everyone! Refreshments and community spirit guaranteed.",
+  //   location: "Miami Beach",
+  //   date: "May 2024",
+  //   urgency: "Relaxed",
+  //   category: "Clean up",
+  //   organizer: "Taylor Paige",
+  //   numberNeeded: "50",
+  //   numberOfVol: "17",
+  //   startTime: "9:00 AM",
 
-    endTime: "1:00 PM",
-    contactEmail: "organizer@beachcleanup.com",
-    weatherForecast: "Sunny, 75°F",
-    eventStatus: "Open",
-    ageRestriction: "12+",
-    accessibility: "Wheelchair accessible",
-  };
+  //   endTime: "1:00 PM",
+  //   contactEmail: "organizer@beachcleanup.com",
+  //   weatherForecast: "Sunny, 75°F",
+  //   eventStatus: "Open",
+  //   ageRestriction: "12+",
+  //   accessibility: "Wheelchair accessible",
+  // };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const{ data }= await axios.get(`/api/event/slug/${slug}`);
+       setTheEvent(data)
+      } catch (error) {
+        console.error('Error fetching volunteer history:', error);
+      }
+    };
+    fetchData();
+  }, [slug]);
 
 
   return (
@@ -83,62 +97,62 @@ function EventScreen() {
         <Col md={6}>
           <img
             className="img-large"
-            src={selectedImage || eevent.image}
-            alt={eevent.name}
+            src={selectedImage || theEvent.image}
+            alt={theEvent.name}
           ></img>
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <Helmet>
-                <title>{eevent.name}</title>
+                <title>{theEvent.name}</title>
               </Helmet>
             </ListGroup.Item>
 
             <ListGroup.Item>
               {" "}
-              <span className="bold-text">Category -</span> {eevent.category}
+              <span className="bold-text">Category -</span> {theEvent.category}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
-              <span className="bold-text"> Date </span> - {eevent.date}
+              <span className="bold-text"> Date </span> - {theEvent.createdAt}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> Time </span> -{" "}
-              <span className="bold-text"> {eevent.startTime}</span> until{" "}
-              <span className="bold-text"> {eevent.endTime}</span>{" "}
+              <span className="bold-text"> {theEvent.startTime}</span> until{" "}
+              <span className="bold-text"> {theEvent.endTime}</span>{" "}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
-              <span className="bold-text"> Urgency </span> - {eevent.urgency}
+              <span className="bold-text"> Urgency </span> - {theEvent.urgency}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> Age Restriction </span> -{" "}
-              {eevent.ageRestriction}
+              {theEvent.ageRestriction}+
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> Weather Forecast </span> -{" "}
-              {eevent.weatherForecast}
+              {theEvent.weather}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> accessibility </span> -{" "}
-              {eevent.accessibility}
+              Wheelchair
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> Status </span> -{" "}
-              <span className="bold-text"> {eevent.numberOfVol} </span>out of{" "}
-              <span className="bold-text"> {eevent.numberNeeded} </span>{" "}
+              <span className="bold-text"> {theEvent.numberOfVol} </span>out of{" "}
+              <span className="bold-text"> {theEvent.numberNeeded} </span>{" "}
               Volunteers needed{" "}
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
               <span className="bold-text"> Contact Email </span> -{" "}
-              {eevent.contactEmail}
+              {theEvent.contactEmail}
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -149,66 +163,37 @@ function EventScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Organizer</Col>
-                    <Col>{eevent.organizer}</Col>
+                    <Col>{theEvent.organizer}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Location:</Col>
                     <Col>
-                      <Badge bg="danger">{eevent.location}</Badge>
+                      <Badge bg="danger">{theEvent.location}</Badge>
                     </Col>
                   </Row>
                 </ListGroup.Item>
 
-                {/* {eevent.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      {iseeventInCart ? (
-                        <Button onClick={()=>removeItemHandler(eevent)} variant="primary">
-                   
-                          Remove from Cart
-                        </Button>
-                      ) : (
-                        <Button onClick={addToCartHandler} variant="primary">
-                          Add to Cart
-                        </Button>
-                      )}
-                    </div>
-                  </ListGroup.Item>
-                )} */}
+               
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <div className="my-3">
-        {/* <h2 ref={reviewsRef}>Reviews</h2> */}
-        {/* <div className="mb-3">
-          {eevent.reviews.length === 0 && (
-            <MessageBox>There is no review</MessageBox>
-          )}
-        </div> */}
-        {/* <ListGroup>
-          {eevent.reviews.map((review) => (
-            <ListGroup.Item key={review._id}>
-              <strong>{review.name}</strong>
-              <Rating rating={review.rating} caption=" "></Rating>
-              <p>{review.comment}</p>
-            </ListGroup.Item>
-          ))}
-        </ListGroup> */}
+        
         <div className="my-3">
           {userInfo ? (
             <form
-            // onSubmit={submitHandler}
+       
             >
-              <h2 className="mb2 makeyellow">{eevent.name}</h2>
+              <h2 className="mb2 makeyellow">{theEvent.name}</h2>
 
-              {/* <ListGroup.Item>Category - {eevent.category}</ListGroup.Item> */}
+    
 
               <h6 className="makewhite">Description:</h6>
-              <p className="mb2 makewhite">{eevent.description}</p>
+              <p className="mb2 makewhite">{theEvent.description}</p>
 
               <FloatingLabel
                 controlId="floatingTextarea"
@@ -225,19 +210,19 @@ function EventScreen() {
               </FloatingLabel>
               <div className="mb-3">
                 <Button
-                  // disabled={loadingCreateReview}
+ 
                   style={{ backgroundColor: "black", color: "#FFD700" }}
                   type="submit"
                 >
                   Volunteer Now!
                 </Button>
-                {/* {loadingCreateReview && <LoadingBox></LoadingBox>} */}
+          
               </div>
             </form>
           ) : (
             <MessageBox>
               Please{" "}
-              <Link to={`/signin?redirect=/eevent/${eevent.slug}`}>
+              <Link to={`/signin?redirect=/event/${theEvent.slug}`}>
                 Sign In
               </Link>{" "}
               to write a review

@@ -22,6 +22,19 @@ $ git clone https://github.com/COSC4353-group6/volunteer_application.git
 $ cd client
 $ npm install
 $ npm start
+
+```
+
+### 3. Create .env File
+
+### 4. Setup .env file with application credientials - contact a team member for application credentials
+
+### 5. Run Backend
+
+```
+$ cd server
+$ npm install
+$ nodemon server.js
 ```
 
 
