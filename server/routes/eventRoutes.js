@@ -50,6 +50,18 @@ eventRouter.get('/allevents', async (req, res) => {
     res.send(allEvents[0]);
 });
 
+eventRouter.get('/slug/:slug', async (req, res) => {
+  const { slug } = req.params;
+  const query = 'SELECT * FROM events WHERE slug= ?';
+  const event = await pool.query(query, [slug]);
+
+  if (event) {
+    res.send(event[0][0]);
+  } else {
+    res.status(404).send({ message: 'Event Not Found' });
+  }
+});
+
 
 
 
