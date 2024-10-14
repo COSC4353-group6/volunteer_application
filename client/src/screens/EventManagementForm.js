@@ -1,41 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles/EventManagementFormStyles.css"; // Ensure this is the correct path
 
 const EventManagementForm = () => {
+  // Hard-coded event data for the form
   const [eventData, setEventManagementForm] = useState({
-    eventName: '',
-    eventDescription: '',
-    location: '',
-    requiredSkills: [''],
-    urgency: '',
-    eventDate: '',
-    availability: [''],
+    eventName: "Charity Marathon",
+    eventDescription: "A charity marathon to raise funds for local shelters.",
+    location: "Central Park, New York",
+    requiredSkills: ["Coordination", "First Aid", "Photography"],
+    urgency: "medium",
+    eventDate: "2024-12-15",
+    availability: ["2024-12-10", "2024-12-11"],
   });
 
   // Hard-coded past events data
   const [pastEvents, setPastEvents] = useState([
     {
-      eventName: '',
-      eventDescription: '',
-      location: '',
-      eventDate: '',
-      requiredSkills: [''],
+      eventName: "Beach Cleanup",
+      eventDescription: 'Cleaning the beach for community service.',
+      location: "Miami Beach, FL",
+      eventDate: "2024-09-15",
+      requiredSkills: ["Teamwork", "Physical Work"],
       isEditing: false, // Track if event is being edited
     },
     {
-      eventName: '',
-      eventDescription:'',
-      location: '',
-      eventDate: '',
-      requiredSkills: [''],
+      eventName: "Food Drive",
+      eventDescription:"Helping with organinzing the food",
+      location: "Houston, TX",
+      eventDate: "2024-10-05",
+      requiredSkills: ["Organization", "Logistics"],
       isEditing: false, // Track if event is being edited
     },
     {
-      eventName: '',
-      eventDescription: '',
-      location: '',
-      eventDate: '',
-      requiredSkills: [''],
+      eventName: "Blood Donation",
+      eventDescription: "Helping with taking blood from the patients",
+      location: "Dallas, TX",
+      eventDate: "2024-08-15",
+      requiredSkills: ["Nursing", "Medical Assistance"],
       isEditing: false, // Track if event is being edited
     },
   ]);
@@ -46,34 +47,6 @@ const EventManagementForm = () => {
     updatedAvailability[index] = value;
     setEventManagementForm({ ...eventData, availability: updatedAvailability });
   };
-
-    // Fetch user profile data when the component mounts
-    useEffect(() => {
-      const fetchEventManagementForm = async () => {
-        try {
-          const response = await fetch('http://localhost:4000/api/event-management');
-          const data = await response.json();
-          setEventManagementForm(data);
-        } catch (error) {
-          console.error('Error fetching user profile:', error);
-        }
-      };
-      fetchEventManagementForm();
-    }, []);
-
-       // Fetch user profile data when the component mounts
-       useEffect(() => {
-        const fetchEventManagementForm = async () => {
-          try {
-            const response = await fetch('http://localhost:4000/api/event-management');
-            const data = await response.json();
-            setPastEvents(data);
-          } catch (error) {
-            console.error('Error fetching user profile:', error);
-          }
-        };
-        fetchEventManagementForm();
-      }, []);
 
   // Add a new availability date input
   const handleAddDate = () => {
@@ -202,23 +175,26 @@ const EventManagementForm = () => {
             />
           </div>
 
-  {/* Availability Input Fields */}
-<div className="form-group">
-  <label>Availability Dates:</label>
-  {Array.isArray(eventData.availability) && eventData.availability.map((date, index) => (
-    <div key={index}>
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => handleAvailabilityChange(index, e.target.value)}
-        required
-      />
-    </div>
-  ))}
-  <button type="button" onClick={handleAddDate}>Add Availability Date</button>
-</div>
-</form>
-</div>
+          {/* Availability Input Fields */}
+          <div className="form-group">
+            <label>Availability Dates:</label>
+            {eventData.availability.map((date, index) => (
+              <div key={index}>
+                <input 
+                  type="date"
+                  value={date}
+                  onChange={(e) => handleAvailabilityChange(index, e.target.value)}
+                  required
+                />
+              </div>
+            ))}
+            <button type="button" onClick={handleAddDate}>Add Availability Date</button>
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
       {/* Table for Past Events with Edit/Delete */}
       <div className="past-events">
         <h3>Past Events</h3>
@@ -233,10 +209,9 @@ const EventManagementForm = () => {
               <th>Actions</th>
             </tr>
           </thead>
-          
           <tbody>
-  {Array.isArray(pastEvents) && pastEvents.map((event, index) => (
-    <tr key={index}>
+            {pastEvents.map((event, index) => (
+              <tr key={index}>
                 {event.isEditing ? (
                   <>
                     <td>
