@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
 import userProfileRouter from './routes/userprofile.js';
-import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
+//import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
 import authRoutes from './routes/auth.js'; // Import authentication routes
 
 dotenv.config();
@@ -15,10 +15,50 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+
+
+// Hard-coded data for event management form 
+const events = [
+  {
+    eventName: 'Beach Cleanup',
+    eventDescription: 'Cleaning the beach for community service.',
+    location: 'Miami Beach, FL',
+    requiredSkills: ['Teamwork', 'Physical Work'],
+    urgency:['Low'],
+    eventDate: '2024-09-15',
+  },
+  {
+    eventName: 'Food Drive',
+    eventDescription: 'Helping with organizing the food',
+    location: 'Houston, TX',
+    requiredSkills: ['Organization', 'Logistics'],
+    urgency:['Low'],
+    eventDate: '2024-10-05',
+  },
+  {
+    eventName: 'Blood Donation',
+    eventDescription: 'Helping with taking blood from the patients',
+    location: 'Dallas, TX',
+    requiredSkills: ['Nursing', 'Medical Assistance'],
+    urgency:['Low'],
+    eventDate: '2024-08-15',
+  },
+];
+
+// API route to serve the events
+app.get('/api/events', (req, res) => {
+  res.json(events);
+});
+
+app.post('/api/events', (req, res) => {
+  const newEvent = req.body;
+  events.push(newEvent); // Add the new event to the hard-coded events array
+  res.status(201).json(newEvent); // Respond with the newly added event
+});
+
 
 // Route to get event data (eventRoutes handles this)
-app.use('/api/event', eventRouter);  // Add your eventRoutes here
+//app.use('/api', eventRouter);  // Add your eventRoutes here
 
 // Route to get volunteer history
 app.use('/api', volunteerHistoryRouter);
