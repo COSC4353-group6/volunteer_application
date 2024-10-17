@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
+import axios from "axios";
 import { useNavigate, useParams } from 'react-router-dom';
 import "../styles/matchuser.css"
 import Navbar from "react-bootstrap/Navbar";
@@ -18,31 +19,43 @@ import { Helmet } from "react-helmet-async";
 
 
 
-const request = {
-  _id: 234,
-  name: "Chiemela Umeh",
-  location: "Scottsdale, AZ",
-  category: "Clean up",
-  age: "54 years",
-  Skills: "Communication, Punctuality",
-  userRequest: "Blood Donation",
-  urgency: "Moderate",
-  requestedEvent: "Beach Clean Up",
-  ageRestriction: "12+"
-};
-
 export default function MatchUser() {
     
     const [userRequest, setUserRequest] = useState('');
     useEffect(() => {
     setUserRequest(request.userRequest);
 }, []);
+
+const [request, setRequest] = useState([]);
+
+const params = useParams()
+console.log(params)
+
+const { _id } = params
+
+console.log(_id)
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`/api/event/volunteer-requests/${_id}`);
+        setRequest(data);
+      } catch (error) {
+        console.error("Error fetching volunteer history:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+ 
+
     return (
     <Container className="small-container">
       {/* <Helmet>
         <title>Edit Product ${request._id}</title>
       </Helmet> */}
-      <h1 className="mb2">Volunteer Request ID {request._id}</h1>
+      <h1 className="mb2">Volunteer Request ID {_id}</h1>
       {/* {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
@@ -56,7 +69,7 @@ export default function MatchUser() {
         <Form.Group className="mb-3 " controlId="name">
           <Form.Label className='makeyellow' >Volunteer Name</Form.Label>
           <Form.Control
-            value={request.name}
+            value={request.user_name}
             // onChange={(e) => setName(e.target.value)}
 
             disabled
@@ -65,7 +78,7 @@ export default function MatchUser() {
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Request ID</Form.Label>
           <Form.Control
-            value={request._id}
+            value={request.request_id}
             // onChange={(e) => setName(e.target.value)}
 
             disabled
@@ -74,7 +87,7 @@ export default function MatchUser() {
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Age</Form.Label>
           <Form.Control
-            value={request.age}
+            value={request.user_age}
             // onChange={(e) => setName(e.target.value)}
 
             disabled
@@ -94,7 +107,7 @@ export default function MatchUser() {
         <Form.Group className="mb2" controlId="slug">
           <Form.Label>Skills</Form.Label>
           <Form.Control
-            value={request.Skills}
+            value={request.user_skills}
             // onChange={(e) => setSlug(e.target.value)}
             disabled
           />
@@ -105,7 +118,7 @@ export default function MatchUser() {
         <Form.Group className="mb-3" controlId="slug">
           <Form.Label className='makeyellow' >Matched Event </Form.Label>
           <Form.Control
-            value={request.requestedEvent}
+            value={request.title}
             // onChange={(e) => setSlug(e.target.value)}
             disabled
           />
