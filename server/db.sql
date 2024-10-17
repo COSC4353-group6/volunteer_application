@@ -60,3 +60,13 @@ CREATE TABLE volunteerConfirmation (
     FOREIGN KEY (user_id) REFERENCES users(_id),
 FOREIGN KEY (event_id) REFERENCES events(_id)
 );
+
+CREATE TABLE volunteer_requests (
+    request_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id bigint,
+    event_id bigint,
+    request_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(_id),
+    FOREIGN KEY (event_id) REFERENCES events(_id)
+);
+
