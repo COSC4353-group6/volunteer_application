@@ -50,8 +50,94 @@ eventRouter.get('/allevents', async (req, res) => {
     res.send(allEvents[0]);
 });
 
+// eventRouter.get('/volunteer-requests', async (req, res) => {
+//   const allRequests = await pool.query(`SELECT * from volunteer_requests`);
+  
+//     res.send(allRequests[0]);
+// });
+
+eventRouter.get('/volunteer-requests', async (req, res) => {
+
+  const query = `
+    SELECT 
+      vr.request_id, 
+      vr.request_date, 
+      u._id AS user_id, 
+      u.name AS user_name, 
+      u.email AS user_email, 
+      u.age AS user_age,
+      u.skills AS user_skills,
+      e._id, 
+      e.title, 
+      e.urgency,
+      e.category,
+      e.ageRestriction,
+      e.createdAt,
+      e.location
+    FROM 
+      volunteer_requests vr
+    JOIN 
+      users u ON vr.user_id = u._id
+    JOIN 
+      events e ON vr.event_id = e._id; 
+  `;
+
+  try {
+    const allRequests = await pool.query(query);
+    res.send(allRequests[0]);  // Send the result if successful
+  } catch (error) {
+    console.error(error);  // Log the error for debugging
+    res.status(500).send({ message: 'Error fetching volunteer requests', error });  // Send error response
+  }
+});
+
+eventRouter.get('/volunteer-requests/:_id', async (req, res) => {
+  const { _id } = req.params; // Use _id from the URL parameters
+
+  const query = `
+    SELECT 
+      vr.request_id, 
+      vr.request_date, 
+      u._id AS user_id, 
+      u.name AS user_name, 
+      u.email AS user_email, 
+      u.age AS user_age,
+      u.skills AS user_skills,
+      e._id AS event_id, 
+      e.title, 
+      e.urgency,
+      e.category,
+      e.ageRestriction,
+      e.createdAt,
+      e.location
+    FROM 
+      volunteer_requests vr
+    JOIN 
+      users u ON vr.user_id = u._id
+    JOIN 
+      events e ON vr.event_id = e._id
+    WHERE 
+      vr.request_id = ?;  -- Filter by request_id
+  `;
+
+  try {
+    // Pass the _id as the parameter to the query
+    const [allRequests] = await pool.query(query, [_id]);
+    
+    if (allRequests.length === 0) {
+      return res.status(404).send({ message: 'Request not found' }); // Handle no results found
+    }
+
+    res.send(allRequests[0]);  // Send the result if successful
+  } catch (error) {
+    console.error(error);  // Log the error for debugging
+    res.status(500).send({ message: 'Error fetching volunteer requests', error });  // Send error response
+  }
+});
 eventRouter.get('/slug/:slug', async (req, res) => {
   const { slug } = req.params;
+
+  console.log(slug)
   const query = 'SELECT * FROM events WHERE slug= ?';
   const event = await pool.query(query, [slug]);
 
@@ -61,6 +147,19 @@ eventRouter.get('/slug/:slug', async (req, res) => {
     res.status(404).send({ message: 'Event Not Found' });
   }
 });
+
+eventRouter.post('/volunteer-request', async(req, res) => {
+  const query = 'INSERT INTO volunteer_requests (user_id, event_id)VALUES(?, ?);'
+
+  let user_id = req.body.thisUserId
+  let event_id = req.body.thisEvent
+
+  const newRequest = await pool.query(query, [
+    user_id,
+    event_id
+  ]);
+  res.send({message: 'User Request successful', newRequest})
+})
 
 
 
