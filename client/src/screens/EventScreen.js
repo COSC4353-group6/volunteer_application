@@ -52,6 +52,26 @@ function EventScreen() {
   const params = useParams();
   const { slug } = params;
 
+  const thisEvent = theEvent._id;
+
+  const thisUserId = 4;
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        `/api/event/volunteer-request`,
+        {
+          thisEvent,
+          thisUserId,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+    } catch (error) {
+      console.error("Error fetching volunteer history:", error);
+    }
+  };
   // const event = {
   //   _id: 20,
   //   name: "Beach Cleanup",
@@ -77,19 +97,17 @@ function EventScreen() {
   //   accessibility: "Wheelchair accessible",
   // };
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const{ data }= await axios.get(`/api/event/slug/${slug}`);
-       setTheEvent(data)
+        const { data } = await axios.get(`/api/event/slug/${slug}`);
+        setTheEvent(data);
       } catch (error) {
-        console.error('Error fetching volunteer history:', error);
+        console.error("Error fetching volunteer history:", error);
       }
     };
     fetchData();
   }, [slug]);
-
 
   return (
     <div>
@@ -139,8 +157,7 @@ function EventScreen() {
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
-              <span className="bold-text"> accessibility </span> -{" "}
-              Wheelchair
+              <span className="bold-text"> accessibility </span> - Wheelchair
             </ListGroup.Item>
             <ListGroup.Item>
               {" "}
@@ -174,23 +191,16 @@ function EventScreen() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-
-               
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
       <div className="my-3">
-        
         <div className="my-3">
           {userInfo ? (
-            <form
-       
-            >
+            <form>
               <h2 className="mb2 makeyellow">{theEvent.name}</h2>
-
-    
 
               <h6 className="makewhite">Description:</h6>
               <p className="mb2 makewhite">{theEvent.description}</p>
@@ -210,13 +220,12 @@ function EventScreen() {
               </FloatingLabel>
               <div className="mb-3">
                 <Button
- 
+                onClick={submitHandler}
                   style={{ backgroundColor: "black", color: "#FFD700" }}
                   type="submit"
                 >
                   Volunteer Now!
                 </Button>
-          
               </div>
             </form>
           ) : (
