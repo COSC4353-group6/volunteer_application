@@ -3,6 +3,7 @@ import express from 'express';
 import volunteerHistoryRouter from '../routes/volunteerHistoryRoute.js';
 import userProfileRouter from '../routes/userprofile.js';
 import authRoutes from '../routes/auth.js';
+import eventRouter from '../routes/eventRoutes.js';
 import cors from 'cors';
 
 // Create a version of the app just for testing
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', volunteerHistoryRouter);
 app.use('/api', userProfileRouter);
 app.use('/api/auth', authRoutes);
+app.use('/api/event', eventRouter);  
 
 // Hard-coded data for events
 const events = [
@@ -100,10 +102,43 @@ describe('POST /api/events', () => {
 // Test for error handling middleware
 describe('Error handling middleware', () => {
   it('should return a 500 error and custom error message', async () => {
-    const response = await request(app).get('/error-route');  // Use the error route
-    expect(response.status).toBe(500);  // Expect status 500
-    expect(response.body).toHaveProperty('message', 'Test error');  // Expect 'Test error' message
-    expect(response.body).toHaveProperty('status', 500);  // Expect status in the response body
+    const response = await request(app).get('/api/event/error-route');  
+    expect(response.status).toBe(500);  
+    expect(response.body).toHaveProperty('message', 'Test error'); 
+    expect(response.body).toHaveProperty('status', 500);  
+  });
+});
+
+
+
+describe('GET /api/events - Validate events array', () => {
+  it('should return an array of events', async () => {
+    const response = await request(app).get('/api/events');
+
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(0); 
+  });
+});
+
+
+describe('POST /api/events - Verify event addition', () => {
+  it('should add a new event and verify it in the events list', async () => {
+    const newEvent = {
+      eventName: 'Community Gardening',
+      eventDescription: 'Join us for a day of gardening in the community.',
+      location: 'Dallas, TX',
+      requiredSkills: ['Gardening'],
+      urgency: ['High'],
+      eventDate: '2024-11-15',
+    };
+
+    await request(app)
+      .post('/api/events')
+      .send(newEvent);
+
+    const response = await request(app).get('/api/events');
+    expect(response.body).toEqual(expect.arrayContaining([expect.objectContaining(newEvent)]));
   });
 });
 

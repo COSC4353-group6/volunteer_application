@@ -1,7 +1,7 @@
-
 import express from "express";
-import { pool } from '../db.js';
+import { pool } from "../db.js";
 const eventRouter = express.Router();
+import { errorHandler } from "../utils.js";
 
 // Hardcoded event data
 const eventsData = {
@@ -17,7 +17,7 @@ const eventsData = {
   pastEvents: [
     {
       eventName: "Beach Cleanup",
-      eventDescription: 'Cleaning the beach for community service.',
+      eventDescription: "Cleaning the beach for community service.",
       location: "Miami Beach, FL",
       eventDate: "2024-09-15",
       requiredSkills: ["Teamwork", "Physical Work"],
@@ -35,29 +35,35 @@ const eventsData = {
       location: "Dallas, TX",
       eventDate: "2024-08-15",
       requiredSkills: ["Nursing", "Medical Assistance"],
-    }
-  ]
+    },
+  ],
 };
 
+eventRouter.get("/error-route", (req, res, next) => {
+  const error = new Error("Test error");
+  error.status = 500;
+  next(error);
+});
+
 // Define an API endpoint for fetching events data
-eventRouter.get('/event-management', (req, res) => {
-  res.json(eventsData); // Send the hardcoded events data as a JSON response
+eventRouter.get("/event-management", (req, res) => {
+  try {
+    res.json(eventsData); // Send the hardcoded events data as a JSON response
+  } catch (error) {
+    next(errorHandler(500, "Failed to retrieve events")); // Pass the error to the errorHandler middleware
+  }
 });
 
-
-eventRouter.get('/allevents', async (req, res) => {
-  const allEvents = await pool.query(`SELECT * from events`);
+eventRouter.get("/allevents", async (req, res, next) => {
+  try {
+    const allEvents = await pool.query(`SELECT * from events`);
     res.send(allEvents[0]);
+  } catch (error) {
+    next(errorHandler(500, "Failed to retrieve events")); // Pass the error to the errorHandler middleware
+  }
 });
 
-// eventRouter.get('/volunteer-requests', async (req, res) => {
-//   const allRequests = await pool.query(`SELECT * from volunteer_requests`);
-  
-//     res.send(allRequests[0]);
-// });
-
-eventRouter.get('/volunteer-requests', async (req, res) => {
-
+eventRouter.get("/volunteer-requests", async (req, res) => {
   const query = `
     SELECT 
       vr.request_id, 
@@ -84,14 +90,16 @@ eventRouter.get('/volunteer-requests', async (req, res) => {
 
   try {
     const allRequests = await pool.query(query);
-    res.send(allRequests[0]);  // Send the result if successful
+    res.send(allRequests[0]); // Send the result if successful
   } catch (error) {
-    console.error(error);  // Log the error for debugging
-    res.status(500).send({ message: 'Error fetching volunteer requests', error });  // Send error response
+    console.error(error); // Log the error for debugging
+    res
+      .status(500)
+      .send({ message: "Error fetching volunteer requests", error }); // Send error response
   }
 });
 
-eventRouter.get('/volunteer-requests/:_id', async (req, res) => {
+eventRouter.get("/volunteer-requests/:_id", async (req, res) => {
   const { _id } = req.params; // Use _id from the URL parameters
 
   const query = `
@@ -123,45 +131,42 @@ eventRouter.get('/volunteer-requests/:_id', async (req, res) => {
   try {
     // Pass the _id as the parameter to the query
     const [allRequests] = await pool.query(query, [_id]);
-    
+
     if (allRequests.length === 0) {
-      return res.status(404).send({ message: 'Request not found' }); // Handle no results found
+      return res.status(404).send({ message: "Request not found" }); // Handle no results found
     }
 
-    res.send(allRequests[0]);  // Send the result if successful
+    res.send(allRequests[0]); // Send the result if successful
   } catch (error) {
-    console.error(error);  // Log the error for debugging
-    res.status(500).send({ message: 'Error fetching volunteer requests', error });  // Send error response
+    console.error(error); // Log the error for debugging
+    res
+      .status(500)
+      .send({ message: "Error fetching volunteer requests", error }); // Send error response
   }
 });
-eventRouter.get('/slug/:slug', async (req, res) => {
+eventRouter.get("/slug/:slug", async (req, res) => {
   const { slug } = req.params;
 
-  console.log(slug)
-  const query = 'SELECT * FROM events WHERE slug= ?';
+  console.log(slug);
+  const query = "SELECT * FROM events WHERE slug= ?";
   const event = await pool.query(query, [slug]);
 
   if (event) {
     res.send(event[0][0]);
   } else {
-    res.status(404).send({ message: 'Event Not Found' });
+    res.status(404).send({ message: "Event Not Found" });
   }
 });
 
-eventRouter.post('/volunteer-request', async(req, res) => {
-  const query = 'INSERT INTO volunteer_requests (user_id, event_id)VALUES(?, ?);'
+eventRouter.post("/volunteer-request", async (req, res) => {
+  const query =
+    "INSERT INTO volunteer_requests (user_id, event_id)VALUES(?, ?);";
 
-  let user_id = req.body.thisUserId
-  let event_id = req.body.thisEvent
+  let user_id = req.body.thisUserId;
+  let event_id = req.body.thisEvent;
 
-  const newRequest = await pool.query(query, [
-    user_id,
-    event_id
-  ]);
-  res.send({message: 'User Request successful', newRequest})
-})
+  const newRequest = await pool.query(query, [user_id, event_id]);
+  res.send({ message: "User Request successful", newRequest });
+});
 
-
-
-
-export default eventRouter
+export default eventRouter;
