@@ -63,7 +63,6 @@ useEffect(() => {
   }
 };
 
-
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
