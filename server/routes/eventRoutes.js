@@ -44,7 +44,7 @@ const eventManage = {
     },
   ],
 };
-
+//end of events with current and past
 eventRouter.get("/error-route", (req, res, next) => {
   const error = new Error("Test error");
   error.status = 500;
