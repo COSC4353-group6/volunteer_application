@@ -70,3 +70,13 @@ CREATE TABLE volunteer_requests (
     FOREIGN KEY (event_id) REFERENCES events(_id)
 );
 
+CREATE TABLE notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
+    event_id BIGINT,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    notification_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(_id),
+    FOREIGN KEY (event_id) REFERENCES events(_id)
+);

@@ -175,4 +175,28 @@ eventRouter.post("/volunteer-request", async (req, res) => {
   res.send({ message: "User Request successful", newRequest });
 });
 
+
+// Route for assigning a volunteer to an event and sending a notification
+eventRouter.post('/assign', async (req, res) => {
+  const { user_id, event_id } = req.body;
+  
+  // Fetch the event description for the notification message
+  const [event] = await pool.query('SELECT description FROM events WHERE _id = ?', [event_id]);
+  
+  if (event.length === 0) {
+      return res.status(404).send({ success: false, message: 'Event not found.' });
+  }
+
+  // Send the notification
+  await pool.query(
+      'INSERT INTO notifications (user_id, event_id, message) VALUES (?, ?, ?)',
+      [user_id, event_id, `You have been assigned to the event: ${event[0].description}`]
+  );
+
+  res.send({ success: true, message: 'User assigned and notified.' });
+});
+
+
 export default eventRouter;
+
+

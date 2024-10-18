@@ -3,7 +3,7 @@ import { FaBell } from 'react-icons/fa';
 import Badge from 'react-bootstrap/Badge';
 import '../styles/Notification.css'; // Import the CSS for this component
 
-const Notification = ({ events }) => {
+const Notification = ({ userId }) => {
   const [notifications, setNotifications] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -12,28 +12,36 @@ const Notification = ({ events }) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // Mark a notification as read
-  const markAsRead = (id) => {
-    setNotifications(
-      notifications.map((n) =>
-        n.id === id ? { ...n, is_read: true } : n
-      )
-    );
-  };
-
-  // Simulate notifications based on the passed events (props)
+  // Fetch notifications when the component mounts
   useEffect(() => {
-    if (events) {
-      console.log('Events received:', events); // Log events to verify
-      const newNotifications = events.map((event) => ({
-        id: event._id,
-        message: `New Event: ${event.name} at ${event.location}`,
-        date: event.Date,
-        is_read: false,
-      }));
-      setNotifications(newNotifications);
+    const fetchNotifications = async () => {
+      if (!userId) return; // Exit if no userId is provided
+
+      try {
+        const response = await fetch(`/api/notifications/${userId}`);
+        const data = await response.json();
+        setNotifications(data);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+  }, [userId]); // Fetch notifications when userId changes
+
+  // Mark a notification as read
+  const markAsRead = async (id) => {
+    try {
+      await fetch(`/api/notifications/read/${id}`, { method: 'POST' });
+      setNotifications(
+        notifications.map((n) =>
+          n.notification_id === id ? { ...n, is_read: true } : n
+        )
+      );
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
     }
-  }, [events]);
+  };
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -51,12 +59,12 @@ const Notification = ({ events }) => {
             {notifications.length === 0 && <li>No new notifications</li>}
             {notifications.map((notification) => (
               <li
-                key={notification.id}
+                key={notification.notification_id}
                 className={`notification-item ${notification.is_read ? 'read' : 'unread'}`}
               >
-                <div onClick={() => markAsRead(notification.id)} className="notification-message">
+                <div onClick={() => markAsRead(notification.notification_id)} className="notification-message">
                   {notification.message}
-                  <small className="notification-date"> Scheduled for {notification.date}</small>
+                  <small className="notification-date">{new Date(notification.notification_date).toLocaleString()}</small>
                 </div>
               </li>
             ))}
