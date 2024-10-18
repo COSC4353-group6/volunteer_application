@@ -4,13 +4,13 @@ const eventRouter = express.Router();
 import { errorHandler } from "../utils.js";
 
 // Hardcoded event data
-const eventsData = {
+const eventManage = {
   currentEvent: {
     eventName: "Charity Marathon",
     eventDescription: "A charity marathon to raise funds for local shelters.",
     location: "Central Park, New York",
     requiredSkills: ["Coordination", "First Aid", "Photography"],
-    urgency: "medium",
+    urgency: "Medium",
     eventDate: "2024-12-15",
     availability: ["2024-12-10", "2024-12-11"],
   },
@@ -21,6 +21,8 @@ const eventsData = {
       location: "Miami Beach, FL",
       eventDate: "2024-09-15",
       requiredSkills: ["Teamwork", "Physical Work"],
+      urgency:"Low",
+      eventDate: '2024-09-15',
     },
     {
       eventName: "Food Drive",
@@ -28,6 +30,8 @@ const eventsData = {
       location: "Houston, TX",
       eventDate: "2024-10-05",
       requiredSkills: ["Organization", "Logistics"],
+      urgency: "Low",
+      eventDate: '2024-10-05',
     },
     {
       eventName: "Blood Donation",
@@ -35,6 +39,8 @@ const eventsData = {
       location: "Dallas, TX",
       eventDate: "2024-08-15",
       requiredSkills: ["Nursing", "Medical Assistance"],
+      urgency: "Low",
+      eventDate: '2024-08-15',
     },
   ],
 };
@@ -48,7 +54,7 @@ eventRouter.get("/error-route", (req, res, next) => {
 // Define an API endpoint for fetching events data
 eventRouter.get("/event-management", (req, res) => {
   try {
-    res.json(eventsData); // Send the hardcoded events data as a JSON response
+    res.json(eventManage); // Send the hardcoded events data as a JSON response
   } catch (error) {
     next(errorHandler(500, "Failed to retrieve events")); // Pass the error to the errorHandler middleware
   }
