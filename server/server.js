@@ -41,6 +41,11 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
+app.get('/error-route', (req, res, next) => {
+  const error = new Error('Test error');
+  error.status = 500; // Explicitly set status to 500
+  next(error); // Pass the error to the error-handling middleware
+});
 
 // Base endpoint for general information
 app.get('*', (req, res) =>
