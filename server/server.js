@@ -5,6 +5,7 @@ import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
 import userProfileRouter from './routes/userprofile.js';
 import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
 import authRoutes from './routes/auth.js'; // Import authentication routes
+import { errorHandler } from './utils.js';
 
 dotenv.config();
 
@@ -23,31 +24,15 @@ app.use('/api/event', eventRouter);  // Add your eventRoutes here
 // Route to get volunteer history
 app.use('/api', volunteerHistoryRouter);
 
+app.use(errorHandler);
 
 // Route to handle user profile
 app.use('/api', userProfileRouter);
 
 // Route for authentication
 app.use('/api/auth', authRoutes);
+// app.get('/api/events/error-route'); 
 
-// Error handling
-app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || 'Something went wrong';
-  return res.status(errorStatus).json({
-    success: false,
-    status: errorStatus,
-    message: errorMessage,
-    stack: err.stack,
-  });
-});
-app.get('/error-route', (req, res, next) => {
-  const error = new Error('Test error');
-  error.status = 500; // Explicitly set status to 500
-  next(error); // Pass the error to the error-handling middleware
-});
-
-// Base endpoint for general information
 app.get('*', (req, res) =>
   res.json({
     Name: 'COSC 4353 volunteer API - Group 6',

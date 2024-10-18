@@ -3,6 +3,7 @@ import express from 'express';
 import volunteerHistoryRouter from '../routes/volunteerHistoryRoute.js';
 import userProfileRouter from '../routes/userprofile.js';
 import authRoutes from '../routes/auth.js';
+import eventRouter from '../routes/eventRoutes.js';
 import cors from 'cors';
 
 // Create a version of the app just for testing
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', volunteerHistoryRouter);
 app.use('/api', userProfileRouter);
 app.use('/api/auth', authRoutes);
+app.use('/api/event', eventRouter);  
 
 // Hard-coded data for events
 const events = [
@@ -100,10 +102,9 @@ describe('POST /api/events', () => {
 // Test for error handling middleware
 describe('Error handling middleware', () => {
   it('should return a 500 error and custom error message', async () => {
-    const response = await request(app).get('/error-route');  // Use the error route
+    const response = await request(app).get('/api/event/error-route');  // Use the error route
     expect(response.status).toBe(500);  // Expect status 500
     expect(response.body).toHaveProperty('message', 'Test error');  // Expect 'Test error' message
     expect(response.body).toHaveProperty('status', 500);  // Expect status in the response body
   });
 });
-
