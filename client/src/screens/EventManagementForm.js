@@ -3,60 +3,73 @@ import "../styles/EventManagementFormStyles.css"; // Ensure this is the correct 
 
 const EventManage = () => {
   const [eventManage, setEventManage] = useState({
-    eventName: 'Annual Charity Run',
-    eventDescription: 'A charity run for a local cause.',
-    location: 'Houston Park',
-    requiredSkills: ['Volunteering', 'Teamwork'],
-    urgency: 'High',
-    eventDate: '2024-12-01',
+    eventName: '',
+    eventDescription: '',
+    location: '',
+    requiredSkills: [''],
+    urgency: '',
+    eventDate: '',
   });
 
   const [pastEvents, setPastEvents] = useState([]);
 
-  // Fetch data from server.js on component mount
   useEffect(() => {
-    fetch('http://localhost:4000/api/events') // Correct the URL to the backend
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched events data:", data);
-        if (Array.isArray(data)) {
-          setPastEvents(data); // Set the state if it's an array
-        } else {
-          console.error("Expected an array but got:", data);
-          setPastEvents([]); // Handle the error appropriately
-        }
-      })
-      .catch((error) => console.error("Error fetching events:", error));
-  }, []); // Empty dependency array means this runs once when component mounts
+    console.log("Event Manage state:", eventManage);
+}, [eventManage]);
 
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value, options } = e.target;
+// When fetching data
+useEffect(() => {
+  fetch('http://localhost:4000/api/event/event-management')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Fetched events data:", data);
+      if (data && data.pastEvents) {
+        setPastEvents(data.pastEvents);
+        console.log("Setting current event:", data.currentEvent); // Debugging line
+        setEventManage(data.currentEvent);
+      } else {
+        console.error("Unexpected data format:", data);
+        setPastEvents([]);
+      }
+    })
+    .catch((error) => console.error("Error fetching events:", error));
+}, []);
+ // Empty dependency array means this runs once when component mounts
 
-    // Handle multiple select for skills
-    if (name === "requiredSkills") {
+ const handleChange = (e) => {
+  const { name, value, options } = e.target;
+
+  if (name === "requiredSkills") {
       const selectedSkills = Array.from(options)
+          .filter(option => option.selected)
+          .map(option => option.value);
+      setEventManage({
+          ...eventManage,
+          [name]: selectedSkills,
+      });
+  } else  if (name === "urgency") {
+    const selectedurgency = Array.from(options)
         .filter(option => option.selected)
         .map(option => option.value);
-        
-      setEventManage({
+    setEventManage({
         ...eventManage,
-        [name]: selectedSkills,
+        [name]: selectedurgency,
       });
-    } else {
+  } else {
       setEventManage({
-        ...eventManage,
-        [name]: value,
+          ...eventManage,
+          [name]: value,
       });
-    }
-  };
+  }
+};
+
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
     // Send the form data (eventManage) to the backend server
-    fetch('http://localhost:4000/api/events', {
+    fetch('http://localhost:4000/api/event/event-management', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +92,7 @@ const EventManage = () => {
   // Handle delete button click
   const handleDelete = (eventName) => {
     // Delete the event from the backend
-    fetch(`http://localhost:4000/api/events/${eventName}`, { // Adjust the endpoint as needed
+    fetch(`http://localhost:4000/api/event/${eventName}`, { // Adjust the endpoint as needed
       method: 'DELETE',
     })
       .then(() => {
@@ -145,24 +158,30 @@ const EventManage = () => {
               <option value="Leadership">Leadership</option>
               <option value="Communication">Communication</option>
               <option value="Problem-Solving">Problem-Solving</option>
+              <option value= "Coordination">Coordination</option>
+              <option value= "First Aid"> First Aid</option>
+              <option value= "Photography"> Photography</option>
             </select>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="eventUrgency">Event Urgency (required):</label>
-            <select
-              id="eventUrgency"
-              name="urgency" 
-              value={eventManage.urgency} 
-              onChange={handleChange} 
-              required
-            >
-              <option value="">Select urgency</option>
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-            </select>
-          </div>
+        <div className="form-group">
+          <label htmlFor="eventUrgency">Event Urgency (required):</label>
+          <select
+            type ="text"
+            id="eventUrgency"
+            name="urgency"
+            value={eventManage.urgency} // Ensure the value is being set correctly
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select urgency</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="crack">crack</option>
+
+          </select>
+        </div>
 
           <div className="form-group">
             <label htmlFor="eventDate">Event Date (required):</label>
