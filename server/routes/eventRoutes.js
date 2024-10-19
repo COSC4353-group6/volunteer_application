@@ -68,133 +68,133 @@ eventRouter.get("/allevents", async (req, res, next) => {
     next(errorHandler(500, "Failed to retrieve events")); // Pass the error to the errorHandler middleware
   }
 });
+eventRouter.get("/volunteer-requests", (req, res) => {
+ 
+  const volunteerRequests = [
+    {
+      request_id: 1,
+      request_date: "2024-10-01",
+      user_id: 101,
+      user_name: "John Doe",
+      user_email: "john@example.com",
+      user_age: 29,
+      user_skills: ["First Aid", "Coordination"],
+      event_id: 201,
+      title: "Charity Marathon",
+      urgency: "Medium",
+      category: "Fundraising",
+      ageRestriction: 18,
+      createdAt: "2024-09-10",
+      location: "New York, NY",
+    },
+    {
+      request_id: 2,
+      request_date: "2024-10-01",
+      user_id: 101,
+      user_name: "John Doe",
+      user_email: "john@example.com",
+      user_age: 29,
+      user_skills: ["First Aid", "Coordination"],
+      event_id: 201,
+      title: "Charity Marathon",
+      urgency: "Medium",
+      category: "Fundraising",
+      ageRestriction: 18,
+      createdAt: "2024-09-10",
+      location: "New York, NY",
+    },
+  ];
 
-eventRouter.get("/volunteer-requests", async (req, res) => {
-  const query = `
-    SELECT 
-      vr.request_id, 
-      vr.request_date, 
-      u._id AS user_id, 
-      u.name AS user_name, 
-      u.email AS user_email, 
-      u.age AS user_age,
-      u.skills AS user_skills,
-      e._id, 
-      e.title, 
-      e.urgency,
-      e.category,
-      e.ageRestriction,
-      e.createdAt,
-      e.location
-    FROM 
-      volunteer_requests vr
-    JOIN 
-      users u ON vr.user_id = u._id
-    JOIN 
-      events e ON vr.event_id = e._id; 
-  `;
+  res.json(volunteerRequests); // Send mock data
+});
 
-  try {
-    const allRequests = await pool.query(query);
-    res.send(allRequests[0]); // Send the result if successful
-  } catch (error) {
-    console.error(error); // Log the error for debugging
-    res
-      .status(500)
-      .send({ message: "Error fetching volunteer requests", error }); // Send error response
+eventRouter.get("/volunteer-requests/:_id", (req, res) => {
+  const { _id } = req.params;
+  const volunteerRequests = [
+    {
+      request_id: 1,
+      request_date: "2024-10-01",
+      user_id: 101,
+      user_name: "John Doe",
+      user_email: "john@example.com",
+      user_age: 29,
+      user_skills: ["First Aid", "Coordination"],
+      event_id: 201,
+      title: "Charity Marathon",
+      urgency: "Medium",
+      category: "Fundraising",
+      ageRestriction: 18,
+      createdAt: "2024-09-10",
+      location: "New York, NY",
+    },
+    {
+      request_id: 2,
+      request_date: "2024-10-01",
+      user_id: 101,
+      user_name: "John Doe",
+      user_email: "john@example.com",
+      user_age: 29,
+      user_skills: ["First Aid", "Coordination"],
+      event_id: 201,
+      title: "Charity Marathon",
+      urgency: "Medium",
+      category: "Fundraising",
+      ageRestriction: 18,
+      createdAt: "2024-09-10",
+      location: "New York, NY",
+    },
+  ];
+
+  const request = volunteerRequests.find((req) => req.request_id === parseInt(_id));
+
+  if (request) {
+    res.json(request);
+  } else {
+    res.status(404).send({ message: "Request not found" });
   }
 });
 
-eventRouter.get("/volunteer-requests/:_id", async (req, res) => {
-  const { _id } = req.params; // Use _id from the URL parameters
 
-  const query = `
-    SELECT 
-      vr.request_id, 
-      vr.request_date, 
-      u._id AS user_id, 
-      u.name AS user_name, 
-      u.email AS user_email, 
-      u.age AS user_age,
-      u.skills AS user_skills,
-      e._id AS event_id, 
-      e.title, 
-      e.urgency,
-      e.category,
-      e.ageRestriction,
-      e.createdAt,
-      e.location
-    FROM 
-      volunteer_requests vr
-    JOIN 
-      users u ON vr.user_id = u._id
-    JOIN 
-      events e ON vr.event_id = e._id
-    WHERE 
-      vr.request_id = ?;  -- Filter by request_id
-  `;
-
-  try {
-    // Pass the _id as the parameter to the query
-    const [allRequests] = await pool.query(query, [_id]);
-
-    if (allRequests.length === 0) {
-      return res.status(404).send({ message: "Request not found" }); // Handle no results found
-    }
-
-    res.send(allRequests[0]); // Send the result if successful
-  } catch (error) {
-    console.error(error); // Log the error for debugging
-    res
-      .status(500)
-      .send({ message: "Error fetching volunteer requests", error }); // Send error response
-  }
-});
-eventRouter.get("/slug/:slug", async (req, res) => {
+eventRouter.get("/slug/:slug", (req, res) => {
   const { slug } = req.params;
-
-  console.log(slug);
-  const query = "SELECT * FROM events WHERE slug= ?";
-  const event = await pool.query(query, [slug]);
+  const event = eventManage.pastEvents.find((e) => e.slug === slug);
 
   if (event) {
-    res.send(event[0][0]);
+    res.json(event);
   } else {
-    res.status(404).send({ message: "Event Not Found" });
+    res.status(404).send({ message: "Event not found" });
   }
 });
 
-eventRouter.post("/volunteer-request", async (req, res) => {
-  const query =
-    "INSERT INTO volunteer_requests (user_id, event_id)VALUES(?, ?);";
 
-  let user_id = req.body.thisUserId;
-  let event_id = req.body.thisEvent;
+eventRouter.post("/volunteer-request", (req, res) => {
+  const { thisUserId, thisEvent } = req.body;
 
-  const newRequest = await pool.query(query, [user_id, event_id]);
-  res.send({ message: "User Request successful", newRequest });
+  const newRequest = {
+    user_id: thisUserId,
+    event_id: thisEvent,
+    request_id: Math.floor(Math.random() * 1000),
+    request_date: new Date().toISOString(),
+  };
+
+  // Add the request to the mock data
+  res.json({ message: "User Request successful", newRequest });
 });
-
 
 // Route for assigning a volunteer to an event and sending a notification
-eventRouter.post('/assign', async (req, res) => {
+eventRouter.post("/assign", (req, res) => {
   const { user_id, event_id } = req.body;
-  
-  // Fetch the event description for the notification message
-  const [event] = await pool.query('SELECT description FROM events WHERE _id = ?', [event_id]);
-  
-  if (event.length === 0) {
-      return res.status(404).send({ success: false, message: 'Event not found.' });
+
+  const event = eventManage.pastEvents.find((e) => e._id === event_id);
+
+  if (!event) {
+    return res.status(404).send({ success: false, message: "Event not found." });
   }
 
-  // Send the notification
-  await pool.query(
-      'INSERT INTO notifications (user_id, event_id, message) VALUES (?, ?, ?)',
-      [user_id, event_id, `You have been assigned to the event: ${event[0].description}`]
-  );
-
-  res.send({ success: true, message: 'User assigned and notified.' });
+  const notification = `You have been assigned to the event: ${event.eventDescription}`;
+  res.json({ success: true, message: "User assigned and notified.", notification });
 });
+
 
 
 export default eventRouter;
