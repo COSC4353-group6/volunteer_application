@@ -10,7 +10,3 @@ export const pool = mysql.createPool({
 
   }).promise();
   
-
-//   INSERT INTO events (image, description, status, timesHeld, category, location, urgency, createdAt) 
-// VALUES ('event_image.jpg', 'Annual tech conference', 'upcoming', 3, 'Technology', 'New York', 'High', NOW());
-
