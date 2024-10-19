@@ -25,7 +25,7 @@ $ npm start
 
 ```
 
-### 3. Create .env File
+### 3. Create .env File (in server directory)
 
 ### 4. Setup .env file with application credientials - contact a team member for application credentials
 
@@ -37,6 +37,15 @@ $ npm install
 $ nodemon server.js
 ```
 
+## Test - In server directory 
+```
+$ npm test
+```
+
+## Code coverage -  In server directory
+```
+$ npm test -- --coverage
+```
 
 ## Support
 
