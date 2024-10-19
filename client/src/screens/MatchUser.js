@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from 'react-router-dom';
-import "../styles/matchuser.css"
+import { useNavigate, useParams } from "react-router-dom";
+import "../styles/matchuser.css";
 import Navbar from "react-bootstrap/Navbar";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
@@ -15,30 +15,27 @@ import logo from "../images/volt2.png";
 import Container from "react-bootstrap/esm/Container";
 import { Helmet } from "react-helmet-async";
 
-
-
-
-
 export default function MatchUser() {
-    
-    const [userRequest, setUserRequest] = useState('');
-    useEffect(() => {
+  const [userRequest, setUserRequest] = useState("");
+  useEffect(() => {
     setUserRequest(request.userRequest);
-}, []);
+  }, []);
 
-const [request, setRequest] = useState([]);
+  const [request, setRequest] = useState([]);
 
-const params = useParams()
-console.log(params)
+  const params = useParams();
+  console.log(params);
 
-const { _id } = params
+  const { _id } = params;
 
-console.log(_id)
+  console.log(_id);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/event/volunteer-requests/${_id}`);
+        const { data } = await axios.get(
+          `/api/event/volunteer-requests/${_id}`
+        );
         setRequest(data);
       } catch (error) {
         console.error("Error fetching volunteer history:", error);
@@ -48,9 +45,9 @@ console.log(_id)
   }, []);
 
 
- 
+  
 
-    return (
+  return (
     <Container className="small-container">
       {/* <Helmet>
         <title>Edit Product ${request._id}</title>
@@ -62,12 +59,11 @@ console.log(_id)
         <MessageBox variant="danger">{error}</MessageBox>
       ) : ( */}
       <h3>User details</h3>
-      <Form 
-    //   onSubmit={submitHandler}
+      <Form
+      //   onSubmit={submitHandler}
       >
-        
         <Form.Group className="mb-3 " controlId="name">
-          <Form.Label className='makeyellow' >Volunteer Name</Form.Label>
+          <Form.Label className="makeyellow">Volunteer Name</Form.Label>
           <Form.Control
             value={request.user_name}
             // onChange={(e) => setName(e.target.value)}
@@ -102,8 +98,6 @@ console.log(_id)
           />
         </Form.Group>
 
-       
-      
         <Form.Group className="mb2" controlId="slug">
           <Form.Label>Skills</Form.Label>
           <Form.Control
@@ -112,11 +106,11 @@ console.log(_id)
             disabled
           />
         </Form.Group>
-       
-        <h3 className='makeyellow'>Event details</h3>
+
+        <h3 className="makeyellow">Event details</h3>
 
         <Form.Group className="mb-3" controlId="slug">
-          <Form.Label className='makeyellow' >Matched Event </Form.Label>
+          <Form.Label className="makeyellow">Matched Event </Form.Label>
           <Form.Control
             value={request.title}
             // onChange={(e) => setSlug(e.target.value)}
@@ -140,12 +134,14 @@ console.log(_id)
             disabled
           />
         </Form.Group>
-        <h3 className='makeyellow'>Finalize Match</h3>
-       
-      
+        <h3 className="makeyellow">Finalize Match</h3>
 
         <Form.Group className="mb-3" controlId="category">
-          <Form.Label>  Dropdown selector to Match user with a different event based on their profiles and event requirements </Form.Label>
+          <Form.Label>
+            {" "}
+            Dropdown selector to Match user with a different event based on
+            their profiles and event requirements{" "}
+          </Form.Label>
           <Form.Select
             aria-label="Category"
             value={userRequest}
@@ -156,18 +152,16 @@ console.log(_id)
             <option value="animal care">animal care</option>
             <option value="Planting Trees">Planting Trees</option>
             <option value="Beach Cleanup">Beach Cleanupr</option>
-    
           </Form.Select>
         </Form.Group>
 
-       
-        
         <div className="mb-3 ">
-          <Button style={{ color: "black", backgroundColor: "#FFD700" }}
-        //    disabled={loadingUpdate} 
-           type="submit"
-           >
-           Finalize Match!
+          <Button
+            style={{ color: "black", backgroundColor: "#FFD700" }}
+            //    disabled={loadingUpdate}
+            type="submit"
+          >
+            Finalize Match!
           </Button>
           {/* {loadingUpdate && <LoadingBox></LoadingBox>} */}
         </div>

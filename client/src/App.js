@@ -101,12 +101,13 @@ const events = [
 
 console.log(userInfo);
 
+
 function App() {
   // const { state, dispatch: ctxDispatch } = useContext(Store);
   // const { fullBox, cart, userInfo } = state;
 
-  // axios.defaults.baseURL = "http://localhost:4000/";
-  axios.defaults.baseURL = "https://volunteer-application-5io5.onrender.com/";
+  axios.defaults.baseURL = "http://localhost:4000/";
+  // axios.defaults.baseURL = "https://volunteer-application-5io5.onrender.com/";
 
   const signoutHandler = () => {
     // ctxDispatch({ type: 'USER_SIGNOUT' });
