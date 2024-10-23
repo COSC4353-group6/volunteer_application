@@ -53,7 +53,7 @@ const VolunteerHistory = () => {
                     <td>{history.category}</td>
                     <td>{history.location}</td>
                     <td>{history.urgency}</td>
-                    <td>{history.createdAt}</td>
+                    <td>{new Date(history.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                     <td>{history.timesHeld}</td>
                     <td>{history.status}</td>
 

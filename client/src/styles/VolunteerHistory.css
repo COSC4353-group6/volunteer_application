@@ -53,3 +53,7 @@ td {
 .volunteer-history tbody tr:nth-child(even) {
   background-color: #ffffff;
 }
+
+.volunteer-history tbody tr:hover {
+  background-color: #f2f2f2;
+}
