@@ -154,6 +154,33 @@ eventRouter.get("/volunteer-requests/:_id", (req, res) => {
   }
 });
 
+//get all states 
+eventRouter.get("/states", async (req, res, next) => {
+  try {
+    const [states] = await pool.query(`SELECT * FROM states`);
+    res.json(states);
+  } catch (error) {
+    next(errorHandler(500, "Failed to retrieve states"));
+  }
+});
+
+//get states by code
+eventRouter.get("/states/:code", async (req, res, next) => {
+  const { code } = req.params;
+
+  try {
+    const [state] = await pool.query(`SELECT * FROM states WHERE state_code = ?`, [code.toUpperCase()]);
+
+    if (state.length > 0) {
+      res.json(state[0]);
+    } else {
+      res.status(404).json({ message: "State not found" });
+    }
+  } catch (error) {
+    next(errorHandler(500, "Failed to retrieve state"));
+  }
+});
+
 
 eventRouter.get("/slug/:slug", (req, res) => {
   const { slug } = req.params;
