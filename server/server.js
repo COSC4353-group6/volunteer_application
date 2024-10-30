@@ -8,7 +8,6 @@ import authRoutes from './routes/auth.js'; // Import authentication routes
 import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
 
-
 dotenv.config();
 
 const app = express();
@@ -19,24 +18,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-
-// Route to get event data (eventRoutes handles this)
 app.use('/api/event', eventRouter);  // Add your eventRoutes here
+app.use('/api', volunteerHistoryRouter); // Make sure this is after eventRouter
+app.use('/api', userProfileRouter); // Move this up if it needs to access the same middleware
+app.use('/api/auth', authRoutes); // Keep authentication routes here
+app.use('/api/notifications', notificationRouter); // Route to handle notifications
 
-// Route to get volunteer history
-app.use('/api', volunteerHistoryRouter);
-
-app.use(errorHandler);
-
-// Route to handle user profile
-app.use('/api', userProfileRouter);
-
-// Route for authentication
-app.use('/api/auth', authRoutes);
-// app.get('/api/events/error-route'); 
-
-// Route to handle notifications
-app.use('/api/notifications', notificationRouter);
+// Error handling middleware
+app.use(errorHandler); // Move the error handler to the end of the routes
 
 app.get('*', (req, res) =>
   res.json({

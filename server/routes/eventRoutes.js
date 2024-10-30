@@ -3,47 +3,34 @@ import { pool } from "../db.js";
 const eventRouter = express.Router();
 import { errorHandler } from "../utils.js";
 
-// Hardcoded event data
-const eventManage = {
-  currentEvent: {
-    eventName: "Charity Marathon",
-    eventDescription: "A charity marathon to raise funds for local shelters.",
-    location: "Central Park, New York",
-    requiredSkills: ["Coordination", "First Aid", "Photography"],
-    urgency: "Medium",
-    eventDate: "2024-12-15",
-    availability: ["2024-12-10", "2024-12-11"],
-  },
-  pastEvents: [
-    {
-      eventName: "Beach Cleanup",
-      eventDescription: "Cleaning the beach for community service.",
-      location: "Miami Beach, FL",
-      eventDate: "2024-09-15",
-      requiredSkills: ["Teamwork", "Physical Work"],
-      urgency:"Low",
-      eventDate: '2024-09-15',
-    },
-    {
-      eventName: "Food Drive",
-      eventDescription: "Helping with organizing the food",
-      location: "Houston, TX",
-      eventDate: "2024-10-05",
-      requiredSkills: ["Organization", "Logistics"],
-      urgency: "Low",
-      eventDate: '2024-10-05',
-    },
-    {
-      eventName: "Blood Donation",
-      eventDescription: "Helping with taking blood from the patients",
-      location: "Dallas, TX",
-      eventDate: "2024-08-15",
-      requiredSkills: ["Nursing", "Medical Assistance"],
-      urgency: "Low",
-      eventDate: '2024-08-15',
-    },
-  ],
-};
+// Define an API endpoint for fetching events data, replacing hardcoded pastEvents with database data
+eventRouter.get("/event-management", async (req, res, next) => {
+  try {
+    // Fetch the current event data (could be hardcoded or also queried if needed)
+    const currentEvent = {
+      eventName: "Charity Marathon",
+      eventDescription: "A charity marathon to raise funds for local shelters.",
+      location: "Central Park, New York",
+      requiredSkills: ["Coordination", "First Aid", "Photography"],
+      urgency: "Medium",
+      eventDate: "2024-12-15",
+      availability: ["2024-12-10", "2024-12-11"],
+    };
+
+    // Fetch past events from the database
+    const [pastEvents] = await pool.query("SELECT * FROM pastEvents");
+
+    // Combine current and past events
+    const eventManage = {
+      currentEvent,
+      pastEvents, // Use database events instead of hardcoded data
+    };
+
+    res.json(eventManage);
+  } catch (error) {
+    next(errorHandler(500, "Failed to retrieve events"));
+  }
+});
 //end of events with current and past
 eventRouter.get("/error-route", (req, res, next) => {
   const error = new Error("Test error");
@@ -225,5 +212,4 @@ eventRouter.post("/assign", (req, res) => {
 
 
 export default eventRouter;
-
 
