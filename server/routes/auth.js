@@ -17,6 +17,7 @@ router.post('/register', [
     }
 
     const { email, password } = req.body;
+    console.log(email, password)
     try {
       // Check if user exists
       const [existingUser] = await pool.query(`SELECT * FROM UserCredentials WHERE email = ?`, [email]);
@@ -29,7 +30,7 @@ router.post('/register', [
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Insert new user
-      await pool.query(`INSERT INTO UserCredentials (email, password) VALUES (?, ?)`, [email, hashedPassword]);
+      await pool.query(`INSERT INTO users (email, password) VALUES (?, ?)`, [email, hashedPassword]);
 
       // Generate JWT token
       const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });

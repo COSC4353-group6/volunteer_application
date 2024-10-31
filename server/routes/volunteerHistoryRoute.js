@@ -1,3 +1,6 @@
+
+
+
 import express from 'express';
 import { pool } from '../db.js';
 import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
@@ -37,3 +40,32 @@ volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
 });
 
 export default volunteerHistoryRouter;
+
+
+
+
+
+
+// import express from 'express';
+// import { pool } from '../db.js';
+// import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
+// // import expressAsyncHandler from 'express-async-handler';
+
+
+// // import { isAuth, isAdmin } from '../utils.js';
+
+// const volunteerHistoryRouter = express.Router();
+// volunteerHistoryRouter.use(isAuth);
+
+//   volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
+
+//     const volunteerHistory = await pool.query(`SELECT * from events WHERE status = "completed"`);
+//       res.send(volunteerHistory[0]);
+//   });
+  
+
+
+  
+  
+// export default volunteerHistoryRouter
+
