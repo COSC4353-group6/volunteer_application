@@ -52,6 +52,8 @@ function EventScreen() {
   const params = useParams();
   const { slug } = params;
 
+  console.log(theEvent)
+
   const thisEvent = theEvent._id;
 
   const thisUserId = 4;
