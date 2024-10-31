@@ -7,6 +7,12 @@ CREATE TABLE locations (
     title VARCHAR(225) NOT NULL UNIQUE
 );
 
+CREATE TABLE states (
+    -- in case needed
+  state_code CHAR(2) PRIMARY KEY,  -- e.g., TX, CA, NY
+  state_name VARCHAR(50) NOT NULL  -- Full name, e.g., Texas, California
+);
+
 
 CREATE TABLE urgencies (
      _id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

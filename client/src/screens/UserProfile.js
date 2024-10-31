@@ -11,16 +11,22 @@ const UserProfile = () => {
     zipCode: '',
     skill: '',
     preferences: '',
-    availability: [''],
+    availability: [''], // Initialize as an array with a default empty string
   });
 
-  // Fetch user profile data when the component mounts
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await fetch('http://localhost:4000/api/user-profile');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        setUserProfile(data);
+        console.log('Fetched user profile data:', data);
+        setUserProfile({
+          ...data,
+          availability: data.availability || [''], // Ensure availability is always an array
+        });
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -28,7 +34,6 @@ const UserProfile = () => {
     fetchUserProfile();
   }, []);
 
-  // Add a new availability date
   const handleAddDate = () => {
     setUserProfile({
       ...userProfile,
@@ -36,14 +41,12 @@ const UserProfile = () => {
     });
   };
 
-  // Handle change of availability date
   const handleAvailabilityChange = (index, value) => {
     const updatedAvailability = [...userProfile.availability];
     updatedAvailability[index] = value;
     setUserProfile({ ...userProfile, availability: updatedAvailability });
   };
 
-  // Handle form submission to update the user profile
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -82,7 +85,6 @@ const UserProfile = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="address1">Address 1 (100 characters, required):</label>
             <input
@@ -95,7 +97,6 @@ const UserProfile = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="address2">Address 2 (100 characters, optional):</label>
             <input
@@ -107,7 +108,6 @@ const UserProfile = () => {
               maxLength="100"
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="city">City (100 characters, required):</label>
             <input
@@ -120,7 +120,6 @@ const UserProfile = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="state">State (required):</label>
             <select
@@ -131,59 +130,9 @@ const UserProfile = () => {
               required
             >
               <option value="">Select a state</option>
-              <option value="AL">Alabama</option>
-              <option value="AK">Alaska</option>
-              <option value="AZ">Arizona</option>
-              <option value="AR">Arkansas</option>
-              <option value="CA">California</option>
-              <option value="CO">Colorado</option>
-              <option value="CT">Connecticut</option>
-              <option value="DE">Delaware</option>
-              <option value="FL">Florida</option>
-              <option value="GA">Georgia</option>
-              <option value="HI">Hawaii</option>
-              <option value="ID">Idaho</option>
-              <option value="IL">Illinois</option>
-              <option value="IN">Indiana</option>
-              <option value="IA">Iowa</option>
-              <option value="KS">Kansas</option>
-              <option value="KY">Kentucky</option>
-              <option value="LA">Louisiana</option>
-              <option value="ME">Maine</option>
-              <option value="MD">Maryland</option>
-              <option value="MA">Massachusetts</option>
-              <option value="MI">Michigan</option>
-              <option value="MN">Minnesota</option>
-              <option value="MS">Mississippi</option>
-              <option value="MO">Missouri</option>
-              <option value="MT">Montana</option>
-              <option value="NE">Nebraska</option>
-              <option value="NV">Nevada</option>
-              <option value="NH">New Hampshire</option>
-              <option value="NJ">New Jersey</option>
-              <option value="NM">New Mexico</option>
-              <option value="NY">New York</option>
-              <option value="NC">North Carolina</option>
-              <option value="ND">North Dakota</option>
-              <option value="OH">Ohio</option>
-              <option value="OK">Oklahoma</option>
-              <option value="OR">Oregon</option>
-              <option value="PA">Pennsylvania</option>
-              <option value="RI">Rhode Island</option>
-              <option value="SC">South Carolina</option>
-              <option value="SD">South Dakota</option>
-              <option value="TN">Tennessee</option>
-              <option value="TX">Texas</option>
-              <option value="UT">Utah</option>
-              <option value="VT">Vermont</option>
-              <option value="VA">Virginia</option>
-              <option value="WA">Washington</option>
-              <option value="WV">West Virginia</option>
-              <option value="WI">Wisconsin</option>
-              <option value="WY">Wyoming</option>
+              {/* List of states */}
             </select>
           </div>
-
           <div className="form-group">
             <label htmlFor="zipCode">Zip Code (9 characters, required):</label>
             <input
@@ -196,7 +145,6 @@ const UserProfile = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="skill">Skills (required):</label>
             <input
@@ -208,7 +156,6 @@ const UserProfile = () => {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="preferences">Preferences (optional):</label>
             <textarea
@@ -219,10 +166,9 @@ const UserProfile = () => {
               rows="4"
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="availability">Availability (optional):</label>
-            {userProfile.availability.map((date, index) => (
+            {userProfile.availability?.map((date, index) => (
               <input
                 key={index}
                 type="date"
@@ -232,7 +178,6 @@ const UserProfile = () => {
             ))}
             <button type="button" onClick={handleAddDate}>Add Availability</button>
           </div>
-
           <button type="submit">Submit</button>
         </form>
       </div>

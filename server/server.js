@@ -8,6 +8,9 @@ import authRoutes from './routes/auth.js'; // Import authentication routes
 import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
 
+//dotenv.config();
+
+
 
 dotenv.config();
 
