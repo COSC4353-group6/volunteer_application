@@ -45,7 +45,23 @@ export default function MatchUser() {
   }, []);
 
 
-  
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await axios.post(
+  //       `/api/event/volunteer-request`,
+  //       {
+  //         thisEvent,
+  //         thisUserId,
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error("Error fetching volunteer history:", error);
+  //   }
+  // };
 
   return (
     <Container className="small-container">
@@ -151,7 +167,7 @@ export default function MatchUser() {
             <option value="Blood Donation">Blood Donation</option>
             <option value="animal care">animal care</option>
             <option value="Planting Trees">Planting Trees</option>
-            <option value="Beach Cleanup">Beach Cleanupr</option>
+            <option value="Beach Cleanup">Beach Cleanup</option>
           </Form.Select>
         </Form.Group>
 
