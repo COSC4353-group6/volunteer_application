@@ -82,6 +82,17 @@ CREATE TABLE volunteer_requests (
     FOREIGN KEY (event_id) REFERENCES events(_id)
 );
 
+CREATE TABLE volunteer_history (
+    _id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
+    participation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(_id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events(_id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE notifications (
     notification_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT,
