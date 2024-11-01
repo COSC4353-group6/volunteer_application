@@ -9,9 +9,13 @@ const EventManage = () => {
     requiredSkills: [],
     urgency: '',
     eventDate: '',
+    event_id: '',
   });
-
   const [pastEvents, setPastEvents] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [event_id, setEventId] = useState(null);
+  const [message, setMessage] = useState(''); // State for submission message
+  const [submitted, setSubmitted] = useState(false); // State to track if the form was submitted
 
   useEffect(() => {
     fetch('http://localhost:4000/api/event/event-management')
@@ -23,14 +27,6 @@ const EventManage = () => {
             requiredSkills: Array.isArray(event.requiredSkills) ? event.requiredSkills : [],
           }));
           setPastEvents(updatedEvents);
-          setEventManage(data.currentEvent || {
-            eventName: '',
-            eventDescription: '',
-            state_name: '',
-            requiredSkills: [],
-            urgency: '',
-            eventDate: '',
-          });
         } else {
           console.error("Unexpected data format:", data);
           setPastEvents([]);
@@ -38,82 +34,74 @@ const EventManage = () => {
       })
       .catch((error) => console.error("Error fetching events:", error));
   }, []);
-  
+
   const handleChange = (e) => {
-    const { name, value, options } = e.target;
-
-    if (name === "requiredSkills") {
-      const selectedSkills = Array.from(options)
-          .filter(option => option.selected)
-          .map(option => option.value);
-      setEventManage(prevState => ({
-          ...prevState,
-          [name]: selectedSkills,
-      }));
+    const { name, value, type, selectedOptions } = e.target;
+    if (type === "select-multiple") {
+      const selectedSkills = Array.from(selectedOptions, option => option.value);
+      setEventManage((prev) => ({ ...prev, [name]: selectedSkills }));
     } else {
-      setEventManage(prevState => ({
-          ...prevState,
-          [name]: value,
-      }));
+      setEventManage((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Simple client-side validation
-    if (!eventManage.eventName || !eventManage.state_name || !eventManage.eventDate || eventManage.requiredSkills.length === 0) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-  
-    fetch('http://localhost:4000/api/event/event-management', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eventManage),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) { // Assuming the API returns a success flag
-          console.log("Event created:", data);
-          // Refresh pastEvents
-          fetch('http://localhost:4000/api/event/event-management')
-            .then((response) => response.json())
-            .then((data) => setPastEvents(data.pastEvents || []));
-          setEventManage({
-            eventName: '',
-            eventDescription: '',
-            state_name: '',
-            requiredSkills: [],
-            urgency: '',
-            eventDate: '',
-          });
-        } else {
-          console.error("Failed to create event:", data.message);
-          alert("Failed to create event: " + data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Error creating event:", error);
-        alert("Error creating event: " + error.message);
+    try {
+      const response = await fetch('http://localhost:4000/api/event/event-management', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventManage),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text(); // Get the raw response text
+        console.error("Error response:", errorText); // Log the error response
+        setMessage("Failed to submit the event. Please try again.");
+      } else {
+        setEventManage({
+          eventName: '',
+          eventDescription: '',
+          state_name: '',
+          requiredSkills: [],
+          urgency: '',
+          eventDate: '',
+          event_id: '',
+        });
+        const data = await response.json();
+        setMessage("Event submitted successfully!");
+        if (isEditing) {
+          // Logic to update the pastEvents array if necessary
+          setIsEditing(false);
+          setEventId(null);
+        }
+      }
+    } catch (error) {
+      console.error("Error during submission:", error);
+      setMessage("An error occurred: " + error.message);
+    }
   };
-  
+
   const handleEdit = (event) => {
     setEventManage(event); // Populate form with the selected event data
+    setIsEditing(true); // Set edit mode
+    setEventId(event.event_id); // Set the ID of the event being edited
   };
 
   const handleDelete = (eventName) => {
-    fetch(`http://localhost:4000/api/event/${eventName}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
+    if (window.confirm(`Are you sure you want to delete the event: ${eventName}?`)) {
+      fetch(`http://localhost:4000/api/event/event-management`, {
+        method: 'DELETE',
       })
-      .catch((error) => console.error("Error deleting event:", error));
+        .then(() => {
+          setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
+        })
+        .catch((error) => console.error("Error deleting event:", error));
+    }
   };
+  
 
   return (
     <section className="event-management">
@@ -205,8 +193,22 @@ const EventManage = () => {
             />
           </div>
 
-          <button type="submit">Submit Event</button>
+          <div className="form-group">
+            <label htmlFor="eventID">Event ID (required):</label>
+            <input
+              type="text"
+              id="eventID"
+              name="event_id"
+              value={eventManage.event_id}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit">{isEditing ? "Update Event" : "Submit Event"}</button>
         </form>
+
+        {message && <p className={`message ${submitted ? 'success' : 'error'}`}>{message}</p>}
 
         <h2>Created Events</h2>
         <table className="past-events">
@@ -218,6 +220,7 @@ const EventManage = () => {
               <th>Skills</th>
               <th>Urgency</th>
               <th>Date</th>
+              <th>Event ID</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -230,9 +233,10 @@ const EventManage = () => {
                 <td>{event.requiredSkills.join(', ')}</td>
                 <td>{event.urgency}</td>
                 <td>{event.eventDate}</td>
+                <td>{event.event_id}</td>
                 <td>
                   <button onClick={() => handleEdit(event)}>Edit</button>
-                  <button onClick={() => handleDelete(event.eventName)}>Delete</button>
+                  <button onClick={() => handleDelete(event)}>Delete</button>
                 </td>
               </tr>
             ))}

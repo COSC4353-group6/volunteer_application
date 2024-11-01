@@ -1,5 +1,6 @@
 import express from "express";
 import { pool } from "../db.js";
+import { body, validationResult } from "express-validator"; // Import body and validationResult
 const eventRouter = express.Router();
 //import { errorHandler } from "../utils.js";
 
@@ -23,7 +24,29 @@ eventRouter.get("/event-management", async (req, res, next) => {
     next(errorHandler(500, "Failed to retrieve events"));
   }
 });
+eventRouter.post('/event-management', [
+  body('eventName').notEmpty().withMessage('Event name is required'),
+  // Add other validations as necessary
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+  }
 
+  const { eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id } = req.body;
+
+  try {
+      await pool.query(
+          'INSERT INTO pastEvents (eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id]
+      );
+
+      res.status(201).json({ message: 'Event created successfully' });
+  } catch (error) {
+      console.error('Error inserting event:', error);
+      res.status(500).json({ error: 'Failed to insert event' });
+  }
+});
 eventRouter.get("/error-route", (req, res, next) => {
   const error = new Error("Test error");
   error.status = 500;

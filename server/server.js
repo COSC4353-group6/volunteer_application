@@ -29,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 // Route to get event data (eventRoutes handles this)
 app.use('/api/event', eventRouter);  // Add your eventRoutes here
 
+
 // Route to get volunteer history
 app.use('/api', volunteerHistoryRouter);
 
