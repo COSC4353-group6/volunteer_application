@@ -1,7 +1,7 @@
 import express from "express";
 import { pool } from "../db.js";
 const eventRouter = express.Router();
-import { errorHandler } from "../utils.js";
+//import { errorHandler } from "../utils.js";
 
 // Define an API endpoint for fetching events data, replacing hardcoded current and past events with database data
 eventRouter.get("/event-management", async (req, res, next) => {

@@ -1,4 +1,4 @@
-export const isAuth = (req, res, next) => {
+/*export const isAuth = (req, res, next) => {
   // Example authentication check - customize based on your auth setup
   if (req.user) {
     next(); // User is authenticated, proceed to the next middleware or route
@@ -17,3 +17,4 @@ export const errorHandler = (err, req, res, next) => {
     message,
   });
 };
+*/

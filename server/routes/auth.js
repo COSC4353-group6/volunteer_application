@@ -1,4 +1,4 @@
-import express from 'express';
+/*import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { check, validationResult } from 'express-validator';
@@ -79,3 +79,4 @@ router.post('/login', [
 );
 
 export default router;
+*/

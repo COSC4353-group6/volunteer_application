@@ -3,12 +3,12 @@
 
 import express from 'express';
 import { pool } from '../db.js';
-import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
+//import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
 
 const volunteerHistoryRouter = express.Router();
 
 // Middleware to check if user is authenticated
-volunteerHistoryRouter.use(isAuth);
+//volunteerHistoryRouter.use(isAuth);
 
 volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
   const userId = req.user._id;  // Assuming req.user is populated by isAuth middleware
