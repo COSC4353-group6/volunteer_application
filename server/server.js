@@ -4,9 +4,11 @@ import cors from 'cors';
 import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
 import userProfileRouter from './routes/userprofile.js';
 import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
-import authRoutes from './routes/auth.js'; // Import authentication routes
-import { errorHandler } from './utils.js';
+//import authRoutes from './routes/auth.js'; // Import authentication routes
+//import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
+//import { pool } from './db.js'; // Assuming db.js is in the same directory
+
 
 //dotenv.config();
 
@@ -20,6 +22,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//app.use(bodyParser.json());
 
 // Routes
 
@@ -29,13 +32,13 @@ app.use('/api/event', eventRouter);  // Add your eventRoutes here
 // Route to get volunteer history
 app.use('/api', volunteerHistoryRouter);
 
-app.use(errorHandler);
+//app.use(errorHandler);
 
 // Route to handle user profile
 app.use('/api', userProfileRouter);
 
 // Route for authentication
-app.use('/api/auth', authRoutes);
+//app.use('/api/auth', authRoutes);
 // app.get('/api/events/error-route'); 
 
 // Route to handle notifications

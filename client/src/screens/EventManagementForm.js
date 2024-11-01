@@ -5,7 +5,7 @@ const EventManage = () => {
   const [eventManage, setEventManage] = useState({
     eventName: '',
     eventDescription: '',
-    location: '',
+    state_name: '',
     requiredSkills: [],
     urgency: '',
     eventDate: '',
@@ -18,11 +18,15 @@ const EventManage = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data && data.pastEvents) {
-          setPastEvents(data.pastEvents);
+          const updatedEvents = data.pastEvents.map(event => ({
+            ...event,
+            requiredSkills: Array.isArray(event.requiredSkills) ? event.requiredSkills : [],
+          }));
+          setPastEvents(updatedEvents);
           setEventManage(data.currentEvent || {
             eventName: '',
             eventDescription: '',
-            location: '',
+            state_name: '',
             requiredSkills: [],
             urgency: '',
             eventDate: '',
@@ -34,7 +38,7 @@ const EventManage = () => {
       })
       .catch((error) => console.error("Error fetching events:", error));
   }, []);
-
+  
   const handleChange = (e) => {
     const { name, value, options } = e.target;
 
@@ -56,7 +60,13 @@ const EventManage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
+    // Simple client-side validation
+    if (!eventManage.eventName || !eventManage.state_name || !eventManage.eventDate || eventManage.requiredSkills.length === 0) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+  
     fetch('http://localhost:4000/api/event/event-management', {
       method: 'POST',
       headers: {
@@ -66,21 +76,31 @@ const EventManage = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Event created:", data);
-        // Optionally refresh pastEvents or reset the form
-        setPastEvents(prevEvents => [...prevEvents, data]); // Assuming `data` is the new event
-        setEventManage({
-          eventName: '',
-          eventDescription: '',
-          location: '',
-          requiredSkills: [],
-          urgency: '',
-          eventDate: '',
-        });
+        if (data.success) { // Assuming the API returns a success flag
+          console.log("Event created:", data);
+          // Refresh pastEvents
+          fetch('http://localhost:4000/api/event/event-management')
+            .then((response) => response.json())
+            .then((data) => setPastEvents(data.pastEvents || []));
+          setEventManage({
+            eventName: '',
+            eventDescription: '',
+            state_name: '',
+            requiredSkills: [],
+            urgency: '',
+            eventDate: '',
+          });
+        } else {
+          console.error("Failed to create event:", data.message);
+          alert("Failed to create event: " + data.message);
+        }
       })
-      .catch((error) => console.error("Error creating event:", error));
+      .catch((error) => {
+        console.error("Error creating event:", error);
+        alert("Error creating event: " + error.message);
+      });
   };
-
+  
   const handleEdit = (event) => {
     setEventManage(event); // Populate form with the selected event data
   };
@@ -128,9 +148,9 @@ const EventManage = () => {
             <label htmlFor="eventLocation">Event Location:</label>
             <input
               type="text"
-              id="eventLocation"
-              name="location"
-              value={eventManage.location}
+              id="state_name"
+              name="state_name"
+              value={eventManage.state_name}
               onChange={handleChange}
               required
             />
@@ -194,7 +214,7 @@ const EventManage = () => {
             <tr>
               <th>Event Name</th>
               <th>Event Description</th>
-              <th>Location</th>
+              <th>State</th>
               <th>Skills</th>
               <th>Urgency</th>
               <th>Date</th>
@@ -206,7 +226,7 @@ const EventManage = () => {
               <tr key={index}>
                 <td>{event.eventName}</td>
                 <td>{event.eventDescription}</td>
-                <td>{event.location}</td>
+                <td>{event.state_name}</td>
                 <td>{event.requiredSkills.join(', ')}</td>
                 <td>{event.urgency}</td>
                 <td>{event.eventDate}</td>

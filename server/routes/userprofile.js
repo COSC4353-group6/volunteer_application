@@ -1,31 +1,38 @@
-// routes/userProfile.js
-
 import express from 'express';
+import { pool } from '../db.js'; // Use curly braces for named import
+import { body, validationResult } from 'express-validator';
+
 const userProfileRouter = express.Router();
 
-let userProfile = {
-  fullName: 'John Doe',
-  address1: '123 Main St',
-  address2: 'Apt 4B',
-  city: 'Austin',
-  state: 'TX',
-  zipCode: '77001',
-  skill: 'animal care, gardening, and cooking',
-  preferences: 'gardening preferred',
-  availability: ['2024-10-15', '2024-10-20'],
-};
+// Endpoint to insert user profile data
+userProfileRouter.post(
+  '/user-profile',
+  [
+    body('fullName').notEmpty().withMessage('Full name is required'),
+    body('address1').notEmpty().withMessage('Address line 1 is required'),
+    // Add other validations as necessary
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-// Get user profile
-userProfileRouter.get('/user-profile', (req, res) => {
-  res.json(userProfile);
-});
+    const { fullName, address1, address2, city, state_name, zipCode, skill, preferences, availability } = req.body;
 
-// Update user profile
-userProfileRouter.post('/user-profile', (req, res) => {
-  const updatedProfile = req.body;
-  userProfile = { ...userProfile, ...updatedProfile }; // Merge with existing profile
-  res.json({ success: true, profile: userProfile });
-});
+    try {
+      // Insert user profile into the database
+      await pool.query(
+        `INSERT INTO userProfile (fullName, address1, address2, city, state_name, zipCode, skill, preferences, availability) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [fullName, address1, address2, city, state_name, zipCode, skill, preferences, JSON.stringify(availability)]
+      );
+
+      res.json({ success: true }); // Send success response
+    } catch (error) {
+      console.error('Error inserting user profile:', error);
+      res.status(500).json({ error: 'Failed to insert user profile' });
+    }
+  }
+);
 
 export default userProfileRouter;
-

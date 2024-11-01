@@ -1,8 +1,8 @@
-import express from 'express';
+/*import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { check, validationResult } from 'express-validator';
-import { pool } from '../db.js';  // Import database connection
+import { pool } from '../db.js';  // Database connection
 
 const router = express.Router();
 
@@ -17,7 +17,6 @@ router.post('/register', [
     }
 
     const { email, password } = req.body;
-    console.log(email, password)
     try {
       // Check if user exists
       const [existingUser] = await pool.query(`SELECT * FROM UserCredentials WHERE email = ?`, [email]);
@@ -30,7 +29,7 @@ router.post('/register', [
       const hashedPassword = await bcrypt.hash(password, salt);
 
       // Insert new user
-      await pool.query(`INSERT INTO users (email, password) VALUES (?, ?)`, [email, hashedPassword]);
+      await pool.query(`INSERT INTO UserCredentials (email, password) VALUES (?, ?)`, [email, hashedPassword]);
 
       // Generate JWT token
       const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -80,3 +79,4 @@ router.post('/login', [
 );
 
 export default router;
+*/

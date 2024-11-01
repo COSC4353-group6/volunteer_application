@@ -13,6 +13,12 @@ CREATE TABLE states (
   state_name VARCHAR(50) NOT NULL  -- Full name, e.g., Texas, California
 );
 
+-- User credentials
+CREATE TABLE UserCredentials (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE urgencies (
      _id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
