@@ -3,7 +3,7 @@
 
 import express from 'express';
 import { pool } from '../db.js';
-//import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
+//import { isAuth } from '../utils.js';  
 
 const volunteerHistoryRouter = express.Router();
 
@@ -25,8 +25,8 @@ volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
       volunteerHistory = await pool.query(`
         SELECT events.* 
         FROM events 
-        JOIN volunteerConfirmation ON events._id = volunteerConfirmation.event_id 
-        WHERE volunteerConfirmation.user_id = ? AND events.status = "completed"`, 
+        JOIN volunteer_history ON events._id = volunteer_history.event_id 
+        WHERE volunteer_history.user_id = ? AND events.status = "completed"`, 
         [userId]
       );
     }
