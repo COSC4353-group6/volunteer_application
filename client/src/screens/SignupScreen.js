@@ -1,17 +1,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/volt2.png';  
-import '../styles/Signup.css'; 
+import logo from '../images/volt2.png';
+import '../styles/Signup.css';
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Signing up as ${userType} with email ${email}`);
-    alert(`Signed up as ${userType}`);
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert('Sign-up successful!');
+      } else {
+        alert(`Error: ${data.error || data.msg}`);
+      }
+    } catch (error) {
+      console.error('Error during sign-up:', error);
+    }
   };
 
   return (
@@ -70,7 +86,7 @@ const SignupScreen = () => {
 
         <p className="form-question">
           Already have an account? <Link to="/signin" className="form-link">Log in here</Link>
-        </p>  {/* Use same class "form-question" and "form-link" */}
+        </p>
       </main>
     </div>
   );
