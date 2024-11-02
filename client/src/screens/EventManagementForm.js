@@ -207,7 +207,7 @@ const EventManage = () => {
                 <td>{event.eventName}</td>
                 <td>{event.eventDescription}</td>
                 <td>{event.location}</td>
-                <td>{event.requiredSkills.join(', ')}</td>
+                <td>{event.requiredSkills}</td>
                 <td>{event.urgency}</td>
                 <td>{event.eventDate}</td>
                 <td>
