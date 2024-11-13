@@ -109,16 +109,26 @@ const ReportScreen = () => {
     <table className="data-table">
       <thead>
         <tr>
-          <th>Event Description</th>
-          <th>Volunteer Assignment</th>
-          <th>ID</th>
+              <th>Event Name</th>
+              <th>Event Description</th>
+              <th>State</th>
+              <th>Skills</th>
+              <th>Urgency</th>
+              <th>Date</th>
+              <th>Assignment</th>
+              <th>Event ID</th>
         </tr>
       </thead>
       <tbody>
         {eventReport.length > 0 ? (
           eventReport.map((event, index) => (
             <tr key={index}>
+              <td>{event.name}</td>
               <td>{event.description}</td>
+              <td>{event.state}</td>
+              <td>{event.skills}</td>
+              <td>{event.urgency}</td>
+              <td>{event.date}</td>
               <td>{event.assignment}</td>
               <td>{event.id}</td>
             </tr>
