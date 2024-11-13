@@ -8,7 +8,7 @@ import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
 //import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
 //import { pool } from './db.js'; // Assuming db.js is in the same directory
-
+import ReportPRouter from  './routes/ReportPages.js';
 
 //dotenv.config();
 
@@ -29,7 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 // Route to get event data (eventRoutes handles this)
 app.use('/api/event', eventRouter);  // Add your eventRoutes here
 
-
+//Route for report page
+app.use ('/api', ReportPRouter);
 // Route to get volunteer history
 app.use('/api', volunteerHistoryRouter);
 
@@ -59,3 +60,4 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
+
