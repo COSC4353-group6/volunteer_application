@@ -25,7 +25,7 @@ ReportPRouter.get('/report-page', async (req, res) => {
     // Fetch event data
     let eventReport = [];
     try {
-      const [eventResult] = await pool.query('SELECT description, assignment, id FROM eventReport');
+      const [eventResult] = await pool.query('SELECT name, description, state, skills, urgency,date, assignment, id FROM eventReport');
       eventReport = eventResult;
       console.log('Event Data:', eventReport);
     } catch (error) {
