@@ -98,6 +98,30 @@ ReportPRouter.get('/report-page', async (req, res) => {
           if (unlinkErr) console.error('Error deleting PDF file:', unlinkErr.message);
         });
       });
+    } else if (format === 'txt') {
+      // Generate and send TXT
+      const filePath = path.join(path.resolve(), 'report.txt');
+      let fileContent = 'Volunteer Report\n\n';
+      volunteerReport.forEach((volunteer) => {
+        fileContent += `Name: ${volunteer.name}\nHistory: ${volunteer.history}\nID: ${volunteer.id}\n\n`;
+      });
+
+      fileContent += '\nEvent Report\n\n';
+      eventReport.forEach((event) => {
+        fileContent += `Name: ${event.name}\nDescription: ${event.description}\nState: ${event.state}\nSkills: ${event.skills}\nUrgency: ${event.urgency}\nDate: ${event.date}\nAssignment: ${event.assignment}\nID: ${event.id}\n\n`;
+      });
+
+      fs.writeFileSync(filePath, fileContent);
+
+      res.download(filePath, 'report.txt', (err) => {
+        if (err) {
+          console.error('Error sending TXT file:', err.message);
+          res.status(500).json({ success: false, message: 'Error generating TXT report' });
+        }
+        fs.unlink(filePath, (unlinkErr) => {
+          if (unlinkErr) console.error('Error deleting TXT file:', unlinkErr.message);
+        });
+      });
     } else {
       // Default: return JSON
       res.json({
