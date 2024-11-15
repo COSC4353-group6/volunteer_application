@@ -163,6 +163,9 @@ const ReportScreen = () => {
         <button onClick={() => generateReport('pdf')} className="generate-report-button" disabled={generatingReport}>
           {generatingReport ? 'Generating PDF...' : 'Download as PDF'}
         </button>
+        <button onClick={() => generateReport('txt')} className="generate-report-button" disabled={generatingReport}>
+          {generatingReport ? 'Generating TXT...' : 'Download as TXT'}
+        </button>
       </div>
     </div>
   );
