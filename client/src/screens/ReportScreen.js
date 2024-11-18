@@ -18,7 +18,8 @@ const ReportScreen = () => {
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch('http://localhost:4000/api/report-page')
+    fetch('/api/report-page') // Relative URL for fetching datafetch('/api/report-page')
+
       .then((response) => {
         if (!response.ok) {
           return response.json().then((err) => {
@@ -50,7 +51,7 @@ const ReportScreen = () => {
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch(`http://localhost:4000/api/report-page?format=${format}`, {
+    fetch(`/api/report-page?format=${format}`, { // Relative URL for generating report
       method: 'GET',
     })
       .then((response) => {
@@ -109,14 +110,14 @@ const ReportScreen = () => {
     <table className="data-table">
       <thead>
         <tr>
-              <th>Event Name</th>
-              <th>Event Description</th>
-              <th>State</th>
-              <th>Skills</th>
-              <th>Urgency</th>
-              <th>Date</th>
-              <th>Assignment</th>
-              <th>Event ID</th>
+          <th>Event Name</th>
+          <th>Event Description</th>
+          <th>State</th>
+          <th>Skills</th>
+          <th>Urgency</th>
+          <th>Date</th>
+          <th>Assignment</th>
+          <th>Event ID</th>
         </tr>
       </thead>
       <tbody>
@@ -134,7 +135,7 @@ const ReportScreen = () => {
             </tr>
           ))
         ) : (
-          <tr><td colSpan="3">No event data available.</td></tr>
+          <tr><td colSpan="8">No event data available.</td></tr>
         )}
       </tbody>
     </table>

@@ -11,7 +11,7 @@ const VolunteerHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const { data } = await axios.get('/api/volunteerhistory');
+        const { data } = await axios.get('/api/volunteerHistory');
         setVolunteerHistory(data);
       } catch (error) {
         console.error('Error fetching volunteer history:', error);

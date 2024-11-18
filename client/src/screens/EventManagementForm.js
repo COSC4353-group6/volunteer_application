@@ -18,7 +18,7 @@ const EventManage = () => {
   const [submitted, setSubmitted] = useState(false); // State to track if the form was submitted
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/event/event-management')
+    fetch('/api/event/event-management')
       .then((response) => response.json())
       .then((data) => {
         if (data && data.pastEvents) {

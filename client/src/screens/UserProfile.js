@@ -17,7 +17,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/user-profile');
+        const response = await fetch('/api/user-profile');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -50,7 +50,7 @@ const UserProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/api/user-profile', {
+      const response = await fetch('api/user-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
