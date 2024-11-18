@@ -94,4 +94,3 @@ const SigninScreen = () => {
 };
 
 export default SigninScreen;
-
