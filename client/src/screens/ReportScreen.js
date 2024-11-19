@@ -18,7 +18,7 @@ const ReportScreen = () => {
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch('/api/report-page') // Relative URL for fetching datafetch('/api/report-page')
+    fetch('http://localhost:4000/api/report-page') // Relative URL for fetching datafetch('/api/report-page')
 
       .then((response) => {
         if (!response.ok) {
@@ -51,7 +51,7 @@ const ReportScreen = () => {
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch(`/api/report-page?format=${format}`, { // Relative URL for generating report
+    fetch(`http://localhost:4000/api/report-page?format=${format}`, { // Relative URL for generating report
       method: 'GET',
     })
       .then((response) => {
