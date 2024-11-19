@@ -1,6 +1,6 @@
-import express from 'express';
-import { pool } from '../db.js';
-//import { isAuth } from '../utils.js';  
+import express from "express";
+import { pool } from "../db.js";
+//import { isAuth } from '../utils.js';
 
 const volunteerHistoryRouter = express.Router();
 
@@ -10,7 +10,7 @@ const volunteerHistoryRouter = express.Router();
 // volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
 //   const userId = req.user._id;  // Assuming req.user is populated by isAuth middleware
 //   const isAdmin = req.user.isOrganizer;  // or req.user.isAdmin if you're using that
-  
+
 //   try {
 //     let volunteerHistory;
 
@@ -20,10 +20,10 @@ const volunteerHistoryRouter = express.Router();
 //     } else {
 //       // If the user is not an admin, they can only see their own history
 //       volunteerHistory = await pool.query(`
-//         SELECT events.* 
-//         FROM events 
-//         JOIN volunteer_history ON events._id = volunteer_history.event_id 
-//         WHERE volunteer_history.user_id = ? AND events.status = "completed"`, 
+//         SELECT events.*
+//         FROM events
+//         JOIN volunteer_history ON events._id = volunteer_history.event_id
+//         WHERE volunteer_history.user_id = ? AND events.status = "completed"`,
 //         [userId]
 //       );
 //     }
@@ -36,14 +36,11 @@ const volunteerHistoryRouter = express.Router();
 //   }
 // });
 
-
 volunteerHistoryRouter.get("/volunteerhistory", async (req, res) => {
   try {
-    
-   const volunteerHistory = await pool.query(
+    const volunteerHistory = await pool.query(
       `SELECT * FROM events WHERE status = "completed"`
     );
-
     res.send(volunteerHistory[0]);
   } catch (error) {
     console.error("Error fetching volunteer history:", error);
@@ -52,8 +49,3 @@ volunteerHistoryRouter.get("/volunteerhistory", async (req, res) => {
 });
 
 export default volunteerHistoryRouter;
-
-
-
-
-
