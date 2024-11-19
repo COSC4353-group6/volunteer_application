@@ -12,6 +12,7 @@ import PastEventScreen from "./screens/PastEventScreen.js";
 import SignupScreen from "./screens/SignupScreen";
 import UserProfile from "./screens/UserProfile";
 import UserListScreen from "./screens/UserListScreen.js";
+import ReportScreen from "./screens/ReportScreen.js";
 import SigninScreen from "./screens/SigninScreen";
 import VolunteerHistory from "./screens/VolunteerHistory";
 import VolunteerMatchingScreen from "./screens/VolunteerMatchingScreen.js";
@@ -243,7 +244,7 @@ function App() {
                         </NavDropdown.Item>
                       </LinkContainer>
                      
-                      <LinkContainer to="/volunteerhistory">
+                      <LinkContainer to="/volunteerHistory">
                         <NavDropdown.Item>Volunteer History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
@@ -273,6 +274,9 @@ function App() {
                       <LinkContainer to="/admin/event-management">
                         <NavDropdown.Item>Event Management</NavDropdown.Item>
                       </LinkContainer>
+                      <LinkContainer to="/admin/report-page">
+                        <NavDropdown.Item>Reports</NavDropdown.Item>
+                      </LinkContainer>
                       {/* <LinkContainer to="/admin/pastevents">
                         <NavDropdown.Item>Completed Events</NavDropdown.Item>
                       </LinkContainer>
@@ -296,7 +300,8 @@ function App() {
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
               <Route path="/liveevents" element={<LiveEventScreen />} />
-              <Route path="/volunteerhistory" element={<VolunteerHistory />} />
+              <Route path="/volunteerHistory" element={<VolunteerHistory />} />
+             <Route path="/report-page" element={<ReportScreen />} /> 
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<ErrorScreen />} />
 
@@ -308,7 +313,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
+              <Route
+                path="/volunteerHistory"
+                element={
+                  <ProtectedRoute>
+                    <VolunteerHistory />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/findevent"
                 element={
@@ -331,6 +343,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <PastEventScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+                <Route
+                path="/admin/report-page"
+                element={
+                  <AdminRoute>
+                    <ReportScreen />
                   </AdminRoute>
                 }
               ></Route>

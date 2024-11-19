@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/volt2.png';  // Update the image path
-import '../styles/Signin.css';  // Ensure the CSS file is linked correctly
+import logo from '../images/volt2.png';
+import '../styles/Signin.css';
 
 const SigninScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Signing in as ${userType} with email ${email}`);
-    alert(`Signed in as ${userType}`);
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.token) {
+        localStorage.setItem('token', data.token);  // Store JWT for authenticated requests
+        alert('Login successful!');
+      } else {
+        alert(`Error: ${data.error || data.msg}`);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   return (
@@ -70,11 +87,10 @@ const SigninScreen = () => {
 
         <p className="form-question">
           Don't have an account? <Link to="/signup" className="form-link">Sign up here</Link>
-        </p>  {/* Use same class "form-question" and "form-link" */}
+        </p>
       </main>
     </div>
   );
 };
 
 export default SigninScreen;
-

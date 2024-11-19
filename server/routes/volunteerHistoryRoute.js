@@ -3,12 +3,12 @@
 
 import express from 'express';
 import { pool } from '../db.js';
-import { isAuth } from '../utils.js';  // Assuming you have an authentication middleware
+//import { isAuth } from '../utils.js';  
 
 const volunteerHistoryRouter = express.Router();
 
 // Middleware to check if user is authenticated
-volunteerHistoryRouter.use(isAuth);
+//volunteerHistoryRouter.use(isAuth);
 
 volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
   const userId = req.user._id;  // Assuming req.user is populated by isAuth middleware
@@ -25,8 +25,8 @@ volunteerHistoryRouter.get('/volunteerhistory', async (req, res) => {
       volunteerHistory = await pool.query(`
         SELECT events.* 
         FROM events 
-        JOIN volunteerConfirmation ON events._id = volunteerConfirmation.event_id 
-        WHERE volunteerConfirmation.user_id = ? AND events.status = "completed"`, 
+        JOIN volunteer_history ON events._id = volunteer_history.event_id 
+        WHERE volunteer_history.user_id = ? AND events.status = "completed"`, 
         [userId]
       );
     }

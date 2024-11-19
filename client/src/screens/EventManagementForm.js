@@ -5,28 +5,28 @@ const EventManage = () => {
   const [eventManage, setEventManage] = useState({
     eventName: '',
     eventDescription: '',
-    location: '',
+    state_name: '',
     requiredSkills: [],
     urgency: '',
     eventDate: '',
+    event_id: '',
   });
-
   const [pastEvents, setPastEvents] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [event_id, setEventId] = useState(null);
+  const [message, setMessage] = useState(''); // State for submission message
+  const [submitted, setSubmitted] = useState(false); // State to track if the form was submitted
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/event/event-management')
+    fetch('/api/event/event-management')
       .then((response) => response.json())
       .then((data) => {
         if (data && data.pastEvents) {
-          setPastEvents(data.pastEvents);
-          setEventManage(data.currentEvent || {
-            eventName: '',
-            eventDescription: '',
-            location: '',
-            requiredSkills: [],
-            urgency: '',
-            eventDate: '',
-          });
+          const updatedEvents = data.pastEvents.map(event => ({
+            ...event,
+            requiredSkills: Array.isArray(event.requiredSkills) ? event.requiredSkills : [],
+          }));
+          setPastEvents(updatedEvents);
         } else {
           console.error("Unexpected data format:", data);
           setPastEvents([]);
@@ -36,64 +36,72 @@ const EventManage = () => {
   }, []);
 
   const handleChange = (e) => {
-    const { name, value, options } = e.target;
-
-    if (name === "requiredSkills") {
-      const selectedSkills = Array.from(options)
-          .filter(option => option.selected)
-          .map(option => option.value);
-      setEventManage(prevState => ({
-          ...prevState,
-          [name]: selectedSkills,
-      }));
+    const { name, value, type, selectedOptions } = e.target;
+    if (type === "select-multiple") {
+      const selectedSkills = Array.from(selectedOptions, option => option.value);
+      setEventManage((prev) => ({ ...prev, [name]: selectedSkills }));
     } else {
-      setEventManage(prevState => ({
-          ...prevState,
-          [name]: value,
-      }));
+      setEventManage((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:4000/api/event/event-management', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventManage),
+      });
 
-    fetch('http://localhost:4000/api/event/event-management', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eventManage),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Event created:", data);
-        // Optionally refresh pastEvents or reset the form
-        setPastEvents(prevEvents => [...prevEvents, data]); // Assuming `data` is the new event
+      if (!response.ok) {
+        const errorText = await response.text(); // Get the raw response text
+        console.error("Error response:", errorText); // Log the error response
+        setMessage("Failed to submit the event. Please try again.");
+      } else {
         setEventManage({
           eventName: '',
           eventDescription: '',
-          location: '',
+          state_name: '',
           requiredSkills: [],
           urgency: '',
           eventDate: '',
+          event_id: '',
         });
-      })
-      .catch((error) => console.error("Error creating event:", error));
+        const data = await response.json();
+        setMessage("Event submitted successfully!");
+        if (isEditing) {
+          // Logic to update the pastEvents array if necessary
+          setIsEditing(false);
+          setEventId(null);
+        }
+      }
+    } catch (error) {
+      console.error("Error during submission:", error);
+      setMessage("An error occurred: " + error.message);
+    }
   };
 
   const handleEdit = (event) => {
     setEventManage(event); // Populate form with the selected event data
+    setIsEditing(true); // Set edit mode
+    setEventId(event.event_id); // Set the ID of the event being edited
   };
 
   const handleDelete = (eventName) => {
-    fetch(`http://localhost:4000/api/event/${eventName}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
+    if (window.confirm(`Are you sure you want to delete the event: ${eventName}?`)) {
+      fetch(`http://localhost:4000/api/event/event-management`, {
+        method: 'DELETE',
       })
-      .catch((error) => console.error("Error deleting event:", error));
+        .then(() => {
+          setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
+        })
+        .catch((error) => console.error("Error deleting event:", error));
+    }
   };
+  
 
   return (
     <section className="event-management">
@@ -128,9 +136,9 @@ const EventManage = () => {
             <label htmlFor="eventLocation">Event Location:</label>
             <input
               type="text"
-              id="eventLocation"
-              name="location"
-              value={eventManage.location}
+              id="state_name"
+              name="state_name"
+              value={eventManage.state_name}
               onChange={handleChange}
               required
             />
@@ -185,8 +193,22 @@ const EventManage = () => {
             />
           </div>
 
-          <button type="submit">Submit Event</button>
+          <div className="form-group">
+            <label htmlFor="eventID">Event ID (required):</label>
+            <input
+              type="text"
+              id="eventID"
+              name="event_id"
+              value={eventManage.event_id}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit">{isEditing ? "Update Event" : "Submit Event"}</button>
         </form>
+
+        {message && <p className={`message ${submitted ? 'success' : 'error'}`}>{message}</p>}
 
         <h2>Created Events</h2>
         <table className="past-events">
@@ -194,10 +216,11 @@ const EventManage = () => {
             <tr>
               <th>Event Name</th>
               <th>Event Description</th>
-              <th>Location</th>
+              <th>State</th>
               <th>Skills</th>
               <th>Urgency</th>
               <th>Date</th>
+              <th>Event ID</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -206,13 +229,14 @@ const EventManage = () => {
               <tr key={index}>
                 <td>{event.eventName}</td>
                 <td>{event.eventDescription}</td>
-                <td>{event.location}</td>
-                <td>{event.requiredSkills}</td>
+                <td>{event.state_name}</td>
+                <td>{event.requiredSkills.join(', ')}</td>
                 <td>{event.urgency}</td>
                 <td>{event.eventDate}</td>
+                <td>{event.event_id}</td>
                 <td>
                   <button onClick={() => handleEdit(event)}>Edit</button>
-                  <button onClick={() => handleDelete(event.eventName)}>Delete</button>
+                  <button onClick={() => handleDelete(event)}>Delete</button>
                 </td>
               </tr>
             ))}

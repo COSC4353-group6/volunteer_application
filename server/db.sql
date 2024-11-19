@@ -13,6 +13,12 @@ CREATE TABLE states (
   state_name VARCHAR(50) NOT NULL  -- Full name, e.g., Texas, California
 );
 
+-- User credentials
+CREATE TABLE UserCredentials (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE urgencies (
      _id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -75,6 +81,17 @@ CREATE TABLE volunteer_requests (
     FOREIGN KEY (user_id) REFERENCES users(_id),
     FOREIGN KEY (event_id) REFERENCES events(_id)
 );
+
+CREATE TABLE volunteer_history (
+    _id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    event_id BIGINT NOT NULL,
+    participation_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(_id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events(_id) ON DELETE CASCADE
+);
+
 
 CREATE TABLE notifications (
     notification_id INT AUTO_INCREMENT PRIMARY KEY,
