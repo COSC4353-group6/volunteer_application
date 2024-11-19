@@ -1,5 +1,5 @@
 import express from 'express';
-import { pool } from '../db.js'; // Ensure your DB connection is correctly configured
+import { pool } from '../db.js';
 import fs from 'fs';
 import path from 'path';
 import { createObjectCsvWriter } from 'csv-writer';
@@ -43,15 +43,22 @@ ReportPRouter.get('/report-page', async (req, res) => {
 
     switch (format.toLowerCase()) {
       case 'csv':
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename="report-${uniqueId}.csv"`);
         await generateCSV(volunteerReport, eventReport, res, uniqueId);
         break;
       case 'pdf':
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="report-${uniqueId}.pdf"`);
         await generatePDF(volunteerReport, eventReport, res, uniqueId);
         break;
       case 'txt':
+        res.setHeader('Content-Type', 'text/plain');
+        res.setHeader('Content-Disposition', `attachment; filename="report-${uniqueId}.txt"`);
         await generateTXT(volunteerReport, eventReport, res, uniqueId);
         break;
       default:
+        res.setHeader('Content-Type', 'application/json');
         res.json({ success: true, volunteerReport, eventReport });
     }
   } catch (error) {
@@ -71,9 +78,7 @@ const generateCSV = async (volunteerReport, eventReport, res, uniqueId) => {
 
   try {
     await csvWriter.writeRecords(volunteerReport);
-    res.download(filePath, (err) => {
-      cleanUpFile(filePath);
-    });
+    res.download(filePath, () => cleanUpFile(filePath));
   } catch (err) {
     console.error('CSV Generation Error:', err.message);
   }
@@ -90,13 +95,13 @@ const generatePDF = async (volunteerReport, eventReport, res, uniqueId) => {
   doc.end();
 
   writeStream.on('finish', () => {
-    res.download(filePath, (err) => cleanUpFile(filePath));
+    res.download(filePath, () => cleanUpFile(filePath));
   });
 };
 
 const cleanUpFile = (filePath) => {
   fs.unlink(filePath, (err) => {
-    if (err) console.log(`Error Cleaning File ${filePath}`);
+    if (err) console.error(`Error Cleaning Up File ${filePath}:`, err);
   });
 };
 

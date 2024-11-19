@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';  // Import axios
 import '../styles/ReportPage.css';
 
 const ReportScreen = () => {
@@ -13,72 +14,48 @@ const ReportScreen = () => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     setLoading(true);
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch('http://localhost:4000/api/report-page') // Relative URL for fetching datafetch('/api/report-page')
-
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((err) => {
-            throw new Error(err.message || 'Failed to fetch data from the server.');
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.volunteerReport && data.eventReport) {
-          setVolunteerReport(data.volunteerReport);
-          setEventReport(data.eventReport);
-          setSuccessMessage('Data fetched successfully!');
-        } else {
-          throw new Error('Incomplete data received from the server.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setErrorMessage(error.message || 'Failed to fetch data. Please try again.');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      const response = await axios.get('api/report-page');
+      // Assuming the response structure includes volunteerReport and eventReport
+      setVolunteerReport(response.data.volunteerReport || []);
+      setEventReport(response.data.eventReport || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setErrorMessage(error.message || 'Failed to fetch data. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const generateReport = (format) => {
+  const generateReport = async (format) => {
     setGeneratingReport(true);
     setSuccessMessage('');
     setErrorMessage('');
 
-    fetch(`http://localhost:4000/api/report-page?format=${format}`, { // Relative URL for generating report
-      method: 'GET',
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to generate the report.');
-        }
-        return response.blob(); // Get the file as a blob
-      })
-      .then((blob) => {
-        // Create a link to download the file
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `report.${format}`; // Name of the downloaded file
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url); // Clean up
-        setSuccessMessage(`Report downloaded successfully as ${format.toUpperCase()}!`);
-      })
-      .catch((error) => {
-        console.error('Error generating report:', error);
-        setErrorMessage('Failed to generate the report. Please try again.');
-      })
-      .finally(() => {
-        setGeneratingReport(false);
-      });
+    try {
+      const response = await axios.get(`/api/report-page?format=${format}`, { responseType: 'blob' });
+      
+      // Create a link to download the file
+      const url = window.URL.createObjectURL(response.data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `report.${format}`; // Name of the downloaded file
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url); // Clean up
+      setSuccessMessage(`Report downloaded successfully as ${format.toUpperCase()}!`);
+    } catch (error) {
+      console.error('Error generating report:', error);
+      setErrorMessage('Failed to generate the report. Please try again.');
+    } finally {
+      setGeneratingReport(false);
+    }
   };
 
   const renderVolunteerTable = () => (
