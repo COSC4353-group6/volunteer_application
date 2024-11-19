@@ -63,6 +63,8 @@ eventRouter.get("/allevents", async (req, res, next) => {
   }
 });
 
+
+
 // Additional routes
 eventRouter.get("/volunteer-requests", async (req, res) => {
   const query = `
