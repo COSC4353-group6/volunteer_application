@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios'; // Import Axios
 import "../styles/EventManagementFormStyles.css"; // Ensure this is the correct path
 
 const EventManage = () => {
@@ -18,21 +19,24 @@ const EventManage = () => {
   const [submitted, setSubmitted] = useState(false); // State to track if the form was submitted
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/event/event-management')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.pastEvents) {
-          const updatedEvents = data.pastEvents.map(event => ({
+    // Use Axios to fetch past events
+    axios.get('api/event/event-management')
+      .then((response) => {
+        if (response.data && response.data.pastEvents) {
+          const updatedEvents = response.data.pastEvents.map(event => ({
             ...event,
             requiredSkills: Array.isArray(event.requiredSkills) ? event.requiredSkills : [],
           }));
           setPastEvents(updatedEvents);
         } else {
-          console.error("Unexpected data format:", data);
+          console.error("Unexpected data format:", response.data);
           setPastEvents([]);
         }
       })
-      .catch((error) => console.error("Error fetching events:", error));
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        setPastEvents([]);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -48,17 +52,14 @@ const EventManage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/api/event/event-management', {
-        method: 'POST',
+      const response = await axios.post('api/event/event-management', eventManage, {
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventManage),
+        }
       });
 
-      if (!response.ok) {
-        const errorText = await response.text(); // Get the raw response text
-        console.error("Error response:", errorText); // Log the error response
+      if (response.status !== 200) {
+        console.error("Error response:", response);
         setMessage("Failed to submit the event. Please try again.");
       } else {
         setEventManage({
@@ -70,10 +71,8 @@ const EventManage = () => {
           eventDate: '',
           event_id: '',
         });
-        const data = await response.json();
         setMessage("Event submitted successfully!");
         if (isEditing) {
-          // Logic to update the pastEvents array if necessary
           setIsEditing(false);
           setEventId(null);
         }
@@ -92,8 +91,8 @@ const EventManage = () => {
 
   const handleDelete = (eventName) => {
     if (window.confirm(`Are you sure you want to delete the event: ${eventName}?`)) {
-      fetch(`http://localhost:4000/api/event/event-management`, {
-        method: 'DELETE',
+      axios.delete('api/event/event-management', {
+        data: { eventName },
       })
         .then(() => {
           setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
