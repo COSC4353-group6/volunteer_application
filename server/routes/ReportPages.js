@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 const ReportPRouter = express.Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+
 ReportPRouter.get('/report-page', async (req, res) => {
   try {
     console.log(`[${new Date().toISOString()}] Request received from ${req.ip}`);
@@ -37,7 +38,8 @@ ReportPRouter.get('/report-page', async (req, res) => {
     if (!volunteerReport.length && !eventReport.length) {
       return res.status(404).json({ success: false, message: 'No data available for the report' });
     }
-
+    
+//determine formats 
     const format = req.query.format || 'json';
     const uniqueId = uuidv4();
 
@@ -66,6 +68,7 @@ ReportPRouter.get('/report-page', async (req, res) => {
     res.status(500).json({ success: false, message: `Error generating report: ${error.message}` });
   }
 });
+//generate csv report
 
 const generateCSV = async (volunteerReport, eventReport, res, uniqueId) => {
   const headers = volunteerReport.length ? Object.keys(volunteerReport[0]) : [];
@@ -84,6 +87,7 @@ const generateCSV = async (volunteerReport, eventReport, res, uniqueId) => {
   }
 };
 
+//generate pdf report
 const generatePDF = async (volunteerReport, eventReport, res, uniqueId) => {
   const filePath = path.join(__dirname, `report-${uniqueId}.pdf`);
   const doc = new PDFDocument();
@@ -99,6 +103,23 @@ const generatePDF = async (volunteerReport, eventReport, res, uniqueId) => {
   });
 };
 
+//generate txt 
+const generateTXT = async (volunteerReport, eventReport, res, uniqueId) => {
+  const filePath = path.join(__dirname, `report-${uniqueId}.txt`);
+
+  try {
+    const content = `Volunteer Report:\n\n${volunteerReport.map(item => JSON.stringify(item, null, 2)).join('\n\n')}\n\n` +
+                    `Event Report:\n\n${eventReport.map(item => JSON.stringify(item, null, 2)).join('\n\n')}`;
+
+    fs.writeFileSync(filePath, content, 'utf8');
+    res.download(filePath, () => cleanUpFile(filePath));
+  } catch (err) {
+    console.error('TXT Generation Error:', err.message);
+    res.status(500).send('Error generating TXT report.');
+  }
+};
+
+//clean up temporary files
 const cleanUpFile = (filePath) => {
   fs.unlink(filePath, (err) => {
     if (err) console.error(`Error Cleaning Up File ${filePath}:`, err);
