@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { pool } from '../db.js';
 //import { isAuth } from '../utils.js';  
