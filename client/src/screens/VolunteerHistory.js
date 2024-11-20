@@ -5,17 +5,18 @@ import logo from '../images/volt2.png';
 
 const VolunteerHistory = () => {
   const [volunteerHistory, setVolunteerHistory] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state 
 
+  // Fetch the volunteer history data from the API
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const { data } = await axios.get('/volunteerhistory');
+        const { data } = await axios.get('/api/volunteerHistory');
         setVolunteerHistory(data);
       } catch (error) {
         console.error('Error fetching volunteer history:', error);
       } finally {
-        setLoading(false); 
+        setLoading(false); // Set loading to false after fetching
       }
     };
     fetchHistory();
@@ -30,7 +31,7 @@ const VolunteerHistory = () => {
       <main>
         <div>
           <h1>Your Participation History</h1>
-          {loading ? (
+          {loading ? ( // Conditional rendering for loading state
             <p>Loading...</p>
           ) : (
             <table>
