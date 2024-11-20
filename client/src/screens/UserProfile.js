@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import Axios
 import '../styles/UserProfileStyle.css';
 
 const UserProfile = () => {
@@ -17,15 +18,11 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/user-profile');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('Fetched user profile data:', data);
+        const response = await axios.get('/api/user-profile');
+        console.log('Fetched user profile data:', response.data);
         setUserProfile({
-          ...data,
-          availability: data.availability || [''], // Ensure availability is always an array
+          ...response.data,
+          availability: response.data.availability || [''], // Ensure availability is always an array
         });
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -50,15 +47,13 @@ const UserProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/api/user-profile', {
-        method: 'POST',
+      const response = await axios.post('/api/user-profile', userProfile, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userProfile),
       });
-      const data = await response.json();
-      if (data.success) {
+
+      if (response.data.success) {
         alert('Profile updated successfully');
       } else {
         alert('Failed to update profile');
@@ -67,7 +62,7 @@ const UserProfile = () => {
       console.error('Error updating user profile:', error);
       alert('An error occurred while updating the profile');
     }
-  };
+  }; 
 
   return (
     <section className="user-profile">
