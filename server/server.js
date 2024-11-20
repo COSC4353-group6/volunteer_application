@@ -4,8 +4,7 @@ import cors from 'cors';
 import volunteerHistoryRouter from './routes/volunteerHistoryRoute.js';
 import userProfileRouter from './routes/userprofile.js';
 import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
-//import authRoutes from './routes/auth.js'; // Import authentication routes
-//import { errorHandler } from './utils.js';
+import authrouter from './routes/authrouter.js';//import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
 //import { pool } from './db.js'; // Assuming db.js is in the same directory
 import ReportPRouter from  './routes/ReportPages.js';
@@ -40,7 +39,7 @@ app.use('/api', volunteerHistoryRouter);
 app.use('/api', userProfileRouter);
 
 // Route for authentication
-//app.use('/api/auth', authRoutes);
+app.use('/api', authrouter);
 // app.get('/api/events/error-route'); 
 
 // Route to handle notifications

@@ -1,90 +1,99 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/volt2.png';
+import axios from 'axios';
 import '../styles/Signin.css';
+import logo from '../images/volt2.png';
 
 const SigninScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('');
+  const [role, setRole] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
 
-      const data = await response.json();
-      if (response.ok && data.token) {
-        localStorage.setItem('token', data.token);  // Store JWT for authenticated requests
-        alert('Login successful!');
+    if (!email || !password || !role) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Send a single user's data to the backend
+      const response = await axios.post('/api/signin', { email, password, role });
+
+      if (response.status === 200) {
+        alert('User added successfully!');
+        setEmail(''); // Reset email field
+        setPassword(''); // Reset password field
+        setRole(''); // Reset role field
       } else {
-        alert(`Error: ${data.error || data.msg}`);
+        alert(`Error: ${response.data.error || 'Failed to add user.'}`);
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error adding user:', error);
+      const errorMessage = error.response?.data?.error || 'An unexpected error occurred. Please try again.';
+      alert(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="signin-container">
-      <header className="header">
-        <div className="header-content">
-          <img src={logo} alt="Logo" className="header-logo" />
-          <h1 className="header-title">Sign In</h1>
-        </div>
-      </header>
+    <header className="header">
+      <div className="header-content">
+        <img src={logo} alt="Logo" className="header-logo" />
+        <h1 className="header-title">Sign In</h1>
+      </div>
+    </header>
       <main className="form-container">
         <form onSubmit={handleSubmit} className="signin-form">
           <div className="form-group">
-            <label htmlFor="signinEmail" className="form-label">Email:</label>
+            <label htmlFor="email"className="form-label">Email:</label>
             <input
+              id="email"
               type="email"
-              id="signinEmail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="form-input"
-              placeholder="Enter your email"
+              placeholder="Enter user email"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="signinPassword" className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label">Password:</label>
             <input
+              id="password"
               type="password"
-              id="signinPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="form-input"
-              placeholder="Enter your password"
+              placeholder="Enter user password"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="userType" className="form-label">Sign in as:</label>
+            <label htmlFor="role"className="form-label" >Role:</label>
             <select
-              id="userType"
-              value={userType}
-              onChange={(e) => setUserType(e.target.value)}
-              className="form-input"
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               required
             >
-              <option value="">Select User Type</option>
+              <option value="">Select Role</option>
               <option value="volunteer">Volunteer</option>
               <option value="admin">Admin</option>
             </select>
           </div>
 
-          <button type="submit" className="form-button siginorsignupbtn">Sign In</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Adding User...' : 'Submit'}
+          </button>
+          
         </form>
-
         <p className="form-question">
           Don't have an account? <Link to="/signup" className="form-link">Sign up here</Link>
         </p>
