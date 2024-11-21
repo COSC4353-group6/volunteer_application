@@ -23,6 +23,7 @@ import AdminRoute from "./hooks/AdminRoute.js";
 import FindEventScreen from "./screens/FindEventScreen.js";
 import EventManagementForm from "./screens/EventManagementForm.js";
 import MatchUser from "./screens/MatchUser.js";
+//import Notifications from "./Notifications";
 import Notification from "./components/Notification"; //Notification component
 import ProtectedRoute from "./hooks/ProtectedRoute.js";
 import Nav from "react-bootstrap/Nav";
@@ -293,6 +294,7 @@ function App() {
 
         <main>
           <Container className="mt-3">
+             {/* Public Routes */}
             <Routes>
               <Route path="/event/:slug" element={<EventScreen />} />
               {/* <Route path="/search" element={<SearchScreen />} /> */}
@@ -304,72 +306,76 @@ function App() {
               <Route path="/" element={<HomeScreen />} />
               <Route path="*" element={<ErrorScreen />} />
 
-              <Route
-                path="/userprofile"
-                element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/volunteerHistory"
-                element={
-                  <ProtectedRoute>
-                    <VolunteerHistory />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/findevent"
-                element={
-                  <ProtectedRoute>
-                    <FindEventScreen />
-                  </ProtectedRoute>
-                }
-              />
+              
+ 
 
-              <Route
-                path="/admin/event-management"
-                element={
-                  <AdminRoute>
-                    <EventManagementForm />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/pastevents"
-                element={
-                  <AdminRoute>
-                    <PastEventScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-                <Route
-                path="/admin/report-page"
-                element={
-                  <AdminRoute>
-                    <ReportScreen />
-                  </AdminRoute>
-                }
-              ></Route>
+  {/* Protected Routes */}
+  <Route
+    path="/userprofile"
+    element={
+      <ProtectedRoute>
+        <UserProfile />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/volunteerHistory"
+    element={
+      <ProtectedRoute>
+        <VolunteerHistory />
+      </ProtectedRoute>
+    }
+  />
+  <Route
+    path="/findevent"
+    element={
+      <ProtectedRoute>
+        <FindEventScreen />
+      </ProtectedRoute>
+    }
+  />
 
-              <Route
-                path="/admin/users"
-                element={
-                  <AdminRoute>
-                    <UserListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/volunteermatching"
-                element={
-                  <AdminRoute>
-                    <VolunteerMatchingScreen />
-                  </AdminRoute>
-                }
-              ></Route>
+  {/* Admin Routes */}
+  <Route
+    path="/admin/event-management"
+    element={
+      <AdminRoute>
+        <EventManagementForm />
+      </AdminRoute>
+    }
+  />
+  <Route
+    path="/admin/pastevents"
+    element={
+      <AdminRoute>
+        <PastEventScreen />
+      </AdminRoute>
+    }
+  />
+  <Route
+    path="/admin/report-page"
+    element={
+      <AdminRoute>
+        <ReportScreen />
+      </AdminRoute>
+    }
+  />
+  <Route
+    path="/admin/users"
+    element={
+      <AdminRoute>
+        <UserListScreen />
+      </AdminRoute>
+    }
+  />
+  <Route
+    path="/admin/volunteermatching"
+    element={
+      <AdminRoute>
+        <VolunteerMatchingScreen />
+      </AdminRoute>
+    }
+  />
               <Route
                 path="/admin/:_id"
                 element={

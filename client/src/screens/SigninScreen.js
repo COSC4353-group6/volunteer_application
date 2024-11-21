@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signin.css';
 import logo from '../images/volt2.png';
@@ -10,32 +10,34 @@ const SigninScreen = () => {
   const [role, setRole] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email || !password || !role) {
-      alert('Please fill in all fields.');
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      // Send a single user's data to the backend
-      const response = await axios.post('/api/signin', { email, password, role });
+      // Send credentials to the backend
+      const { data } = await axios.post('http://localhost:4000/api/signin', {
+        email,
+        password,
+        role,
+      });
 
-      if (response.status === 200) {
-        alert('User added successfully!');
-        setEmail(''); // Reset email field
-        setPassword(''); // Reset password field
-        setRole(''); // Reset role field
+      // Save user info to localStorage for later use
+      localStorage.setItem('userInfo', JSON.stringify(data));
+
+      // Redirect based on role
+      if (data.role === 'admin') {
+            navigate('/');
+      } else if (data.role === 'Volunteer') {
+        navigate('/');
       } else {
-        alert(`Error: ${response.data.error || 'Failed to add user.'}`);
+        alert('Role not recognized. Please contact support.');
       }
     } catch (error) {
-      console.error('Error adding user:', error);
-      const errorMessage = error.response?.data?.error || 'An unexpected error occurred. Please try again.';
-      alert(errorMessage);
+      console.error('Error during sign-in:', error);
+      alert('Sign-in failed. Please check your credentials and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -43,22 +45,17 @@ const SigninScreen = () => {
 
   return (
     <div className="signin-container">
-    <header className="header">
-      <div className="header-content">
-        <img src={logo} alt="Logo" className="header-logo" />
-        <h1 className="header-title">Sign In</h1>
-      </div>
-    </header>
       <main className="form-container">
         <form onSubmit={handleSubmit} className="signin-form">
           <div className="form-group">
-            <label htmlFor="email"className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label">Email:</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter user email"
+              className="form-input"
+              placeholder="Enter your email"
               required
             />
           </div>
@@ -70,29 +67,29 @@ const SigninScreen = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter user password"
+              className="form-input"
+              placeholder="Enter your password"
               required
             />
           </div>
-
           <div className="form-group">
-            <label htmlFor="role"className="form-label" >Role:</label>
+            <label htmlFor="role" className="form-label">Role:</label>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
+              className="form-input"
               required
             >
               <option value="">Select Role</option>
-              <option value="volunteer">Volunteer</option>
+              <option value="Volunteer">Volunteer</option>
               <option value="admin">Admin</option>
             </select>
           </div>
 
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? 'Adding User...' : 'Submit'}
+          <button type="submit" className="form-button siginorsignupbtn" disabled={isLoading}>
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
-          
         </form>
         <p className="form-question">
           Don't have an account? <Link to="/signup" className="form-link">Sign up here</Link>
