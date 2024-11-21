@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'; // Import Axios
-import "../styles/EventManagementFormStyles.css"; // Ensure this is the correct path
+import axios from "axios";
+import "../styles/EventManagementFormStyles.css";
 
 const EventManage = () => {
   const [eventManage, setEventManage] = useState({
-    eventName: '',
-    eventDescription: '',
-    state_name: '',
-    requiredSkills: [],
-    urgency: '',
-    eventDate: '',
-    event_id: '',
+    eventName: "",
+    eventDescription: "",
+    state_name: "",
+    requiredSkills: "", // Plain text
+    urgency: "",
+    eventDate: "",
+    event_id: "",
   });
   const [pastEvents, setPastEvents] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [event_id, setEventId] = useState(null);
-  const [message, setMessage] = useState(''); // State for submission message
-  const [submitted, setSubmitted] = useState(false); // State to track if the form was submitted
+  const [message, setMessage] = useState("");
 
+  // Fetch past events on component mount
   useEffect(() => {
-    // Use Axios to fetch past events
-    axios.get('api/event/event-management')
+    axios
+      .get("api/event/event-management")
       .then((response) => {
         if (response.data && response.data.pastEvents) {
-          const updatedEvents = response.data.pastEvents.map(event => ({
-            ...event,
-            requiredSkills: Array.isArray(event.requiredSkills) ? event.requiredSkills : [],
-          }));
-          setPastEvents(updatedEvents);
+          setPastEvents(response.data.pastEvents);
         } else {
           console.error("Unexpected data format:", response.data);
           setPastEvents([]);
@@ -39,43 +35,43 @@ const EventManage = () => {
       });
   }, []);
 
+  // Handle form input changes
   const handleChange = (e) => {
-    const { name, value, type, selectedOptions } = e.target;
-    if (type === "select-multiple") {
-      const selectedSkills = Array.from(selectedOptions, option => option.value);
-      setEventManage((prev) => ({ ...prev, [name]: selectedSkills }));
-    } else {
-      setEventManage((prev) => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = e.target;
+    setEventManage((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle form submission (Create/Update event)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('api/event/event-management', eventManage, {
+      const response = await axios.post("api/event/event-management", eventManage, {
         headers: {
-          'Content-Type': 'application/json',
-        }
+          "Content-Type": "application/json",
+        },
       });
 
-      if (response.status !== 200) {
-        console.error("Error response:", response);
-        setMessage("Failed to submit the event. Please try again.");
-      } else {
-        setEventManage({
-          eventName: '',
-          eventDescription: '',
-          state_name: '',
-          requiredSkills: [],
-          urgency: '',
-          eventDate: '',
-          event_id: '',
-        });
+      if (response.status === 201 || response.status === 200) {
         setMessage("Event submitted successfully!");
+        setEventManage({
+          eventName: "",
+          eventDescription: "",
+          state_name: "",
+          requiredSkills: "",
+          urgency: "",
+          eventDate: "",
+          event_id: "",
+        });
         if (isEditing) {
           setIsEditing(false);
           setEventId(null);
         }
+        // Refresh events after submission
+        axios.get("api/event/event-management").then((res) => {
+          setPastEvents(res.data.pastEvents || []);
+        });
+      } else {
+        setMessage("Failed to submit event.");
       }
     } catch (error) {
       console.error("Error during submission:", error);
@@ -83,24 +79,30 @@ const EventManage = () => {
     }
   };
 
+  // Handle event editing
   const handleEdit = (event) => {
-    setEventManage(event); // Populate form with the selected event data
-    setIsEditing(true); // Set edit mode
-    setEventId(event.event_id); // Set the ID of the event being edited
+    setEventManage(event); // Populate form with selected event data
+    setIsEditing(true); // Enable editing mode
+    setEventId(event.event_id); // Set event ID
   };
 
-  const handleDelete = (eventName) => {
-    if (window.confirm(`Are you sure you want to delete the event: ${eventName}?`)) {
-      axios.delete('api/event/event-management', {
-        data: { eventName },
-      })
+  // Handle event deletion
+  const handleDelete = (event_id) => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      axios
+        .delete(`api/event/event-management/${event_id}`)
         .then(() => {
-          setPastEvents(prevEvents => prevEvents.filter(event => event.eventName !== eventName));
+          setPastEvents((prevEvents) =>
+            prevEvents.filter((event) => event.event_id !== event_id)
+          );
+          setMessage("Event deleted successfully!");
         })
-        .catch((error) => console.error("Error deleting event:", error));
+        .catch((error) => {
+          console.error("Error deleting event:", error);
+          setMessage("Failed to delete the event.");
+        });
     }
   };
-  
 
   return (
     <section className="event-management">
@@ -132,7 +134,7 @@ const EventManage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="eventLocation">Event Location:</label>
+            <label htmlFor="state_name">Event Location (State):</label>
             <input
               type="text"
               id="state_name"
@@ -144,30 +146,21 @@ const EventManage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="requiredSkills">Event Skills (required):</label>
-            <select
+            <label htmlFor="requiredSkills">Required Skills:</label>
+            <input
+              type="text"
               id="requiredSkills"
               name="requiredSkills"
               value={eventManage.requiredSkills}
               onChange={handleChange}
               required
-              multiple
-            >
-              <option value="Volunteering">Volunteering</option>
-              <option value="Teamwork">Teamwork</option>
-              <option value="Leadership">Leadership</option>
-              <option value="Communication">Communication</option>
-              <option value="Problem-Solving">Problem-Solving</option>
-              <option value="Coordination">Coordination</option>
-              <option value="First Aid">First Aid</option>
-              <option value="Photography">Photography</option>
-            </select>
+            />
           </div>
 
           <div className="form-group">
-            <label htmlFor="eventUrgency">Event Urgency (required):</label>
+            <label htmlFor="urgency">Event Urgency (required):</label>
             <select
-              id="eventUrgency"
+              id="urgency"
               name="urgency"
               value={eventManage.urgency}
               onChange={handleChange}
@@ -193,10 +186,10 @@ const EventManage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="eventID">Event ID (required):</label>
+            <label htmlFor="event_id">Event ID (required):</label>
             <input
               type="text"
-              id="eventID"
+              id="event_id"
               name="event_id"
               value={eventManage.event_id}
               onChange={handleChange}
@@ -207,7 +200,7 @@ const EventManage = () => {
           <button type="submit">{isEditing ? "Update Event" : "Submit Event"}</button>
         </form>
 
-        {message && <p className={`message ${submitted ? 'success' : 'error'}`}>{message}</p>}
+        {message && <p className="message">{message}</p>}
 
         <h2>Created Events</h2>
         <table className="past-events">
@@ -216,7 +209,7 @@ const EventManage = () => {
               <th>Event Name</th>
               <th>Event Description</th>
               <th>State</th>
-              <th>Skills</th>
+              <th>Required Skills</th>
               <th>Urgency</th>
               <th>Date</th>
               <th>Event ID</th>
@@ -229,13 +222,13 @@ const EventManage = () => {
                 <td>{event.eventName}</td>
                 <td>{event.eventDescription}</td>
                 <td>{event.state_name}</td>
-                <td>{event.requiredSkills.join(', ')}</td>
+                <td>{event.requiredSkills}</td>
                 <td>{event.urgency}</td>
                 <td>{event.eventDate}</td>
                 <td>{event.event_id}</td>
                 <td>
                   <button onClick={() => handleEdit(event)}>Edit</button>
-                  <button onClick={() => handleDelete(event)}>Delete</button>
+                  <button onClick={() => handleDelete(event.event_id)}>Delete</button>
                 </td>
               </tr>
             ))}

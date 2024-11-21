@@ -1,56 +1,80 @@
 import express from "express";
 import { pool } from "../db.js";
-import { body, validationResult } from "express-validator"; // Import body and validationResult
-const eventRouter = express.Router();
-//import { errorHandler } from "../utils.js";
+import { body, validationResult } from "express-validator";
 
-// Define an API endpoint for fetching events data, replacing hardcoded current and past events with database data
+const eventRouter = express.Router();
+
+// Define the errorHandler function if not imported
+const errorHandler = (status, message) => {
+  const error = new Error(message);
+  error.status = status;
+  return error;
+};
+
+// Fetch current and past events
 eventRouter.get("/event-management", async (req, res, next) => {
   try {
-    // Fetch the current event data from the database
     const [currentEvent] = await pool.query("SELECT * FROM currentEvent");
-
-    // Fetch past events from the database
     const [pastEvents] = await pool.query("SELECT * FROM pastEvents");
-
-    // Combine current and past events
-    const eventManage = {
-      currentEvent: currentEvent[0], // assuming there's only one current event
-      pastEvents,
-    };
-
-    res.json(eventManage);
+    res.json({ currentEvent: currentEvent[0], pastEvents });
   } catch (error) {
     next(errorHandler(500, "Failed to retrieve events"));
   }
 });
-eventRouter.post('/event-management', [
-  body('eventName').notEmpty().withMessage('Event name is required'),
-  // Add other validations as necessary
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+
+// Create a new event
+eventRouter.post(
+  "/event-management",
+  [body("eventName").notEmpty().withMessage("Event name is required")],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
-  }
+    }
 
-  const { eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id } = req.body;
+    const { eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id } = req.body;
 
-  try {
+    try {
       await pool.query(
-          'INSERT INTO pastEvents (eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-          [eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id]
+        "INSERT INTO pastEvents (eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [eventName, eventDescription, state_name, requiredSkills, urgency, eventDate, slug, event_id]
       );
 
-      res.status(201).json({ message: 'Event created successfully' });
-  } catch (error) {
-      console.error('Error inserting event:', error);
-      res.status(500).json({ error: 'Failed to insert event' });
+            // Insert a notification into the database
+            const notificationMessage = `A new event "${eventName}" has been created!`;
+            await pool.query(
+              "INSERT INTO notificationsevent (message, event_id, createdAt) VALUES (?, ?, NOW())",
+              [notificationMessage, event_id]
+            );
+      
+            // Optionally log or send a real-time notification here
+            console.log("Notification created:", notificationMessage);
+
+      res.status(201).json({ message: "Event created successfully" });
+    } catch (error) {
+      console.error("Error inserting event:", error);
+      res.status(500).json({ error: "Failed to insert event" });
+    }
   }
-});
-eventRouter.get("/error-route", (req, res, next) => {
-  const error = new Error("Test error");
-  error.status = 500;
-  next(error);
+);
+
+
+// Delete an event by ID
+eventRouter.delete("/event-management/:id", async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "Event ID is required for deletion." });
+  }
+  try {
+    const [result] = await pool.query("DELETE FROM pastEvents WHERE event_id = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    res.status(200).json({ message: "Event deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    res.status(500).json({ error: "Failed to delete event" });
+  }
 });
 
 

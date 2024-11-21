@@ -6,6 +6,7 @@ import userProfileRouter from './routes/userprofile.js';
 import eventRouter from './routes/eventRoutes.js'; // Import your eventRoutes
 import authrouter from './routes/authrouter.js';//import { errorHandler } from './utils.js';
 import notificationRouter from './routes/notificationRoutes.js'; // Import notification routes
+//import ProtectedRoute from './routes/ProtectedRoute.js';
 //import { pool } from './db.js'; // Assuming db.js is in the same directory
 import ReportPRouter from  './routes/ReportPages.js';
 
@@ -41,6 +42,8 @@ app.use('/api', userProfileRouter);
 // Route for authentication
 app.use('/api', authrouter);
 // app.get('/api/events/error-route'); 
+
+//app.use('/api', ProtectedRoute);
 
 // Route to handle notifications
 app.use('/api/notifications', notificationRouter);

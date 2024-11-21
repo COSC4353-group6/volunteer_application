@@ -1,91 +1,105 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../images/volt2.png';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/Signup.css';
 
 const SignupScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('');
+  const [role, setRole] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password || !role) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
+      // Send user data to the backend
+      const response = await axios.post('http://localhost:4000/api/signup', {
+        email,
+        password,
+        role,
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        alert('Sign-up successful!');
+      if (response.status === 200) {
+        alert('User added successfully!');
+        setEmail(''); // Reset email field
+        setPassword(''); // Reset password field
+        setRole(''); // Reset role field
+
+        // Redirect to the sign-in page
+        navigate('/signin');
       } else {
-        alert(`Error: ${data.error || data.msg}`);
+        alert(`Error: ${response.data.error || 'Failed to add user.'}`);
       }
     } catch (error) {
-      console.error('Error during sign-up:', error);
+      console.error('Error adding user:', error);
+      const errorMessage = error.response?.data?.error || 'An unexpected error occurred. Please try again.';
+      alert(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="signup-container">
-      <header className="header">
-        <div className="header-content">
-          <img src={logo} alt="Logo" className="header-logo" />
-          <h1 className="header-title">Sign Up</h1>
-        </div>
-      </header>
       <main className="form-container">
         <form onSubmit={handleSubmit} className="signup-form">
           <div className="form-group">
-            <label htmlFor="signupEmail" className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label">Email:</label>
             <input
+              id="email"
               type="email"
-              id="signupEmail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-input"
-              placeholder="Enter your email"
+              placeholder="Enter user email"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="signupPassword" className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label">Password:</label>
             <input
+              id="password"
               type="password"
-              id="signupPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-input"
-              placeholder="Enter your password"
+              placeholder="Enter user password"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="userType" className="form-label">Sign up as:</label>
+            <label htmlFor="role" className="form-label">Role:</label>
             <select
-              id="userType"
-              value={userType}
-              onChange={(e) => setUserType(e.target.value)}
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               className="form-input"
               required
             >
-              <option value="">Select User Type</option>
+              <option value="">Select Role</option>
               <option value="volunteer">Volunteer</option>
               <option value="admin">Admin</option>
             </select>
           </div>
 
-          <button type="submit" className="form-button siginorsignupbtn">Sign Up</button>
+          <button type="submit" className="form-button siginorsignupbtn" disabled={isLoading}>
+            {isLoading ? 'Adding User...' : 'Submit'}
+          </button>
         </form>
-
         <p className="form-question">
-          Already have an account? <Link to="/signin" className="form-link">Log in here</Link>
+          Do you have an account already? <Link to="/signin" className="form-link">Sign in here</Link>
         </p>
       </main>
     </div>

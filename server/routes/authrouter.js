@@ -3,7 +3,8 @@ import { pool } from '../db.js';
 
 const authrouter = express.Router();
 
-authrouter.post('/signin', async (req, res) => {
+// Signup Route
+authrouter.post('/signup', async (req, res) => {
   const { email, password, role } = req.body;
 
   // Validate input
@@ -12,10 +13,8 @@ authrouter.post('/signin', async (req, res) => {
   }
 
   try {
-    // Insert user into the UserCredentials table without explicitly using VALUES
-    const query = `
-      INSERT INTO UserCredentials SET email = ?, password = ?, role = ?
-    `;
+    // Insert user into the UserCredentials table
+    const query = `INSERT INTO UserCredentials (email, password, role) VALUES (?, ?, ?)`;
 
     await pool.query(query, [email, password, role]);
 
@@ -29,6 +28,33 @@ authrouter.post('/signin', async (req, res) => {
     } else {
       res.status(500).json({ error: 'Failed to add user to the database.' });
     }
+  }
+});
+
+// Signin Route
+authrouter.post('/signin', async (req, res) => {
+  const { email, password, role } = req.body;
+
+  // Validate input
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+
+  try {
+    // Check if user exists and validate password
+    const query = `SELECT * FROM UserCredentials WHERE email = ? AND password = ?`;
+    const [rows] = await pool.query(query, [email, password, role]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
+
+    // Extract user role
+    const user = rows[0];
+    res.status(200).json({ token: 'dummy-auth-token', role: user.role });
+  } catch (error) {
+    console.error('Error during user authentication:', error);
+    res.status(500).json({ error: 'Failed to authenticate user.' });
   }
 });
 
