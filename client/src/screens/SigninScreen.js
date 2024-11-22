@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signin.css';
-import logo from '../images/volt2.png';
 
 const SigninScreen = () => {
   const [email, setEmail] = useState('');
@@ -17,19 +16,16 @@ const SigninScreen = () => {
     setIsLoading(true);
 
     try {
-      // Send credentials to the backend
       const { data } = await axios.post('http://localhost:4000/api/signin', {
         email,
         password,
         role,
       });
 
-      // Save user info to localStorage for later use
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      // Redirect based on role
       if (data.role === 'admin') {
-            navigate('/');
+        navigate('/');
       } else if (data.role === 'Volunteer') {
         navigate('/');
       } else {
@@ -47,8 +43,11 @@ const SigninScreen = () => {
     <div className="signin-container">
       <main className="form-container">
         <form onSubmit={handleSubmit} className="signin-form">
+          <h2 style={{ color: 'yellow' }}>Sign In</h2>
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label" style={{ color: 'white' }}>
+              Email:
+            </label>
             <input
               id="email"
               type="email"
@@ -61,7 +60,9 @@ const SigninScreen = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label" style={{ color: 'white' }}>
+              Password:
+            </label>
             <input
               id="password"
               type="password"
@@ -73,7 +74,9 @@ const SigninScreen = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="role" className="form-label">Role:</label>
+            <label htmlFor="role" className="form-label" style={{ color: 'white' }}>
+              Role:
+            </label>
             <select
               id="role"
               value={role}

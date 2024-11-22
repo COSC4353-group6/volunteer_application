@@ -9,7 +9,7 @@ const SignupScreen = () => {
   const [role, setRole] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +22,6 @@ const SignupScreen = () => {
     setIsLoading(true);
 
     try {
-      // Send user data to the backend
       const response = await axios.post('http://localhost:4000/api/signup', {
         email,
         password,
@@ -31,11 +30,9 @@ const SignupScreen = () => {
 
       if (response.status === 200) {
         alert('User added successfully!');
-        setEmail(''); // Reset email field
-        setPassword(''); // Reset password field
-        setRole(''); // Reset role field
-
-        // Redirect to the sign-in page
+        setEmail('');
+        setPassword('');
+        setRole('');
         navigate('/signin');
       } else {
         alert(`Error: ${response.data.error || 'Failed to add user.'}`);
@@ -53,8 +50,11 @@ const SignupScreen = () => {
     <div className="signup-container">
       <main className="form-container">
         <form onSubmit={handleSubmit} className="signup-form">
+          <h2 style={{ color: 'yellow' }}>Sign Up</h2>
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label" style={{ color: 'white' }}>
+              Email:
+            </label>
             <input
               id="email"
               type="email"
@@ -67,7 +67,9 @@ const SignupScreen = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label" style={{ color: 'white' }}>
+              Password:
+            </label>
             <input
               id="password"
               type="password"
@@ -80,7 +82,9 @@ const SignupScreen = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="role" className="form-label">Role:</label>
+            <label htmlFor="role" className="form-label" style={{ color: 'white' }}>
+              Role:
+            </label>
             <select
               id="role"
               value={role}
@@ -107,3 +111,4 @@ const SignupScreen = () => {
 };
 
 export default SignupScreen;
+
